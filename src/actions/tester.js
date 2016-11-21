@@ -1,8 +1,8 @@
 "use strict";
 
 const {createAction} = require('./index');
-const {showSaveDirDialog} = require('../service/dialog');
-const {WorkerTasks, execByWorker} = require('../service/worker');
+const {showOpenCreateDirDialog} = require('../service/DialogService');
+const {WorkerTasks, execByWorker} = require('../service/WorkerService');
 
 
 const Actions = {
@@ -20,7 +20,7 @@ function showError(msg) {
 
 function testDialog() {
     return (dispatch, getState) => {
-        return showSaveDirDialog()
+        return showOpenCreateDirDialog()
             .then((dirPath) => {
                 dispatch(showText(`Selected dir: ${dirPath}`));
             })

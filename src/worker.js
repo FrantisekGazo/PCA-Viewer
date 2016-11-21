@@ -1,7 +1,7 @@
 const ipc = require('electron').ipcRenderer;
 const BrowserWindow = require('electron').remote.BrowserWindow;
 
-const {WorkerTasks, workerTaskProgress, workerTaskEnded} = require('./service/worker');
+const {WorkerTasks, workerTaskProgress, workerTaskEnded} = require('./service/WorkerService');
 
 
 ipc.on(WorkerTasks.TEST, function (event, text, callerId) {

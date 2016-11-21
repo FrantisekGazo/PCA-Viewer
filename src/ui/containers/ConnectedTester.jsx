@@ -7,7 +7,7 @@ const Tester = require('../components/Tester.jsx');
 const {testDialog, testWorker} = require('../../actions/tester');
 
 
-const ConnectedTester = connect(
+module.exports = connect(
     // state to props
     (state) => {
         return {
@@ -27,5 +27,3 @@ const ConnectedTester = connect(
         };
     }
 )(Tester);
-
-module.exports = ConnectedTester;

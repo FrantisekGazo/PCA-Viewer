@@ -7,7 +7,7 @@ const Counter = require('../components/Counter.jsx');
 const {increment, decrement} = require('../../actions/counter');
 
 
-const ConnectedCounter = connect(
+module.exports = connect(
     // state to props
     (state) => {
         return {value: state.counter.number};
@@ -24,5 +24,3 @@ const ConnectedCounter = connect(
         };
     }
 )(Counter);
-
-module.exports = ConnectedCounter;
