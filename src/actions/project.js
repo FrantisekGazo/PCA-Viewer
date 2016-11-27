@@ -1,7 +1,8 @@
 "use strict";
 
-const {createAction} = require('./index');
-const {showOpenDirDialog, showOpenCreateDirDialog} = require('../service/DialogService');
+const { createAction } = require('./index');
+const { showOpenDirDialog, showOpenCreateDirDialog } = require('../service/DialogService');
+const { replace } = require('react-router-redux');
 
 
 const Actions = {
@@ -10,7 +11,12 @@ const Actions = {
 };
 
 function selectProject(dir) {
-    return createAction(Actions.SELECT_PROJECT, dir);
+    return function (dispatch) {
+        dispatch(createAction(Actions.SELECT_PROJECT, dir));
+
+        const location = {pathname: `/project/`};
+        dispatch(replace(location));
+    }
 }
 
 function showProjectSelectionError(msg) {

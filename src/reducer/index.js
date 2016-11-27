@@ -1,14 +1,14 @@
 "use strict";
 
 const { combineReducers } = require("redux");
+const { routerReducer } = require('react-router-redux');
 
-const { counter } = require("./counter");
 const { tester } = require("./tester");
 const { project } = require("./project");
 
 
 module.exports = combineReducers({
-    counter,
     tester,
-    project
+    project,
+    routing: routerReducer
 });

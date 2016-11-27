@@ -9,7 +9,7 @@ const { closeProject, openExistingProject, startNewProject } = require('../../ac
 
 module.exports = connect(
     // state to props
-    (state) => {
+    (state, props) => {
         return {
             path: state.project.path
         };

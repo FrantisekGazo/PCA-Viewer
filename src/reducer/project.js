@@ -14,7 +14,8 @@ const project = (state = initState, action) => {
         case Actions.SELECT_PROJECT: {
             return update(state, {
                 $merge: {
-                    path: action.payload
+                    path: action.payload,
+                    error: ''
                 }
             });
         }

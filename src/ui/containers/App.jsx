@@ -3,27 +3,17 @@
 const React = require('react');
 const {connect} = require('react-redux');
 
-const ConnectedCounter = require('./ConnectedCounter.jsx');
-const ConnectedTester = require('./ConnectedTester.jsx');
-const ConnectedStartScreen = require('./ConnectedStartScreen.jsx');
-const ConnectedProjectScreen = require('./ConnectedProjectScreen.jsx');
 
-
-const AppLayout = ({path}) => {
-    const screen = (path) ? (<ConnectedProjectScreen/>) : (<ConnectedStartScreen/>);
+const AppLayout = ({children}) => {
     return <div>
-        {/*<ConnectedCounter/>*/}
-        {/*<ConnectedTester/>*/}
-        {screen}
+        {children}
     </div>
 };
 
 module.exports = connect(
     // state to props
-    (state) => {
-        return {
-            path: state.project.path
-        };
+    (state, props) => {
+        return {};
     },
     // dispatch functions to props
     (dispatch) => {
