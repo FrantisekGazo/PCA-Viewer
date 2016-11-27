@@ -7,7 +7,8 @@ const {Actions} = require('../actions/project');
 
 const initState = {
     path: null,
-    error: ''
+    error: '',
+    data: {}
 };
 const project = (state = initState, action) => {
     switch (action.type) {

@@ -1,12 +1,11 @@
-const ipc = require('electron').ipcRenderer;
-const BrowserWindow = require('electron').remote.BrowserWindow;
+const { ipcRenderer } = require('electron');
+const { BrowserWindow } = require('electron').remote;
 
-const {WorkerTasks, workerTaskProgress, workerTaskEnded} = require('./service/WorkerService');
+const { WorkerTasks, workerTaskProgress, workerTaskEnded } = require('./service/WorkerService');
 
 
-ipc.on(WorkerTasks.TEST, function (event, text, callerId) {
+ipcRenderer.on(WorkerTasks.LOAD_DATA_FILE, function (event, filePath, callerId) {
     const fromWindow = BrowserWindow.fromId(callerId);
 
-    const modifiedText = `${text.toUpperCase()} (changed by worker)`;
-    fromWindow.webContents.send(workerTaskEnded(WorkerTasks.TEST), text, modifiedText, null);
+    fromWindow.webContents.send(workerTaskEnded(WorkerTasks.LOAD_DATA_FILE), filePath, 'FAKE DATA', null);
 });

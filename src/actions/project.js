@@ -1,8 +1,10 @@
 "use strict";
 
-const { createAction } = require('./index');
-const { showOpenDirDialog, showOpenCreateDirDialog } = require('../service/DialogService');
-const { replace } = require('react-router-redux');
+const {replace} = require('react-router-redux');
+
+const {createAction} = require('./index');
+const {showOpenCreateDirDialog, showOpenDirDialog, showOpenFileDialog} = require('../service/DialogService');
+const {WorkerTasks, execByWorker} = require('../service/WorkerService');
 
 
 const Actions = {
@@ -14,7 +16,7 @@ function selectProject(dir) {
     return function (dispatch) {
         dispatch(createAction(Actions.SELECT_PROJECT, dir));
 
-        const location = {pathname: `/project/`};
+        const location = {pathname: `/project/data/`};
         dispatch(replace(location));
     }
 }
@@ -51,9 +53,26 @@ function openExistingProject() {
     }
 }
 
+function addData() {
+    return function (dispatch) {
+        showOpenFileDialog()
+            .then((filePath) => {
+                return execByWorker(WorkerTasks.LOAD_DATA_FILE, filePath)
+            })
+            .then((data) => {
+                console.log('RECEIVED DATA: ', data);
+            })
+            .catch((err) => {
+                console.log('RECEIVED ERROR: ', err);
+            });
+    }
+}
+
+
 module.exports = {
     Actions,
     startNewProject,
     openExistingProject,
-    closeProject
+    closeProject,
+    addData
 };

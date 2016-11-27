@@ -35,7 +35,24 @@ const showOpenDirDialog = () => {
     });
 };
 
+const showOpenFileDialog = () => {
+    // Return a new promise.
+    return new Promise(function (resolve, reject) {
+        remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
+            properties: ['openFile']
+        }, (filePaths) => {
+            if (filePaths && filePaths[0]) {
+                const filePath = filePaths[0];
+                resolve(filePath);
+            } else {
+                reject(Error('Nothing selected'));
+            }
+        });
+    });
+};
+
 module.exports = {
     showOpenCreateDirDialog,
-    showOpenDirDialog
+    showOpenDirDialog,
+    showOpenFileDialog
 };

@@ -5,13 +5,14 @@ const React = require('react');
 const showMenu = require('../menu/Menu');
 
 
-const ProjectScreen = ({path, onCloseProjectClicked}) => {
+const ProjectScreen = ({children, path, onCloseProjectClicked}) => {
 
     showMenu(true, onCloseProjectClicked);
 
     return (
         <div>
             {path}
+            {children}
         </div>
     );
 };

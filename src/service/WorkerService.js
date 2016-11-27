@@ -1,9 +1,9 @@
-const {BrowserWindow} = require('electron').remote;
-const {ipcRenderer} = require('electron');
+const { BrowserWindow } = require('electron').remote;
+const { ipcRenderer } = require('electron');
 
 
 const WorkerTasks = {
-    TEST: 'test',
+    LOAD_DATA_FILE: 'load-data-file',
 };
 
 function workerTaskEnded(name) {
