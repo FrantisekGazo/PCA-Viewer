@@ -8,6 +8,8 @@ const {Actions} = require('../actions/project');
 const initState = {
     path: null,
     error: '',
+    usedDataSets: [],
+    dataSets: {},
     data: {}
 };
 const project = (state = initState, action) => {

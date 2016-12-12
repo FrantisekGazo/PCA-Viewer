@@ -3,7 +3,7 @@
 const React = require('react');
 const {connect} = require('react-redux');
 
-const ProjectData = require('../components/ProjectData.jsx');
+const ProjectDatasetList = require('../components/ProjectDatasetList.jsx');
 const { addData } = require('../../actions/project');
 
 
@@ -20,4 +20,4 @@ module.exports = connect(
             }
         };
     }
-)(ProjectData);
+)(ProjectDatasetList);

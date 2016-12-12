@@ -3,17 +3,21 @@
 const React = require('react');
 
 
-const ProjectData = ({onAddDataClicked}) => {
+const ProjectDatasetList = ({datasets, onAddDataClicked}) => {
+    const list = null;
+
     return (
         <div>
             <h2>Data</h2>
+            <ul>{list}</ul>
             <button onClick={onAddDataClicked}>Add data</button>
         </div>
     )
 };
 
-ProjectData.propTypes = {
+ProjectDatasetList.propTypes = {
+    datasets: React.PropTypes.array,
     onAddDataClicked: React.PropTypes.func.isRequired
 };
 
-module.exports = ProjectData;
+module.exports = ProjectDatasetList;

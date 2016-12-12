@@ -12,7 +12,7 @@ let mainWindow;
 let workerWindow;
 let splashWindow;
 let windowParams = {
-    width: 800,
+    width: 900,
     height: 500,
     show: false
 };
@@ -86,9 +86,9 @@ function createMainWindow() {
 
 function createWorkerWindow() {
     if (process.env.NODE_ENV === 'development') {
-        workerWindow = new BrowserWindow({width: 600, height: 200, show: true, parent: mainWindow});
+        workerWindow = new BrowserWindow({width: 800, height: 200, show: true, parent: mainWindow});
         workerWindow.webContents.openDevTools();
-        workerWindow.setPosition(400, 700);
+        workerWindow.setPosition(300, 700);
     } else {
         workerWindow = new BrowserWindow({width: 10, height: 10, show: false, parent: mainWindow});
     }
