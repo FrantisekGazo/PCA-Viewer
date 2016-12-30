@@ -2,15 +2,20 @@
 
 const React = require('react');
 
-const ProjectDatasetDetail = ({dataset, onAddDataClicked, onDeleteClicked, onCloseClicked}) => {
+const DataList = require('./DataList.jsx');
+
+const ProjectDatasetDetail = ({dataset, onAddDataClicked, onDeleteClicked, onCloseClicked, onDataClicked}) => {
     return (
         <div id="dataset-detail">
             Name: {dataset.name}
             <br/>
             ID: {dataset.id}
             <br/>
-            <br/>
-            <button onClick={() => onAddDataClicked(dataset.id)}>Add Data</button>
+            <DataList data={[{id: 1, name: 'data 1'},{id: 2, name: 'data 2'},{id: 3, name: 'data 3'},{id: 4, name: 'data 4'},{id: 5, name: 'data 5'}]}
+                      onDataClick={(dataId) => {
+                          onDataClicked(dataset.id, dataId)
+                      }}
+                      onAddDataClick={() => onAddDataClicked(dataset.id)}/>
             <br/>
             <button onClick={() => onDeleteClicked(dataset.id)}>Delete</button>
             <button onClick={() => onCloseClicked(dataset.id)}>Close</button>
@@ -22,7 +27,8 @@ ProjectDatasetDetail.propTypes = {
     dataset: React.PropTypes.object.isRequired,
     onAddDataClicked: React.PropTypes.func.isRequired,
     onDeleteClicked: React.PropTypes.func.isRequired,
-    onCloseClicked: React.PropTypes.func.isRequired
+    onCloseClicked: React.PropTypes.func.isRequired,
+    onDataClicked: React.PropTypes.func.isRequired
 };
 
 module.exports = ProjectDatasetDetail;

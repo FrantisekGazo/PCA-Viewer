@@ -12,9 +12,9 @@ const ProjectDatasetList = ({datasets, onDatasetClicked, onAddDatasetClicked}) =
 
     return (
         <div id="dataset-list">
-            <p>Data</p>
+            Datasets:
             <ul>{list}</ul>
-            <button onClick={onAddDatasetClicked}>Add data</button>
+            <button onClick={onAddDatasetClicked}>Add Dataset</button>
         </div>
     );
 };

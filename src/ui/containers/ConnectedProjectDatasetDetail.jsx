@@ -17,14 +17,18 @@ module.exports = connect(
     // dispatch functions to props
     (dispatch) => {
         return {
-            onAddDataClicked: (datasetId) => {
-                dispatch(addData(datasetId))
+            onCloseClicked: (datasetId) => {
+                dispatch(closeDatasetDetail(datasetId))
             },
             onDeleteClicked: (datasetId) => {
                 dispatch(closeAndDeleteDataset(datasetId))
             },
-            onCloseClicked: (datasetId) => {
-                dispatch(closeDatasetDetail(datasetId))
+            onAddDataClicked: (datasetId) => {
+                dispatch(addData(datasetId))
+            },
+            onDataClicked: (datasetId, dataId) => {
+                // TODO
+                console.log(`DO SOMETHING ON DATA CLICK! ${datasetId} ${dataId}`);
             }
         };
     }
