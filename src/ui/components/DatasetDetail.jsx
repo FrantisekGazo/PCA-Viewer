@@ -4,7 +4,7 @@ const React = require('react');
 
 const DataList = require('./DataList.jsx');
 
-const ProjectDatasetDetail = ({dataset, onAddDataClicked, onDeleteClicked, onCloseClicked, onDataClicked}) => {
+const DatasetDetail = ({dataset, onAddDataClicked, onDeleteClicked, onCloseClicked, onDataClicked}) => {
     return (
         <div id="dataset-detail">
             Name: {dataset.name}
@@ -23,7 +23,7 @@ const ProjectDatasetDetail = ({dataset, onAddDataClicked, onDeleteClicked, onClo
     );
 };
 
-ProjectDatasetDetail.propTypes = {
+DatasetDetail.propTypes = {
     dataset: React.PropTypes.object.isRequired,
     onAddDataClicked: React.PropTypes.func.isRequired,
     onDeleteClicked: React.PropTypes.func.isRequired,
@@ -31,4 +31,4 @@ ProjectDatasetDetail.propTypes = {
     onDataClicked: React.PropTypes.func.isRequired
 };
 
-module.exports = ProjectDatasetDetail;
+module.exports = DatasetDetail;

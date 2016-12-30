@@ -3,7 +3,7 @@
 const React = require('react');
 
 
-const ProjectDatasetListItem = ({dataset, onClick}) => {
+const DatasetListItem = ({dataset, onClick}) => {
     return (
         <div onClick={onClick}>
             {dataset.name}
@@ -11,9 +11,9 @@ const ProjectDatasetListItem = ({dataset, onClick}) => {
     )
 };
 
-ProjectDatasetListItem.propTypes = {
+DatasetListItem.propTypes = {
     dataset: React.PropTypes.object.isRequired,
     onClick: React.PropTypes.func.isRequired
 };
 
-module.exports = ProjectDatasetListItem;
+module.exports = DatasetListItem;

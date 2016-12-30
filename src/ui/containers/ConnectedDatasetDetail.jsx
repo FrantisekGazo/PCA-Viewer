@@ -3,7 +3,7 @@
 const React = require('react');
 const {connect} = require('react-redux');
 
-const ProjectDatasetDetail = require('../components/ProjectDatasetDetail.jsx');
+const DatasetDetail = require('../components/DatasetDetail.jsx');
 const { addData, closeAndDeleteDataset, closeDatasetDetail } = require('../../actions/project');
 
 
@@ -32,4 +32,4 @@ module.exports = connect(
             }
         };
     }
-)(ProjectDatasetDetail);
+)(DatasetDetail);

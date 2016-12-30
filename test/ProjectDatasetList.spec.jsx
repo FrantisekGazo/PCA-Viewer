@@ -4,7 +4,7 @@ const expect = require('expect');
 const shallow = require('enzyme').shallow;
 const React = require('react');
 
-const ProjectDatasetList = require('../src/ui/components/ProjectDatasetList.jsx');
+const ProjectDatasetList = require('../src/ui/components/DatasetList.jsx');
 
 
 describe('component', () => {
