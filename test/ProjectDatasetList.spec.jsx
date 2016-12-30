@@ -10,8 +10,13 @@ const ProjectDatasetList = require('../src/ui/components/ProjectDatasetList.jsx'
 describe('component', () => {
 
     it('should render text', () => {
-        const component = shallow(<ProjectDatasetList onAddDataClicked={() => {}} />);
+        const mockDatasets = [];
+        const emptyFunction = () => {};
+
+        const component = shallow(<ProjectDatasetList datasets={mockDatasets}
+                                                      onDatasetClicked={emptyFunction}
+                                                      onAddDatasetClicked={emptyFunction}/>);
         console.log(component);
-        expect(component.text()).toInclude('Data');
+        expect(component.text()).toInclude('Add data');
     });
 });

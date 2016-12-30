@@ -1,0 +1,40 @@
+html, body {
+    margin: 0;
+    min-width: 500px;
+    display: inline-block;
+    width: 1000px;
+}
+
+#dataset-list {
+    background-color: chartreuse;/*
+    display: inline-block;
+    width: 200px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding: 8px;*/
+}
+
+#dataset-detail {
+    background-color: orange;/*
+    display: inline-block;
+    width: 300px;
+    position: absolute;
+    left: 200px;
+    top: 0;
+    bottom: 0;
+    padding: 8px;*/
+}
+
+#content {
+    background-color: orangered;/*
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    left: 500px;
+    top: 0;
+    bottom: 0;
+    padding: 8px;*/
+}
+

@@ -2,22 +2,27 @@
 
 const React = require('react');
 
+const ProjectDatasetListItem = require('./ProjectDatasetListItem.jsx');
 
-const ProjectDatasetList = ({datasets, onAddDataClicked}) => {
-    const list = null;
+
+const ProjectDatasetList = ({datasets, onDatasetClicked, onAddDatasetClicked}) => {
+    const list = datasets.map(dataset => (<ProjectDatasetListItem key={dataset.id}
+                                                                  dataset={dataset}
+                                                                  onClick={() => onDatasetClicked(dataset.id)}/>));
 
     return (
-        <div>
-            <h2>Data</h2>
+        <div id="dataset-list">
+            <p>Data</p>
             <ul>{list}</ul>
-            <button onClick={onAddDataClicked}>Add data</button>
+            <button onClick={onAddDatasetClicked}>Add data</button>
         </div>
-    )
+    );
 };
 
 ProjectDatasetList.propTypes = {
     datasets: React.PropTypes.array,
-    onAddDataClicked: React.PropTypes.func.isRequired
+    onDatasetClicked: React.PropTypes.func.isRequired,
+    onAddDatasetClicked: React.PropTypes.func.isRequired
 };
 
 module.exports = ProjectDatasetList;

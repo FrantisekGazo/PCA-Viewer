@@ -1,14 +1,17 @@
 "use strict";
 
-const {replace} = require('react-router-redux');
+const { replace } = require('react-router-redux');
 
-const {createAction} = require('./index');
-const {showOpenCreateDirDialog, showOpenDirDialog, showOpenFileDialog} = require('../service/DialogService');
-const {WorkerTasks, execByWorker} = require('../service/WorkerService');
+const { createAction } = require('./index');
+const { showOpenCreateDirDialog, showOpenDirDialog, showOpenFileDialog } = require('../service/DialogService');
+const { WorkerTasks, execByWorker } = require('../service/WorkerService');
 
 
 const Actions = {
     SELECT_PROJECT: 'SELECT_PROJECT',
+    NEW_DATASET: 'NEW_DATASET',
+    DELETE_DATASET: 'DELETE_DATASET',
+    SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
     SHOW_PROJECT_ERROR: 'SHOW_PROJECT_ERROR',
 };
 
@@ -16,7 +19,7 @@ function selectProject(dir) {
     return function (dispatch) {
         dispatch(createAction(Actions.SELECT_PROJECT, dir));
 
-        const location = {pathname: `/project/data/`};
+        const location = {pathname: `/project/`};
         dispatch(replace(location));
     }
 }
@@ -53,6 +56,33 @@ function openExistingProject() {
     }
 }
 
+function addDataset() {
+    return createAction(Actions.NEW_DATASET);
+}
+
+function showDatasetDetail(datasetId) {
+    return function (dispatch, getState) {
+        if (getState().project.detail !== datasetId) {
+            dispatch(createAction(Actions.SHOW_DATASET_DETAIL, datasetId));
+        }
+    }
+}
+
+function closeDatasetDetail(datasetId) {
+    return createAction(Actions.SHOW_DATASET_DETAIL, null);
+}
+
+function deleteDataset(datasetId) {
+    return createAction(Actions.DELETE_DATASET, datasetId);
+}
+
+function closeAndDeleteDataset(datasetId) {
+    return function (dispatch) {
+        dispatch(closeDatasetDetail(datasetId));
+        dispatch(deleteDataset(datasetId));
+    }
+}
+
 function addData() {
     return function (dispatch) {
         showOpenFileDialog()
@@ -74,5 +104,9 @@ module.exports = {
     startNewProject,
     openExistingProject,
     closeProject,
-    addData
+    addDataset,
+    addData,
+    showDatasetDetail,
+    closeDatasetDetail,
+    closeAndDeleteDataset
 };

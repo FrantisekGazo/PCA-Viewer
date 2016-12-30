@@ -3,22 +3,27 @@
 const React = require('react');
 
 const showMenu = require('../menu/Menu');
+const ConnectedProjectDatasetList = require('../containers/ConnectedProjectDatasetList.jsx');
+const ConnectedProjectDatasetDetail = require('../containers/ConnectedProjectDatasetDetail.jsx');
+const ConnectedProjectContent = require('../containers/ConnectedProjectContent.jsx');
 
 
-const ProjectScreen = ({children, path, onCloseProjectClicked}) => {
+const ProjectScreen = ({path, showDetail, onCloseProjectClicked}) => {
 
     showMenu(true, onCloseProjectClicked);
 
     return (
         <div>
-            {path}
-            {children}
+            <ConnectedProjectDatasetList/>
+            { showDetail ? <ConnectedProjectDatasetDetail/> : null }
+            <ConnectedProjectContent/>
         </div>
     );
 };
 
 ProjectScreen.propTypes = {
     path: React.PropTypes.string.isRequired,
+    showDetail: React.PropTypes.bool.isRequired,
     onCloseProjectClicked: React.PropTypes.func.isRequired,
 };
 

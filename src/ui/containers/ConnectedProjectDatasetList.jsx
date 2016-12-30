@@ -4,19 +4,24 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const ProjectDatasetList = require('../components/ProjectDatasetList.jsx');
-const { addData } = require('../../actions/project');
+const { addDataset, showDatasetDetail } = require('../../actions/project');
 
 
 module.exports = connect(
     // state to props
     (state) => {
-        return {};
+        return {
+            datasets: state.project.usedDatasets.map(id => state.project.datasets[id])
+        };
     },
     // dispatch functions to props
     (dispatch) => {
         return {
-            onAddDataClicked: () => {
-                dispatch(addData())
+            onAddDatasetClicked: () => {
+                dispatch(addDataset())
+            },
+            onDatasetClicked: (id) => {
+                dispatch(showDatasetDetail(id))
             }
         };
     }

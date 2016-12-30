@@ -11,7 +11,8 @@ module.exports = connect(
     // state to props
     (state, props) => {
         return {
-            path: state.project.path
+            path: state.project.path,
+            showDetail: state.project.detail != null
         };
     },
     // dispatch functions to props

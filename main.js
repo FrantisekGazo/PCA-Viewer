@@ -12,7 +12,8 @@ let mainWindow;
 let workerWindow;
 let splashWindow;
 let windowParams = {
-    width: 900,
+    width: 1000,
+    minWidth: 1000,
     height: 500,
     show: false
 };
