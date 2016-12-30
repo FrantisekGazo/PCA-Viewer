@@ -13,6 +13,7 @@ const Actions = {
     DELETE_DATASET: 'DELETE_DATASET',
     SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
     SHOW_PROJECT_ERROR: 'SHOW_PROJECT_ERROR',
+    ADD_ENTRIES: 'ADD_ENTRIES',
 };
 
 function selectProject(dir) {
@@ -83,14 +84,18 @@ function closeAndDeleteDataset(datasetId) {
     }
 }
 
-function addEntries() {
+function addEntries(datasetId, entries) {
+    return createAction(Actions.ADD_ENTRIES, {datasetId, entries});
+}
+
+function loadEntries(datasetId) {
     return function (dispatch) {
         showOpenFileDialog()
             .then((filePath) => {
                 return execByWorker(WorkerTasks.LOAD_ENTRY_FILE, filePath)
             })
-            .then((data) => {
-                console.log('RECEIVED DATA: ', data);
+            .then((entries) => {
+                dispatch(addEntries(datasetId, entries));
             })
             .catch((err) => {
                 console.log('RECEIVED ERROR: ', err);
@@ -105,7 +110,7 @@ module.exports = {
     openExistingProject,
     closeProject,
     addDataset,
-    addEntries,
+    loadEntries,
     showDatasetDetail,
     closeDatasetDetail,
     closeAndDeleteDataset

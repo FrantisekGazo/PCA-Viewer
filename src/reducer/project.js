@@ -2,10 +2,10 @@
 
 const update = require('immutability-helper');
 
-const {Actions} = require('../actions/project');
+const { Actions } = require('../actions/project');
 
 
-function newDataset(id, color='#000', name='New Dataset', entries=[]) {
+function newDataset(id, color = '#000', name = 'New Dataset', entries = []) {
     return {
         id,
         color,
@@ -14,7 +14,7 @@ function newDataset(id, color='#000', name='New Dataset', entries=[]) {
     }
 }
 
-function newEntry(id, name='New Entry', values=[]) {
+function newEntry(id, name = 'New Entry', values = []) {
     return {
         id,
         name,
@@ -88,6 +88,26 @@ const project = (state = initState, action) => {
         case Actions.SHOW_DATASET_DETAIL: {
             return update(state, {
                 detail: {$set: action.payload}
+            });
+        }
+        case Actions.ADD_ENTRIES: {
+            const { datasetId, entries } = action.payload;
+
+            const entryMap = {};
+            for (let i = 0; i < entries.length; i++) {
+                const entry = entries[i];
+                entryMap[entry.id] = entry;
+            }
+
+            const entryIds = entries.map(entry => entry.id);
+
+            return update(state, {
+                datasets: {
+                    [datasetId]: {
+                        entries: {$push: entryIds}
+                    }
+                },
+                entries: {$merge: entryMap}
             });
         }
         default:

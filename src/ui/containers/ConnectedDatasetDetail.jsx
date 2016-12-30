@@ -4,29 +4,32 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const DatasetDetail = require('../components/DatasetDetail.jsx');
-const { addEntries, closeAndDeleteDataset, closeDatasetDetail } = require('../../actions/project');
+const { loadEntries, closeAndDeleteDataset, closeDatasetDetail } = require('../../actions/project');
 
 
 module.exports = connect(
     // state to props
     (state) => {
+        const dataset = state.project.datasets[state.project.detail];
+
         return {
-            dataset: state.project.datasets[state.project.detail]
+            dataset,
+            datasetEntries: dataset.entries.map(entryId => state.project.entries[entryId])
         };
     },
     // dispatch functions to props
     (dispatch) => {
         return {
-            onCloseClicked: (datasetId) => {
+            onCloseClick: (datasetId) => {
                 dispatch(closeDatasetDetail(datasetId))
             },
-            onDeleteClicked: (datasetId) => {
+            onDeleteClick: (datasetId) => {
                 dispatch(closeAndDeleteDataset(datasetId))
             },
-            onAddEntriesClicked: (datasetId) => {
-                dispatch(addEntries(datasetId))
+            onLoadEntriesClick: (datasetId) => {
+                dispatch(loadEntries(datasetId))
             },
-            onEntryClicked: (datasetId, entryId) => {
+            onEntryClick: (datasetId, entryId) => {
                 // TODO
                 console.log(`DO SOMETHING ON DATA CLICK! ${datasetId} ${entryId}`);
             }
