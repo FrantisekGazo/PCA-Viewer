@@ -83,11 +83,11 @@ function closeAndDeleteDataset(datasetId) {
     }
 }
 
-function addData() {
+function addEntries() {
     return function (dispatch) {
         showOpenFileDialog()
             .then((filePath) => {
-                return execByWorker(WorkerTasks.LOAD_DATA_FILE, filePath)
+                return execByWorker(WorkerTasks.LOAD_ENTRY_FILE, filePath)
             })
             .then((data) => {
                 console.log('RECEIVED DATA: ', data);
@@ -105,7 +105,7 @@ module.exports = {
     openExistingProject,
     closeProject,
     addDataset,
-    addData,
+    addEntries,
     showDatasetDetail,
     closeDatasetDetail,
     closeAndDeleteDataset

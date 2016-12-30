@@ -5,6 +5,23 @@ const update = require('immutability-helper');
 const {Actions} = require('../actions/project');
 
 
+function newDataset(id, color='#000', name='New Dataset', entries=[]) {
+    return {
+        id,
+        color,
+        name,
+        entries
+    }
+}
+
+function newEntry(id, name='New Entry', values=[]) {
+    return {
+        id,
+        name,
+        values
+    }
+}
+
 const initState = {
     /* path to the project directory */
     path: null,
@@ -12,16 +29,16 @@ const initState = {
     error: '',
     /* show detail for dataset */
     detail: null,
-    /* datasets used by project */
+    /* dataset IDs used by project */
     usedDatasets: [],
     /* last ID assigned to dataset */
     lastDatasetId: 0,
     /* all datasets */
     datasets: {},
     /* last ID assigned to data */
-    lastDataId: 0,
+    lastEntryId: 0,
     /* all data */
-    data: {}
+    entries: {}
 };
 const project = (state = initState, action) => {
     switch (action.type) {
@@ -41,20 +58,16 @@ const project = (state = initState, action) => {
             });
         }
         case Actions.NEW_DATASET: {
-            const id = state.lastDatasetId + 1;
+            const datasetId = state.lastDatasetId + 1;
 
             return update(state, {
                 datasets: {
                     $merge: {
-                        [id]: {
-                            id: id,
-                            name: "New Dataset",
-                            data: []
-                        }
+                        [datasetId]: newDataset(datasetId)
                     }
                 },
-                usedDatasets: {$push: [id]},
-                lastDatasetId: {$set: id}
+                usedDatasets: {$push: [datasetId]},
+                lastDatasetId: {$set: datasetId}
             });
         }
         case Actions.DELETE_DATASET: {
