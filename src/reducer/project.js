@@ -91,15 +91,19 @@ const project = (state = initState, action) => {
             });
         }
         case Actions.ADD_ENTRIES: {
-            const { datasetId, entries } = action.payload;
+            const { datasetId, values } = action.payload;
+
+            let entryId = state.lastEntryId;
 
             const entryMap = {};
-            for (let i = 0; i < entries.length; i++) {
-                const entry = entries[i];
-                entryMap[entry.id] = entry;
-            }
+            const entryIds = [];
+            for (let i = 0; i < values.length; i++) {
+                entryId += 1;
+                const entry = newEntry(entryId, `New Entry ${entryId}`, values[i]);
 
-            const entryIds = entries.map(entry => entry.id);
+                entryMap[entry.id] = entry;
+                entryIds.push(entry.id);
+            }
 
             return update(state, {
                 datasets: {
@@ -107,7 +111,8 @@ const project = (state = initState, action) => {
                         entries: {$push: entryIds}
                     }
                 },
-                entries: {$merge: entryMap}
+                entries: {$merge: entryMap},
+                lastEntryId: {$set: entryId}
             });
         }
         default:

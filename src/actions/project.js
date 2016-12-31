@@ -84,8 +84,8 @@ function closeAndDeleteDataset(datasetId) {
     }
 }
 
-function addEntries(datasetId, entries) {
-    return createAction(Actions.ADD_ENTRIES, {datasetId, entries});
+function addEntries(datasetId, values) {
+    return createAction(Actions.ADD_ENTRIES, {datasetId, values});
 }
 
 function loadEntries(datasetId) {
@@ -94,8 +94,8 @@ function loadEntries(datasetId) {
             .then((filePath) => {
                 return execByWorker(WorkerTasks.LOAD_ENTRY_FILE, filePath)
             })
-            .then((entries) => {
-                dispatch(addEntries(datasetId, entries));
+            .then((values) => {
+                dispatch(addEntries(datasetId, values));
             })
             .catch((err) => {
                 console.log('RECEIVED ERROR: ', err);

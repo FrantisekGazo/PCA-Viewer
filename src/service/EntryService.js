@@ -1,21 +1,25 @@
 "use strict";
 
+const readline = require('readline');
+const fs = require('fs');
+
+
 function readFromFile(filePath) {
     return new Promise(function (resolve, reject) {
-        console.log('LOAD FILE:', filePath);
+        const values = [];
 
-        const ids = [];
-        for (let i = 1; i < 1000; i++) {
-            ids.push(i);
-        }
-
-        const result = ids.map(num => {
-            return {id: num, name: `Entry ${num}`, values: [1, 2, 3]}
+        const rl = readline.createInterface({
+            input: fs.createReadStream(filePath)
         });
-        console.log('LOAD RESULT:', result);
 
-        resolve(result);
-        //reject(Error('Nothing selected'));
+        rl.on('line', function (line) {
+            const value = line.split(' ').map(stringValue => parseFloat(stringValue));
+            values.push(value);
+        });
+
+        rl.on('close', function () {
+            resolve(values);
+        });
     });
 }
 
