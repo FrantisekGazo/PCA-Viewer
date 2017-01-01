@@ -3,7 +3,7 @@ const { ipcRenderer } = require('electron');
 
 
 const WorkerTasks = {
-    LOAD_ENTRY_FILE: 'load-entry-file',
+    LOAD_VALUES_FROM_FILE: 'load-values-from-file',
 };
 
 function workerTaskEnded(name) {

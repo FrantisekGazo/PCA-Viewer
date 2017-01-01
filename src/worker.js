@@ -2,7 +2,7 @@ const { ipcRenderer } = require('electron');
 const { BrowserWindow } = require('electron').remote;
 
 const { WorkerTasks, workerTaskProgress, workerTaskEnded } = require('./service/WorkerService');
-const { readFromFile } = require('./service/EntryService');
+const { readValuesFromFile } = require('./service/FileService');
 
 
 function sendEnd(callerId, task, inArg, result, error) {
@@ -10,13 +10,13 @@ function sendEnd(callerId, task, inArg, result, error) {
     fromWindow.webContents.send(workerTaskEnded(task), inArg, result, error);
 }
 
-ipcRenderer.on(WorkerTasks.LOAD_ENTRY_FILE, function (event, filePath, callerId) {
-    readFromFile(filePath)
+ipcRenderer.on(WorkerTasks.LOAD_VALUES_FROM_FILE, function (event, filePath, callerId) {
+    readValuesFromFile(filePath)
         .then((result) => {
-            sendEnd(callerId, WorkerTasks.LOAD_ENTRY_FILE, filePath, result, null);
+            sendEnd(callerId, WorkerTasks.LOAD_VALUES_FROM_FILE, filePath, result, null);
         })
         .catch((err) => {
-            sendEnd(callerId, WorkerTasks.LOAD_ENTRY_FILE, filePath, null, err);
+            sendEnd(callerId, WorkerTasks.LOAD_VALUES_FROM_FILE, filePath, null, err);
         });
 
 });

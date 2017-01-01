@@ -7,6 +7,8 @@ const EntryListItem = ({entry, onClick}) => {
     return (
         <div onClick={onClick}>
             {entry.name}
+            <br/>
+            [ {entry.value.toString()} ]
         </div>
     )
 };

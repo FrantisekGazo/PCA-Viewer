@@ -5,6 +5,11 @@ const update = require('immutability-helper');
 const { Actions } = require('../actions/project');
 
 
+// HELPER FUNCTIONS ----------------------------------------------------------------------
+
+/**
+ * Creates Dataset structure.
+ */
 function newDataset(id, color = '#000', name = 'New Dataset', entries = []) {
     return {
         id,
@@ -14,12 +19,96 @@ function newDataset(id, color = '#000', name = 'New Dataset', entries = []) {
     }
 }
 
-function newEntry(id, name = 'New Entry', values = []) {
+/**
+ * Creates Entry structure.
+ */
+function newEntry(id, name = 'New Entry', value = []) {
     return {
         id,
         name,
-        values
+        value
     }
+}
+
+// REDUCER FUNCTIONS ----------------------------------------------------------------------
+
+function selectDataset(state, action) {
+    return update(state, {
+        $merge: {
+            path: action.payload,
+            error: ''
+        }
+    });
+}
+
+function showProjectError(state, action) {
+    return update(state, {
+        $merge: {
+            error: action.payload
+        }
+    });
+}
+
+function addNewDataset(state, action) {
+    const datasetId = state.lastDatasetId + 1;
+
+    return update(state, {
+        datasets: {
+            $merge: {
+                [datasetId]: newDataset(datasetId)
+            }
+        },
+        usedDatasets: {$push: [datasetId]},
+        lastDatasetId: {$set: datasetId}
+    });
+}
+
+function deleteDataset(state, action) {
+    const datasetId = action.payload;
+
+    const updatedDatasets = Object.assign({}, state.datasets);
+    delete updatedDatasets[datasetId];
+
+    return update(state, {
+        usedDatasets: {
+            $set: state.usedDatasets.filter(id => id !== datasetId)
+        },
+        datasets: {
+            $set: updatedDatasets
+        }
+    });
+}
+
+function showDatasetDetail(state, action) {
+    return update(state, {
+        detail: {$set: action.payload}
+    });
+}
+
+function addEntries(state, action) {
+    const {datasetId, values} = action.payload;
+
+    let entryId = state.lastEntryId;
+
+    const entryMap = {};
+    const entryIds = [];
+    for (let i = 0; i < values.length; i++) {
+        entryId += 1;
+        const entry = newEntry(entryId, `New Entry ${entryId}`, values[i]);
+
+        entryMap[entry.id] = entry;
+        entryIds.push(entry.id);
+    }
+
+    return update(state, {
+        datasets: {
+            [datasetId]: {
+                entries: {$push: entryIds}
+            }
+        },
+        entries: {$merge: entryMap},
+        lastEntryId: {$set: entryId}
+    });
 }
 
 const initState = {
@@ -42,79 +131,18 @@ const initState = {
 };
 const project = (state = initState, action) => {
     switch (action.type) {
-        case Actions.SELECT_PROJECT: {
-            return update(state, {
-                $merge: {
-                    path: action.payload,
-                    error: ''
-                }
-            });
-        }
-        case Actions.SHOW_PROJECT_ERROR: {
-            return update(state, {
-                $merge: {
-                    error: action.payload
-                }
-            });
-        }
-        case Actions.NEW_DATASET: {
-            const datasetId = state.lastDatasetId + 1;
-
-            return update(state, {
-                datasets: {
-                    $merge: {
-                        [datasetId]: newDataset(datasetId)
-                    }
-                },
-                usedDatasets: {$push: [datasetId]},
-                lastDatasetId: {$set: datasetId}
-            });
-        }
-        case Actions.DELETE_DATASET: {
-            const datasetId = action.payload;
-
-            const updatedDatasets = Object.assign({}, state.datasets);
-            delete updatedDatasets[datasetId];
-
-            return update(state, {
-                usedDatasets: {
-                    $set: state.usedDatasets.filter(id => id !== datasetId)
-                },
-                datasets: {
-                    $set: updatedDatasets
-                }
-            });
-        }
-        case Actions.SHOW_DATASET_DETAIL: {
-            return update(state, {
-                detail: {$set: action.payload}
-            });
-        }
-        case Actions.ADD_ENTRIES: {
-            const { datasetId, values } = action.payload;
-
-            let entryId = state.lastEntryId;
-
-            const entryMap = {};
-            const entryIds = [];
-            for (let i = 0; i < values.length; i++) {
-                entryId += 1;
-                const entry = newEntry(entryId, `New Entry ${entryId}`, values[i]);
-
-                entryMap[entry.id] = entry;
-                entryIds.push(entry.id);
-            }
-
-            return update(state, {
-                datasets: {
-                    [datasetId]: {
-                        entries: {$push: entryIds}
-                    }
-                },
-                entries: {$merge: entryMap},
-                lastEntryId: {$set: entryId}
-            });
-        }
+        case Actions.SELECT_PROJECT:
+            return selectDataset(state, action);
+        case Actions.SHOW_PROJECT_ERROR:
+            return showProjectError(state, action);
+        case Actions.NEW_DATASET:
+            return addNewDataset(state, action);
+        case Actions.DELETE_DATASET:
+            return deleteDataset(state, action);
+        case Actions.SHOW_DATASET_DETAIL:
+            return showDatasetDetail(state, action);
+        case Actions.ADD_ENTRIES:
+            return addEntries(state, action);
         default:
             return state;
     }

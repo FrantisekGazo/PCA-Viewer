@@ -92,7 +92,7 @@ function loadEntries(datasetId) {
     return function (dispatch) {
         showOpenFileDialog()
             .then((filePath) => {
-                return execByWorker(WorkerTasks.LOAD_ENTRY_FILE, filePath)
+                return execByWorker(WorkerTasks.LOAD_VALUES_FROM_FILE, filePath)
             })
             .then((values) => {
                 dispatch(addEntries(datasetId, values));

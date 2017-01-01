@@ -4,7 +4,12 @@ const readline = require('readline');
 const fs = require('fs');
 
 
-function readFromFile(filePath) {
+/**
+ * Reads the given file and returns read values. Each value is an array of decimal numbers.
+ * @param filePath Path to the file that will be read.
+ * @returns {Promise}
+ */
+function readValuesFromFile(filePath) {
     return new Promise(function (resolve, reject) {
         const values = [];
 
@@ -24,5 +29,5 @@ function readFromFile(filePath) {
 }
 
 module.exports = {
-    readFromFile
+    readValuesFromFile
 };
