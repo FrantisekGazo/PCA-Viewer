@@ -3,22 +3,30 @@
 const React = require('react');
 
 const EntryList = require('./EntryList.jsx');
+const EntrySpectrumPlot = require('./EntrySpectrumPlot.jsx');
 
 const DatasetDetail = ({dataset, datasetEntries, onDeleteClick, onCloseClick, onLoadEntriesClick, onEntryClick}) => {
     return (
         <div id="dataset-detail">
             Name: {dataset.name}
+            [
+            <button onClick={() => onDeleteClick(dataset.id)}>Delete</button>
+            <button onClick={() => onCloseClick(dataset.id)}>Close</button>
+            ]
             <br/>
             ID: {dataset.id}
+            <br/>
+            <EntrySpectrumPlot title="Spectrum"
+                               entries={datasetEntries}
+                               onPlotClick={(p) => {
+                                   console.log('PLOT CLICK:', p);
+                               }}/>
             <br/>
             <EntryList entries={datasetEntries}
                        onEntryClick={(entryId) => {
                            onEntryClick(dataset.id, entryId)
                        }}
                        onLoadEntriesClick={() => onLoadEntriesClick(dataset.id)}/>
-            <br/>
-            <button onClick={() => onDeleteClick(dataset.id)}>Delete</button>
-            <button onClick={() => onCloseClick(dataset.id)}>Close</button>
         </div>
     );
 };

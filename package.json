@@ -55,6 +55,8 @@
   },
   "dependencies": {
     "immutability-helper": "^2.0.0",
+    "ml-pca": "^1.1.2",
+    "plotly.js": "^1.21.2",
     "react": "^15.3.2",
     "react-addons-css-transition-group": "^15.3.2",
     "react-dom": "^15.3.2",
