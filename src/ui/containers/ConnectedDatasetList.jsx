@@ -11,7 +11,7 @@ module.exports = connect(
     // state to props
     (state) => {
         return {
-            datasets: state.project.usedDatasets.map(id => state.project.datasets[id])
+            datasets: state.project.usedDatasetIds.map(id => state.project.datasets[id])
         };
     },
     // dispatch functions to props

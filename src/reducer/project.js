@@ -58,7 +58,7 @@ function addNewDataset(state, action) {
                 [datasetId]: newDataset(datasetId)
             }
         },
-        usedDatasets: {$push: [datasetId]},
+        usedDatasetIds: {$push: [datasetId]},
         lastDatasetId: {$set: datasetId}
     });
 }
@@ -70,8 +70,8 @@ function deleteDataset(state, action) {
     delete updatedDatasets[datasetId];
 
     return update(state, {
-        usedDatasets: {
-            $set: state.usedDatasets.filter(id => id !== datasetId)
+        usedDatasetIds: {
+            $set: state.usedDatasetIds.filter(id => id !== datasetId)
         },
         datasets: {
             $set: updatedDatasets
@@ -119,7 +119,7 @@ const initState = {
     /* show detail for dataset */
     detail: null,
     /* dataset IDs used by project */
-    usedDatasets: [],
+    usedDatasetIds: [],
     /* last ID assigned to dataset */
     lastDatasetId: 0,
     /* all datasets */
