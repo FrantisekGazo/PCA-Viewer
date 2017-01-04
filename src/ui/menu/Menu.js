@@ -87,20 +87,24 @@ const template = () => [
     }
 ];
 
-function fileMenu(closeCallback) {
+function fileMenu(onSaveClick, onCloseClick) {
     return {
         label: 'File',
         role: 'file',
         submenu: [
             {
-                label: 'Close Project',
-                click: closeCallback
+                label: 'Save',
+                click: onSaveClick
+            },
+            {
+                label: 'Close',
+                click: onCloseClick
             }
         ]
     }
 }
 
-function showMenu(forProject = false, closeCallback=null) {
+function showMenu(forProject = false, onSaveClick = null, onCloseClick = null) {
     const layout = template();
 
     // add 1st menu item
@@ -110,7 +114,7 @@ function showMenu(forProject = false, closeCallback=null) {
 
     if (forProject) {
         // add 2st menu item
-        const fm = fileMenu(closeCallback);
+        const fm = fileMenu(onSaveClick, onCloseClick);
         layout.splice(1, 0, fm);
     }
 

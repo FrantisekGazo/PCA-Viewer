@@ -28,6 +28,40 @@ function readValuesFromFile(filePath) {
     });
 }
 
+/**
+ * Writes given text to a file on given path.
+ * @returns {Promise}
+ */
+function writeToFile(filePath, text) {
+    return new Promise(function (resolve, reject) {
+        fs.writeFile(filePath, text, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+/**
+ * Writes given text to a file on given path.
+ * @returns {Promise}
+ */
+function readFromFile(filePath) {
+    return new Promise(function (resolve, reject) {
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}
+
 module.exports = {
-    readValuesFromFile
+    readFromFile,
+    readValuesFromFile,
+    writeToFile,
 };

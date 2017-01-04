@@ -1,14 +1,18 @@
 "use strict";
 
 const { replace } = require('react-router-redux');
+const fs = require('fs');
+const path = require('path');
 
 const { createAction } = require('./index');
 const { showOpenCreateDirDialog, showOpenDirDialog, showOpenFileDialog } = require('../service/DialogService');
 const { WorkerTasks, execByWorker } = require('../service/WorkerService');
+const { readFromFile, writeToFile } = require('../service/FileService');
 
 
 const Actions = {
     SELECT_PROJECT: 'SELECT_PROJECT',
+    SET_PROJECT: 'SET_PROJECT',
     NEW_DATASET: 'NEW_DATASET',
     DELETE_DATASET: 'DELETE_DATASET',
     SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
@@ -29,8 +33,45 @@ function showProjectSelectionError(msg) {
     return createAction(Actions.SHOW_PROJECT_ERROR, msg);
 }
 
+function setProject(project) {
+    return createAction(Actions.SET_PROJECT, project);
+}
+
+function saveProject() {
+    return function (dispatch, getState) {
+        const state = getState();
+
+        const filePath = path.join(state.project.path, '.project.json');
+        const json = JSON.stringify(state.project);
+
+        return writeToFile(filePath, json);
+    }
+}
+
+function loadProject() {
+    return function (dispatch, getState) {
+        const state = getState();
+
+        const filePath = path.join(state.project.path, '.project.json');
+
+        return readFromFile(filePath)
+            .then((data) => {
+                const project = JSON.parse(data);
+                return dispatch(setProject(project));
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+}
+
 function closeProject() {
-    return selectProject(null);
+    return function (dispatch) {
+        const location = {pathname: `/`};
+        dispatch(replace(location));
+
+        dispatch(createAction(Actions.SELECT_PROJECT, null));
+    }
 }
 
 function startNewProject() {
@@ -49,7 +90,17 @@ function openExistingProject() {
     return function (dispatch) {
         showOpenDirDialog()
             .then((dir) => {
-                dispatch(selectProject(dir));
+                const filePath = path.join(dir, '.project.json');
+                if (!fs.existsSync(filePath)) {
+                    throw Error('Selected directory is not a PCA project');
+                }
+
+                return readFromFile(filePath)
+                    .then((data) => {
+                        const project = JSON.parse(data);
+                        dispatch(setProject(project));
+                        dispatch(selectProject(dir));
+                    });
             })
             .catch((err) => {
                 dispatch(showProjectSelectionError(err.message));
@@ -113,5 +164,6 @@ module.exports = {
     loadEntries,
     showDatasetDetail,
     closeDatasetDetail,
-    closeAndDeleteDataset
+    closeAndDeleteDataset,
+    saveProject,
 };

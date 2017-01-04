@@ -30,7 +30,6 @@ module.exports = connect(
             });
 
             model = JSON.stringify(pca.toJSON());
-            console.log(model);
         }
 
         return {
