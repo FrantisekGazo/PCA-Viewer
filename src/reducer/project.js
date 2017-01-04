@@ -32,7 +32,11 @@ function newEntry(id, name = 'New Entry', value = []) {
 
 // REDUCER FUNCTIONS ----------------------------------------------------------------------
 
-function selectDataset(state, action) {
+function setProject(state, action) {
+    return action.payload;
+}
+
+function selectProject(state, action) {
     return update(state, {
         $merge: {
             path: action.payload,
@@ -131,8 +135,10 @@ const initState = {
 };
 const project = (state = initState, action) => {
     switch (action.type) {
+        case Actions.SET_PROJECT:
+            return setProject(state, action);
         case Actions.SELECT_PROJECT:
-            return selectDataset(state, action);
+            return selectProject(state, action);
         case Actions.SHOW_PROJECT_ERROR:
             return showProjectError(state, action);
         case Actions.NEW_DATASET:

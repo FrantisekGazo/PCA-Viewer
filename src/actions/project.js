@@ -6,11 +6,12 @@ const path = require('path');
 const { createAction } = require('./index');
 const { showOpenCreateDirDialog, showOpenDirDialog, showOpenFileDialog } = require('../service/DialogService');
 const { WorkerTasks, execByWorker } = require('../service/WorkerService');
-const { writeToFile } = require('../service/FileService');
+const { readFromFile, writeToFile } = require('../service/FileService');
 
 
 const Actions = {
     SELECT_PROJECT: 'SELECT_PROJECT',
+    SET_PROJECT: 'SET_PROJECT',
     NEW_DATASET: 'NEW_DATASET',
     DELETE_DATASET: 'DELETE_DATASET',
     SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
@@ -31,6 +32,10 @@ function showProjectSelectionError(msg) {
     return createAction(Actions.SHOW_PROJECT_ERROR, msg);
 }
 
+function setProject(project) {
+    return createAction(Actions.SET_PROJECT, project);
+}
+
 function saveProject() {
     return function (dispatch, getState) {
         const state = getState();
@@ -39,6 +44,23 @@ function saveProject() {
         const json = JSON.stringify(state.project);
 
         return writeToFile(filePath, json);
+    }
+}
+
+function loadProject() {
+    return function (dispatch, getState) {
+        const state = getState();
+
+        const filePath = path.join(state.project.path, '.project.json');
+
+        return readFromFile(filePath)
+            .then((data) => {
+                const project = JSON.parse(data);
+                return dispatch(setProject(project));
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 }
 

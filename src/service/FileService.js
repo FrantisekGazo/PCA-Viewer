@@ -44,7 +44,24 @@ function writeToFile(filePath, text) {
     });
 }
 
+/**
+ * Writes given text to a file on given path.
+ * @returns {Promise}
+ */
+function readFromFile(filePath) {
+    return new Promise(function (resolve, reject) {
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}
+
 module.exports = {
+    readFromFile,
     readValuesFromFile,
     writeToFile,
 };
