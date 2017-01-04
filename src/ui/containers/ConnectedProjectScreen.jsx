@@ -4,7 +4,7 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const ProjectScreen = require('../components/ProjectScreen.jsx');
-const { closeProject, openExistingProject, startNewProject } = require('../../actions/project');
+const { closeProject, openExistingProject, saveProject, startNewProject } = require('../../actions/project');
 
 
 module.exports = connect(
@@ -18,7 +18,10 @@ module.exports = connect(
     // dispatch functions to props
     (dispatch) => {
         return {
-            onCloseProjectClicked: () => {
+            onSaveClick: () => {
+                dispatch(saveProject())
+            },
+            onCloseClick: () => {
                 dispatch(closeProject())
             }
         };

@@ -8,9 +8,9 @@ const ConnectedDatasetDetail = require('../containers/ConnectedDatasetDetail.jsx
 const ConnectedProjectContent = require('../containers/ConnectedProjectContent.jsx');
 
 
-const ProjectScreen = ({path, showDetail, onCloseProjectClicked}) => {
+const ProjectScreen = ({path, showDetail, onSaveClick, onCloseClick}) => {
 
-    showMenu(true, onCloseProjectClicked);
+    showMenu(true, onSaveClick, onCloseClick);
 
     return (
         <div>
@@ -24,7 +24,8 @@ const ProjectScreen = ({path, showDetail, onCloseProjectClicked}) => {
 ProjectScreen.propTypes = {
     path: React.PropTypes.string.isRequired,
     showDetail: React.PropTypes.bool.isRequired,
-    onCloseProjectClicked: React.PropTypes.func.isRequired,
+    onSaveClick: React.PropTypes.func.isRequired,
+    onCloseClick: React.PropTypes.func.isRequired,
 };
 
 module.exports = ProjectScreen;

@@ -29,8 +29,19 @@ function showProjectSelectionError(msg) {
     return createAction(Actions.SHOW_PROJECT_ERROR, msg);
 }
 
+function saveProject() {
+    return function (dispatch) {
+        console.log("TODO : SAVE");
+    }
+}
+
 function closeProject() {
-    return selectProject(null);
+    return function (dispatch) {
+        const location = {pathname: `/`};
+        dispatch(replace(location));
+
+        dispatch(createAction(Actions.SELECT_PROJECT, null));
+    }
 }
 
 function startNewProject() {
@@ -113,5 +124,6 @@ module.exports = {
     loadEntries,
     showDatasetDetail,
     closeDatasetDetail,
-    closeAndDeleteDataset
+    closeAndDeleteDataset,
+    saveProject,
 };
