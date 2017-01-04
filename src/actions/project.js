@@ -1,10 +1,12 @@
 "use strict";
 
 const { replace } = require('react-router-redux');
+const path = require('path');
 
 const { createAction } = require('./index');
 const { showOpenCreateDirDialog, showOpenDirDialog, showOpenFileDialog } = require('../service/DialogService');
 const { WorkerTasks, execByWorker } = require('../service/WorkerService');
+const { writeToFile } = require('../service/FileService');
 
 
 const Actions = {
@@ -30,8 +32,13 @@ function showProjectSelectionError(msg) {
 }
 
 function saveProject() {
-    return function (dispatch) {
-        console.log("TODO : SAVE");
+    return function (dispatch, getState) {
+        const state = getState();
+
+        const filePath = path.join(state.project.path, '.project.json');
+        const json = JSON.stringify(state.project);
+
+        return writeToFile(filePath, json);
     }
 }
 

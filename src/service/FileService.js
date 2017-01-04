@@ -28,6 +28,23 @@ function readValuesFromFile(filePath) {
     });
 }
 
+/**
+ * Writes given text to a file on given path.
+ * @returns {Promise}
+ */
+function writeToFile(filePath, text) {
+    return new Promise(function (resolve, reject) {
+        fs.writeFile(filePath, text, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 module.exports = {
-    readValuesFromFile
+    readValuesFromFile,
+    writeToFile,
 };
