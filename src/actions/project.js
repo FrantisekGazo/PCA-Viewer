@@ -1,6 +1,7 @@
 "use strict";
 
 const { replace } = require('react-router-redux');
+const fs = require('fs');
 const path = require('path');
 
 const { createAction } = require('./index');
@@ -89,7 +90,17 @@ function openExistingProject() {
     return function (dispatch) {
         showOpenDirDialog()
             .then((dir) => {
-                dispatch(selectProject(dir));
+                const filePath = path.join(dir, '.project.json');
+                if (!fs.existsSync(filePath)) {
+                    throw Error('Selected directory is not a PCA project');
+                }
+
+                return readFromFile(filePath)
+                    .then((data) => {
+                        const project = JSON.parse(data);
+                        dispatch(setProject(project));
+                        dispatch(selectProject(dir));
+                    });
             })
             .catch((err) => {
                 dispatch(showProjectSelectionError(err.message));
