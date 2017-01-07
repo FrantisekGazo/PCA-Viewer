@@ -7,7 +7,7 @@ const Plotly = require("plotly.js/dist/plotly.js");
 class EntrySpectrumPlot extends React.Component {
 
     drawPlot() {
-        const elementId = "plot";
+        const elementId = "spectrumPlot";
 
         const data = this.props.entries.map(entry => {
             let i = 0;
@@ -67,7 +67,7 @@ class EntrySpectrumPlot extends React.Component {
 
     render() {
         return (
-            <div id="plot"></div>
+            <div id="spectrumPlot"></div>
         );
     }
 }

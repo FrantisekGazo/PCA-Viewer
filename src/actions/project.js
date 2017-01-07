@@ -10,6 +10,8 @@ const { WorkerTasks, execByWorker } = require('../service/WorkerService');
 const { readFromFile, writeToFile } = require('../service/FileService');
 
 
+const PROJECT_FILE = 'project.json';
+
 const Actions = {
     SELECT_PROJECT: 'SELECT_PROJECT',
     SET_PROJECT: 'SET_PROJECT',
@@ -41,7 +43,7 @@ function saveProject() {
     return function (dispatch, getState) {
         const state = getState();
 
-        const filePath = path.join(state.project.path, '.project.json');
+        const filePath = path.join(state.project.path, PROJECT_FILE);
         const json = JSON.stringify(state.project);
 
         return writeToFile(filePath, json);
@@ -52,7 +54,7 @@ function loadProject() {
     return function (dispatch, getState) {
         const state = getState();
 
-        const filePath = path.join(state.project.path, '.project.json');
+        const filePath = path.join(state.project.path, PROJECT_FILE);
 
         return readFromFile(filePath)
             .then((data) => {
@@ -90,7 +92,7 @@ function openExistingProject() {
     return function (dispatch) {
         showOpenDirDialog()
             .then((dir) => {
-                const filePath = path.join(dir, '.project.json');
+                const filePath = path.join(dir, PROJECT_FILE);
                 if (!fs.existsSync(filePath)) {
                     throw Error('Selected directory is not a PCA project');
                 }

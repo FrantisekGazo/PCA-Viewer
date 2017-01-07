@@ -25,12 +25,11 @@ const getPCA = createSelector(
     [getAllUsedEntries],
     (values) => {
         if (values.length > 0) {
-            const pca = new PCA(values, {
+            return new PCA(values, {
                 scale: true
             });
-            return JSON.stringify(pca.toJSON());
         } else {
-            return "";
+            return null;
         }
     }
 );
