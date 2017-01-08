@@ -131,7 +131,8 @@ const initState = {
     /* last ID assigned to data */
     lastEntryId: 0,
     /* all data */
-    entries: {}
+    entries: {},
+    usedEigenpairs: []
 };
 const project = (state = initState, action) => {
     switch (action.type) {

@@ -36,4 +36,5 @@ Simple desktop app created using these technologies:
 ## Project specific dependencies:
 
 - [ml-pca](https://www.npmjs.com/package/ml-pca): library for calculation of principal component analysis
+- [ml-matrix](https://www.npmjs.com/package/ml-matrix): matrix manipulation and computation library
 - [plotly.js](https://www.npmjs.com/package/plotly.js): graphing library

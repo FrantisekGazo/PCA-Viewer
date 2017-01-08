@@ -9,8 +9,7 @@ class EigenvaluePlot extends React.Component {
     drawPlot() {
         const elementId = "eigenvaluePlot";
 
-        let i = 1;
-        let cumulatedVariance = 0;
+        let i = 0;
         const x = this.props.values.map(v => i++);
 
         const data = [
@@ -23,7 +22,7 @@ class EigenvaluePlot extends React.Component {
             {
                 name: 'Cumulative Explained Variance',
                 x: x,
-                y: this.props.explainedVariance.map(v => cumulatedVariance += v),
+                y: this.props.cumulativeVariance,
                 yaxis: 'y2',
                 type: 'line'
             }
@@ -77,7 +76,7 @@ class EigenvaluePlot extends React.Component {
 
 EigenvaluePlot.propTypes = {
     values: React.PropTypes.array.isRequired,
-    explainedVariance: React.PropTypes.array.isRequired
+    cumulativeVariance: React.PropTypes.array.isRequired
 };
 
 module.exports = EigenvaluePlot;
