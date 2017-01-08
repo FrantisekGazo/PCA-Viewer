@@ -1,19 +1,19 @@
 "use strict";
 
 const React = require('react');
-const {connect} = require('react-redux');
+const { connect } = require('react-redux');
 
 const ProjectContent = require('../components/ProjectContent.jsx');
-const { getPCA, getProjectionMatrix, getTransformedMatrix, getTransformedEntries } = require('../../selector/pca');
+const { getPCA, getTransformedEntries } = require('../../selector/pca');
 
 
 module.exports = connect(
     // state to props
     (state) => {
+        const pca = getPCA(state);
         return {
-            pca: getPCA(state),
-            projectionMatrix: getProjectionMatrix(state),
-            transformedMatrix: getTransformedMatrix(state),
+            eigenvalues: pca.getEigenvalues(),
+            cumulativeVariance: pca.getCumulativeVariance(),
             transformedEntries: getTransformedEntries(state),
         };
     },
