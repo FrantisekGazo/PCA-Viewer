@@ -38,12 +38,17 @@ function setProject(state, action) {
 }
 
 function selectProject(state, action) {
-    return update(state, {
-        $merge: {
-            path: action.payload,
-            error: ''
-        }
-    });
+    const path = action.payload;
+    if (path == null) {
+        return Object.assign({}, initState, {path: path});
+    } else {
+        return update(state, {
+            $merge: {
+                path: path,
+                error: ''
+            }
+        });
+    }
 }
 
 function showProjectError(state, action) {

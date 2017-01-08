@@ -16,7 +16,7 @@ const getUsedEntries = (state) => {
 const getOriginalMatrix = (state) => {
     const values = getUsedEntries(state).map(entry => entry.value);
 
-    if (values) {
+    if (values.length > 0) {
         return new Matrix(values);
     } else {
         return null;
