@@ -10,11 +10,11 @@ const { Actions } = require('../actions/project');
 /**
  * Creates Dataset structure.
  */
-function newDataset(id, color = '#000', name = 'New Dataset', entries = []) {
+function newDataset(id, name = 'New Dataset', color = '#000000', entries = []) {
     return {
         id,
-        color,
         name,
+        color,
         entries
     }
 }
@@ -22,10 +22,11 @@ function newDataset(id, color = '#000', name = 'New Dataset', entries = []) {
 /**
  * Creates Entry structure.
  */
-function newEntry(id, name = 'New Entry', value = []) {
+function newEntry(id, name = 'New Entry', color = null, value = []) {
     return {
         id,
         name,
+        color,
         value
     }
 }
@@ -98,7 +99,7 @@ function addEntries(state, action) {
     const entryIds = [];
     for (let i = 0; i < values.length; i++) {
         entryId += 1;
-        const entry = newEntry(entryId, `New Entry ${entryId}`, values[i]);
+        const entry = newEntry(entryId, `New Entry ${entryId}`, null, values[i]);
 
         entryMap[entry.id] = entry;
         entryIds.push(entry.id);

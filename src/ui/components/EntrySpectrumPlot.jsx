@@ -2,6 +2,7 @@
 
 const React = require('react');
 const Plotly = require("plotly.js/dist/plotly.js");
+const { hexToRgbString } = require('../../service/ColorService');
 
 
 class EntrySpectrumPlot extends React.Component {
@@ -19,7 +20,7 @@ class EntrySpectrumPlot extends React.Component {
                 y: entry.value,
                 mode: 'lines',
                 line: {
-                    color: 'rgb(219, 64, 82)'
+                    color: hexToRgbString(entry.color)
                 }
             }
         });

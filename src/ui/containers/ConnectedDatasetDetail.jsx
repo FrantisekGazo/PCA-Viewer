@@ -5,16 +5,15 @@ const {connect} = require('react-redux');
 
 const DatasetDetail = require('../components/DatasetDetail.jsx');
 const { loadEntries, closeAndDeleteDataset, closeDatasetDetail } = require('../../actions/project');
+const { getDetailDatasetEntries, getDetailDataset } = require('../../selector/dataset');
 
 
 module.exports = connect(
     // state to props
     (state) => {
-        const dataset = state.project.datasets[state.project.detail];
-
         return {
-            dataset,
-            datasetEntries: dataset.entries.map(entryId => state.project.entries[entryId])
+            dataset: getDetailDataset(state),
+            datasetEntries: getDetailDatasetEntries(state)
         };
     },
     // dispatch functions to props

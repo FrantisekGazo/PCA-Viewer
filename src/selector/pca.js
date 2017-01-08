@@ -4,12 +4,13 @@ const { createSelector } = require('reselect');
 const PCA = require('ml-pca');
 const Matrix = require('ml-matrix');
 
+const { getDatasetEntries } = require('./dataset');
+
 
 const getUsedEntries = (state) => {
     return state.project.usedDatasetIds
-        .map((datasetId) => state.project.datasets[datasetId])
-        .reduce((result, dataset) => result.concat(dataset.entries), [])
-        .map(entryId => state.project.entries[entryId]);
+        .map((datasetId) => getDatasetEntries(state, {datasetId: datasetId}))
+        .reduce((result, entries) => result.concat(entries), []);
 };
 
 const getOriginalMatrix = (state) => {
@@ -18,14 +19,14 @@ const getOriginalMatrix = (state) => {
     if (values) {
         return new Matrix(values);
     } else {
-        return new Matrix(0, 0);
+        return null;
     }
 };
 
 const getPCA = createSelector(
     [getOriginalMatrix],
     (matrix) => {
-        if (matrix.length >= 0) {
+        if (matrix) {
             return new PCA(matrix, {
                 scale: true
             });
