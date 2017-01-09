@@ -4,12 +4,13 @@ const React = require('react');
 
 
 const EntryListItem = ({entry, onClick}) => {
+    let i = 1;
+    const valueCells = entry.value.map(v => (<td key={i++}>{v}</td>));
     return (
-        <div onClick={onClick}>
-            {entry.name}
-            <br/>
-            [ {entry.value.toString()} ]
-        </div>
+        <tr onClick={onClick}>
+            <td key={0}>{entry.name}</td>
+            { valueCells }
+        </tr>
     )
 };
 
