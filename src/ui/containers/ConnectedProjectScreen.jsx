@@ -5,7 +5,8 @@ const { connect } = require('react-redux');
 
 const ProjectScreen = require('../components/ProjectScreen.jsx');
 const { closeProject, saveProject } = require('../../actions/project');
-const { getPCA } = require('../../selector/pca');
+const { isDetailShown } = require('../../selector/dataset');
+const { isPcaLoaded } = require('../../selector/pca');
 
 
 module.exports = connect(
@@ -13,8 +14,8 @@ module.exports = connect(
     (state, props) => {
         return {
             path: state.project.path,
-            showDetail: state.project.detail !== null,
-            showContent: getPCA(state) !== null
+            showDetail: isDetailShown(state),
+            showContent: isPcaLoaded(state)
         };
     },
     // dispatch functions to props

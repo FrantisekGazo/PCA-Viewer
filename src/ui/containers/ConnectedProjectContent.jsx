@@ -4,16 +4,15 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const ProjectContent = require('../components/ProjectContent.jsx');
-const { getPCA, getTransformedEntries } = require('../../selector/pca');
+const { getCumulativeVariance, getEigenvalues, getTransformedEntries } = require('../../selector/pca');
 
 
 module.exports = connect(
     // state to props
     (state) => {
-        const pca = getPCA(state);
         return {
-            eigenvalues: pca.getEigenvalues(),
-            cumulativeVariance: pca.getCumulativeVariance(),
+            eigenvalues: getEigenvalues(state),
+            cumulativeVariance: getCumulativeVariance(state),
             transformedEntries: getTransformedEntries(state),
         };
     },

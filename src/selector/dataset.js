@@ -1,6 +1,7 @@
 "use strict";
 
-const { createSelector } = require('reselect');
+
+const isDetailShown = (state, props) => state.project.detail !== null;
 
 const getDataset = (state, props) => state.project.datasets[props.datasetId];
 
@@ -22,9 +23,17 @@ const getDetailDatasetEntries = (state) => {
     return getDatasetEntries(state, {datasetId: state.project.detail});
 };
 
+const getUsedEntries = (state) => {
+    return state.project.usedDatasetIds
+        .map((datasetId) => getDatasetEntries(state, {datasetId: datasetId}))
+        .reduce((result, entries) => result.concat(entries), []);
+};
+
 module.exports = {
     getDataset,
     getDatasetEntries,
     getDetailDataset,
     getDetailDatasetEntries,
+    getUsedEntries,
+    isDetailShown,
 };

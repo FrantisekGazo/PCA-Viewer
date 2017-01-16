@@ -2,7 +2,7 @@
 
 const update = require('immutability-helper');
 
-const { Actions } = require('../actions/project');
+const {Actions} = require('../actions/project');
 
 
 // HELPER FUNCTIONS ----------------------------------------------------------------------
@@ -121,6 +121,40 @@ function addEntries(state, action) {
     });
 }
 
+function pcaPending(state, action) {
+    return update(state, {
+        pca: {
+            $set: {
+                loaded: false,
+                loading: true
+            }
+        }
+    });
+}
+
+function pcaReady(state, action) {
+    const model = action.payload;
+    if (model) {
+        const pca = Object.assign({}, model, {
+            loaded: true,
+            loading: false
+        });
+
+        return update(state, {
+            pca: {$set: pca}
+        });
+    } else {
+        return update(state, {
+            pca: {
+                $set: {
+                    loaded: false,
+                    loading: false
+                }
+            }
+        });
+    }
+}
+
 const initState = {
     /* path to the project directory */
     path: null,
@@ -138,6 +172,14 @@ const initState = {
     lastEntryId: 0,
     /* all data */
     entries: {},
+    pca: {
+        loading: false,
+        loaded: false,
+        cumulativeVariance: [],
+        eigenvalues: [],
+        eigenvectors: [],
+        transformedEntries: []
+    },
     usedEigenpairs: []
 };
 const project = (state = initState, action) => {
@@ -156,6 +198,10 @@ const project = (state = initState, action) => {
             return showDatasetDetail(state, action);
         case Actions.ADD_ENTRIES:
             return addEntries(state, action);
+        case Actions.PCA_PENDING:
+            return pcaPending(state, action);
+        case Actions.PCA_READY:
+            return pcaReady(state, action);
         default:
             return state;
     }

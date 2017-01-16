@@ -1,6 +1,6 @@
 "use strict";
 
-const { replace } = require('react-router-redux');
+const {replace} = require('react-router-redux');
 const fs = require('fs');
 const path = require('path');
 
@@ -8,6 +8,7 @@ const { createAction } = require('./index');
 const { showOpenCreateDirDialog, showOpenDirDialog, showOpenFileDialog } = require('../service/DialogService');
 const { WorkerTasks, execByWorker } = require('../service/WorkerService');
 const { readFromFile, writeToFile } = require('../service/FileService');
+const { calculatePCA } = require('../service/PcaService');
 
 
 const PROJECT_FILE = 'project.json';
@@ -20,6 +21,8 @@ const Actions = {
     SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
     SHOW_PROJECT_ERROR: 'SHOW_PROJECT_ERROR',
     ADD_ENTRIES: 'ADD_ENTRIES',
+    PCA_PENDING: 'PCA_PENDING',
+    PCA_READY: 'PCA_READY',
 };
 
 //region Action Creators
@@ -57,10 +60,22 @@ function createAddEntriesAction(datasetId, values) {
     return createAction(Actions.ADD_ENTRIES, {datasetId, values});
 }
 
+function createPcaPendingAction() {
+    return createAction(Actions.PCA_PENDING);
+}
+
+function createPcaReadyAction(pca) {
+    return createAction(Actions.PCA_READY, pca);
+}
+
 //endregion Action Creators
 
 //region Action Dispatchers
 
+/**
+ * Creates a new project.
+ * @returns {Function}
+ */
 function startNewProject() {
     return function (dispatch, getState) {
         showOpenCreateDirDialog()
@@ -74,6 +89,10 @@ function startNewProject() {
     }
 }
 
+/**
+ * Opens an existing project.
+ * @returns {Function}
+ */
 function openExistingProject() {
     return function (dispatch, getState) {
         showOpenDirDialog()
@@ -98,6 +117,10 @@ function openExistingProject() {
     }
 }
 
+/**
+ * Saves the open project to a file.
+ * @returns {Function}
+ */
 function saveProject() {
     return function (dispatch, getState) {
         const state = getState();
@@ -109,6 +132,10 @@ function saveProject() {
     }
 }
 
+/**
+ * Closes the open project.
+ * @returns {Function}
+ */
 function closeProject() {
     return function (dispatch, getState) {
         const location = {pathname: `/`};
@@ -118,12 +145,21 @@ function closeProject() {
     }
 }
 
+/**
+ * Creates new empty dataset.
+ * @returns {Function}
+ */
 function addDataset() {
     return function (dispatch, getState) {
         dispatch(createAddDatasetAction());
     }
 }
 
+/**
+ * Shows a detail of dataset with given ID.
+ * @param datasetId A dataset ID.
+ * @returns {Function}
+ */
 function showDatasetDetail(datasetId) {
     return function (dispatch, getState) {
         if (getState().project.detail !== datasetId) {
@@ -132,19 +168,36 @@ function showDatasetDetail(datasetId) {
     }
 }
 
+/**
+ * Closes a detail of dataset with given ID.
+ * @param datasetId A dataset ID.
+ * @returns {Function}
+ */
 function closeDatasetDetail(datasetId) {
     return function (dispatch, getState) {
         dispatch(createShowDatasetDetailAction(null));
     }
 }
 
+/**
+ * Closes a detail and deletes dataset with given ID.
+ * @param datasetId A dataset ID.
+ * @returns {Function}
+ */
 function closeAndDeleteDataset(datasetId) {
     return function (dispatch, getState) {
         dispatch(createShowDatasetDetailAction(null));
         dispatch(createDeleteDatasetAction(datasetId));
+
+        recalculatePCA(dispatch, getState);
     }
 }
 
+/**
+ * Loads entries from a file to dataset with given ID.
+ * @param datasetId A dataset ID
+ * @returns {Function}
+ */
 function loadEntries(datasetId) {
     return function (dispatch, getState) {
         showOpenFileDialog()
@@ -153,11 +206,22 @@ function loadEntries(datasetId) {
             })
             .then((values) => {
                 dispatch(createAddEntriesAction(datasetId, values));
+
+                // recalculate PCA if values were not empty
+                if (values.length > 0) {
+                    recalculatePCA(dispatch, getState);
+                }
             })
             .catch((err) => {
                 console.log('RECEIVED ERROR: ', err);
             });
     }
+}
+
+function recalculatePCA(dispatch, getState) { // FIXME : make this async
+    dispatch(createPcaPendingAction());
+    const pca = calculatePCA(getState());
+    dispatch(createPcaReadyAction(pca));
 }
 
 //endregion Action Dispatchers
