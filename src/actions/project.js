@@ -8,7 +8,6 @@ const { createAction } = require('./index');
 const { showOpenCreateDirDialog, showOpenDirDialog, showOpenFileDialog } = require('../service/DialogService');
 const { WorkerTasks, execByWorker } = require('../service/WorkerService');
 const { readFromFile, writeToFile } = require('../service/FileService');
-const { calculatePCA } = require('../service/PcaService');
 
 
 const PROJECT_FILE = 'project.json';
@@ -209,19 +208,21 @@ function loadEntries(datasetId) {
 
                 // recalculate PCA if values were not empty
                 if (values.length > 0) {
-                    recalculatePCA(dispatch, getState);
+                    dispatch(createPcaPendingAction());
+                    return execByWorker(WorkerTasks.CALCULATE_PCA, getState());
+                } else {
+                    return Promise.resolve(undefined);
+                }
+            })
+            .then((pca) => {
+                if (pca !== undefined) {
+                    dispatch(createPcaReadyAction(pca));
                 }
             })
             .catch((err) => {
                 console.log('RECEIVED ERROR: ', err);
             });
     }
-}
-
-function recalculatePCA(dispatch, getState) { // FIXME : make this async
-    dispatch(createPcaPendingAction());
-    const pca = calculatePCA(getState());
-    dispatch(createPcaReadyAction(pca));
 }
 
 //endregion Action Dispatchers
