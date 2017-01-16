@@ -4,7 +4,7 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const ProjectScreen = require('../components/ProjectScreen.jsx');
-const { closeProject, openExistingProject, saveProject, startNewProject } = require('../../actions/project');
+const { closeProject, saveProject } = require('../../actions/project');
 const { getPCA } = require('../../selector/pca');
 
 

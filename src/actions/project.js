@@ -22,21 +22,80 @@ const Actions = {
     ADD_ENTRIES: 'ADD_ENTRIES',
 };
 
-function selectProject(dir) {
-    return function (dispatch) {
-        dispatch(createAction(Actions.SELECT_PROJECT, dir));
+//region Action Creators
+// these action creators are private and called only internally by action dispatchers
 
-        const location = {pathname: `/project/`};
-        dispatch(replace(location));
+function createGoToProjectScreenAction() {
+    return replace({pathname: `/project/`});
+}
+
+function createSelectProjectAction(projectDir) {
+    return createAction(Actions.SELECT_PROJECT, projectDir);
+}
+
+function createProjectErrorAction(errorMessage) {
+    return createAction(Actions.SHOW_PROJECT_ERROR, errorMessage);
+}
+
+function createSetProjectAction(projectStoreObject) {
+    return createAction(Actions.SET_PROJECT, projectStoreObject);
+}
+
+function createAddDatasetAction() {
+    return createAction(Actions.NEW_DATASET);
+}
+
+function createShowDatasetDetailAction(datasetId) {
+    return createAction(Actions.SHOW_DATASET_DETAIL, datasetId);
+}
+
+function createDeleteDatasetAction(datasetId) {
+    return createAction(Actions.DELETE_DATASET, datasetId);
+}
+
+function createAddEntriesAction(datasetId, values) {
+    return createAction(Actions.ADD_ENTRIES, {datasetId, values});
+}
+
+//endregion Action Creators
+
+//region Action Dispatchers
+
+function startNewProject() {
+    return function (dispatch, getState) {
+        showOpenCreateDirDialog()
+            .then((dir) => {
+                dispatch(createSelectProjectAction(dir));
+                dispatch(createGoToProjectScreenAction());
+            })
+            .catch((err) => {
+                dispatch(createProjectErrorAction(err.message));
+            });
     }
 }
 
-function showProjectSelectionError(msg) {
-    return createAction(Actions.SHOW_PROJECT_ERROR, msg);
-}
+function openExistingProject() {
+    return function (dispatch, getState) {
+        showOpenDirDialog()
+            .then((dir) => {
+                const filePath = path.join(dir, PROJECT_FILE);
+                if (!fs.existsSync(filePath)) {
+                    throw Error('Selected directory is not a PCA project');
+                }
 
-function setProject(project) {
-    return createAction(Actions.SET_PROJECT, project);
+                return readFromFile(filePath)
+                    .then((data) => {
+                        const project = JSON.parse(data);
+                        project['path'] = dir;
+
+                        dispatch(createSetProjectAction(project));
+                        dispatch(createGoToProjectScreenAction());
+                    });
+            })
+            .catch((err) => {
+                dispatch(createProjectErrorAction(err.message));
+            });
+    }
 }
 
 function saveProject() {
@@ -50,105 +109,50 @@ function saveProject() {
     }
 }
 
-function loadProject() {
-    return function (dispatch, getState) {
-        const state = getState();
-
-        const filePath = path.join(state.project.path, PROJECT_FILE);
-
-        return readFromFile(filePath)
-            .then((data) => {
-                const project = JSON.parse(data);
-                return dispatch(setProject(project));
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-}
-
 function closeProject() {
-    return function (dispatch) {
+    return function (dispatch, getState) {
         const location = {pathname: `/`};
         dispatch(replace(location));
 
-        dispatch(createAction(Actions.SELECT_PROJECT, null));
-    }
-}
-
-function startNewProject() {
-    return function (dispatch) {
-        showOpenCreateDirDialog()
-            .then((dir) => {
-                dispatch(selectProject(dir));
-            })
-            .catch((err) => {
-                dispatch(showProjectSelectionError(err.message));
-            });
-    }
-}
-
-function openExistingProject() {
-    return function (dispatch) {
-        showOpenDirDialog()
-            .then((dir) => {
-                const filePath = path.join(dir, PROJECT_FILE);
-                if (!fs.existsSync(filePath)) {
-                    throw Error('Selected directory is not a PCA project');
-                }
-
-                return readFromFile(filePath)
-                    .then((data) => {
-                        const project = JSON.parse(data);
-                        dispatch(setProject(project));
-                        dispatch(selectProject(dir));
-                    });
-            })
-            .catch((err) => {
-                dispatch(showProjectSelectionError(err.message));
-            });
+        dispatch(createSelectProjectAction(null));
     }
 }
 
 function addDataset() {
-    return createAction(Actions.NEW_DATASET);
+    return function (dispatch, getState) {
+        dispatch(createAddDatasetAction());
+    }
 }
 
 function showDatasetDetail(datasetId) {
     return function (dispatch, getState) {
         if (getState().project.detail !== datasetId) {
-            dispatch(createAction(Actions.SHOW_DATASET_DETAIL, datasetId));
+            dispatch(createShowDatasetDetailAction(datasetId));
         }
     }
 }
 
 function closeDatasetDetail(datasetId) {
-    return createAction(Actions.SHOW_DATASET_DETAIL, null);
-}
-
-function deleteDataset(datasetId) {
-    return createAction(Actions.DELETE_DATASET, datasetId);
-}
-
-function closeAndDeleteDataset(datasetId) {
-    return function (dispatch) {
-        dispatch(closeDatasetDetail(datasetId));
-        dispatch(deleteDataset(datasetId));
+    return function (dispatch, getState) {
+        dispatch(createShowDatasetDetailAction(null));
     }
 }
 
-function addEntries(datasetId, values) {
-    return createAction(Actions.ADD_ENTRIES, {datasetId, values});
+function closeAndDeleteDataset(datasetId) {
+    return function (dispatch, getState) {
+        dispatch(createShowDatasetDetailAction(null));
+        dispatch(createDeleteDatasetAction(datasetId));
+    }
 }
 
 function loadEntries(datasetId) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
         showOpenFileDialog()
             .then((filePath) => {
                 return execByWorker(WorkerTasks.LOAD_VALUES_FROM_FILE, filePath)
             })
             .then((values) => {
-                dispatch(addEntries(datasetId, values));
+                dispatch(createAddEntriesAction(datasetId, values));
             })
             .catch((err) => {
                 console.log('RECEIVED ERROR: ', err);
@@ -156,16 +160,17 @@ function loadEntries(datasetId) {
     }
 }
 
+//endregion Action Dispatchers
 
 module.exports = {
     Actions,
     startNewProject,
     openExistingProject,
+    saveProject,
     closeProject,
     addDataset,
-    loadEntries,
     showDatasetDetail,
     closeDatasetDetail,
     closeAndDeleteDataset,
-    saveProject,
+    loadEntries,
 };
