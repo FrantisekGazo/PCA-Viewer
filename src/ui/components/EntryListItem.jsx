@@ -1,16 +1,17 @@
 "use strict";
 
 const React = require('react');
+const { TableRow, TableRowColumn } = require('material-ui/Table');
 
 
 const EntryListItem = ({entry, onClick}) => {
     let i = 1;
-    const valueCells = entry.value.map(v => (<td key={i++}>{v}</td>));
+    const valueCells = entry.value.map(v => (<TableRowColumn key={i++}>{v}</TableRowColumn>));
     return (
-        <tr onClick={onClick}>
-            <td key={0}>{entry.name}</td>
+        <TableRow onTouchTap={onClick} hoverable={true}>
+            <TableRowColumn key={0}>{entry.name}</TableRowColumn>
             { valueCells }
-        </tr>
+        </TableRow>
     )
 };
 

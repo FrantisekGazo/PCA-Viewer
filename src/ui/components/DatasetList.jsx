@@ -1,6 +1,11 @@
 "use strict";
 
 const React = require('react');
+const { List } = require('material-ui/List');
+const { Card, CardActions } = require('material-ui/Card');
+const Subheader = require('material-ui/Subheader').default;
+const FloatingActionButton = require('material-ui/FloatingActionButton').default;
+const ContentAdd = require('material-ui/svg-icons/content/add').default;
 
 const DatasetListItem = require('./DatasetListItem.jsx');
 
@@ -11,11 +16,17 @@ const DatasetList = ({datasets, onDatasetClicked, onAddDatasetClicked}) => {
                                                            onClick={() => onDatasetClicked(dataset.id)}/>));
 
     return (
-        <div id="dataset-list">
-            Datasets:
-            <ul>{list}</ul>
-            <button onClick={onAddDatasetClicked}>Add Dataset</button>
-        </div>
+        <Card id="dataset-list">
+            <List>
+                <Subheader>Datasets:</Subheader>
+                {list}
+            </List>
+            <CardActions>
+                <FloatingActionButton label="Add" mini={true} onTouchTap={onAddDatasetClicked}>
+                    <ContentAdd />
+                </FloatingActionButton>
+            </CardActions>
+        </Card>
     );
 };
 

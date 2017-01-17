@@ -21,6 +21,7 @@ Simple desktop app created using these technologies:
 - [reselect](https://www.npmjs.com/package/reselect): simplifies usage of derived data from Redux store 
 - [immutability-helper](https://www.npmjs.com/package/immutability-helper): mutates a copy of data without changing the original source
 - [react-router](https://www.npmjs.com/package/react-router), [react-router-redux](https://www.npmjs.com/package/react-router-redux): simplifies app navigation
+- [material-ui](https://www.npmjs.com/package/material-ui): a Set of React Components that Implement Google's Material Design
 
 ##Dev Dependencies:
 

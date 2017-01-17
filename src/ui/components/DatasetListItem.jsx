@@ -1,13 +1,23 @@
 "use strict";
 
 const React = require('react');
+const { ListItem } = require('material-ui/List');
+const Avatar = require('material-ui/Avatar').default;
 
 
 const DatasetListItem = ({dataset, onClick}) => {
     return (
-        <div onClick={onClick}>
-            {dataset.name}
-        </div>
+        <ListItem onTouchTap={onClick}
+                  primaryText={dataset.name}
+                  leftAvatar={
+                      <Avatar
+                          color="#fff"
+                          backgroundColor={dataset.color}
+                          size={30}
+                          style={{margin: 5}}>
+                          {dataset.name.substr(0, 1)}
+                      </Avatar>
+                  }/>
     )
 };
 

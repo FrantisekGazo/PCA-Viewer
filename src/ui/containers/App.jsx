@@ -1,12 +1,15 @@
 "use strict";
 
 const React = require('react');
-const {connect} = require('react-redux');
+const { connect } = require('react-redux');
+const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default;
 
 
 const AppLayout = ({children}) => {
     return <div>
-        {children}
+        <MuiThemeProvider>
+            {children}
+        </MuiThemeProvider>
     </div>
 };
 

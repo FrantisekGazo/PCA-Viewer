@@ -1,6 +1,6 @@
 'use strict';
 
-const {app, BrowserWindow} = require('electron');
+const { app, BrowserWindow } = require('electron');
 
 
 //console.log(app.getPath('userData')); // TODO : use for PDF storage

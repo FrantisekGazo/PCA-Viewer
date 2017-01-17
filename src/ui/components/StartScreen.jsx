@@ -1,6 +1,7 @@
 "use strict";
 
 const React = require('react');
+const FlatButton = require('material-ui/FlatButton').default;
 
 const showMenu = require('../menu/Menu');
 
@@ -12,8 +13,9 @@ const StartScreen = ({error, onStartNewClicked, onOpenExistingClicked}) => {
 
     return (
         <div>
-            <button onClick={onStartNewClicked}>Start a new project</button>
-            <button onClick={onOpenExistingClicked}>Open an existing project</button>
+            <FlatButton label="Start a new project" onTouchTap={onStartNewClicked} />
+            <br/>
+            <FlatButton label="Open an existing project" onTouchTap={onOpenExistingClicked} />
             { errorMsg }
         </div>
     );
