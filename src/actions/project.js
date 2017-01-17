@@ -188,7 +188,11 @@ function closeAndDeleteDataset(datasetId) {
         dispatch(createShowDatasetDetailAction(null));
         dispatch(createDeleteDatasetAction(datasetId));
 
-        recalculatePCA(dispatch, getState);
+        dispatch(createPcaPendingAction());
+        return execByWorker(WorkerTasks.CALCULATE_PCA, getState())
+            .then((pca) => {
+                dispatch(createPcaReadyAction(pca));
+            });
     }
 }
 
@@ -209,14 +213,12 @@ function loadEntries(datasetId) {
                 // recalculate PCA if values were not empty
                 if (values.length > 0) {
                     dispatch(createPcaPendingAction());
-                    return execByWorker(WorkerTasks.CALCULATE_PCA, getState());
+                    return execByWorker(WorkerTasks.CALCULATE_PCA, getState())
+                        .then((pca) => {
+                            dispatch(createPcaReadyAction(pca));
+                        });
                 } else {
-                    return Promise.resolve(undefined);
-                }
-            })
-            .then((pca) => {
-                if (pca !== undefined) {
-                    dispatch(createPcaReadyAction(pca));
+                    return Promise.resolve();
                 }
             })
             .catch((err) => {
