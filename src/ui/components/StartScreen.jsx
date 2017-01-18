@@ -3,7 +3,6 @@
 const React = require('react');
 const FlatButton = require('material-ui/FlatButton').default;
 
-const { ColorPicker, colors } = require('../components/ColorPicker');
 const showMenu = require('../menu/Menu');
 
 
@@ -18,7 +17,6 @@ const StartScreen = ({error, onStartNewClicked, onOpenExistingClicked}) => {
             <br/>
             <FlatButton label="Open an existing project" onTouchTap={onOpenExistingClicked} />
             { errorMsg }
-            <ColorPicker colors={colors} value= '#E74C3C' onChange={() => {}}/>
         </div>
     );
 };
