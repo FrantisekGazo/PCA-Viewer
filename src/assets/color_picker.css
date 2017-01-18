@@ -1,224 +1,227 @@
+/** This css is for ColorPicker only */
+/** DO NOT CHANGE! */
+
 .colorpicker {
-  position: relative;
-  height: 13em;
-  background-color: #fff;
+    position: relative;
+    height: 13em;
+    background-color: #fff;
 }
 
 .map {
-  position: absolute;
-  top: 1em;
-  bottom: 1em;
-  right: 1em;
-  left: 1em;
-  overflow: hidden;
-  user-select: none;
-  border-radius: 0.25em;
+    position: absolute;
+    top: 1em;
+    bottom: 1em;
+    right: 1em;
+    left: 1em;
+    overflow: hidden;
+    user-select: none;
+    border-radius: 0.25em;
 }
 
 .map.active {
-  cursor: none;
+    cursor: none;
 }
 
 .map.dark .pointer {
-  border-color: #fff;
+    border-color: #fff;
 }
 
 .map.light .pointer {
-  border-color: #000;
+    border-color: #000;
 }
 
 .map .pointer {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  margin-left: -5px;
-  margin-bottom: -5px;
-  border-radius: 100%;
-  border: 1px solid #000;
-  will-change: left, bottom;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    margin-bottom: -5px;
+    border-radius: 100%;
+    border: 1px solid #000;
+    will-change: left, bottom;
 }
 
 .map .background {
-  top: 0;
-  left: 0;
-  position: absolute;
-  height: 100%;
-  width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
 
 .map .background:before,
 .map .background:after {
-  display: block;
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+    display: block;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
 .map .background:after {
-  background: linear-gradient(to bottom, transparent 0%, black 100%);
+    background: linear-gradient(to bottom, transparent 0%, black 100%);
 }
 
 .map .background:before {
-  background: linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 100%);
 }
 
 .slider {
-  position: absolute;
-  user-select: none;
+    position: absolute;
+    user-select: none;
 }
 
 .slider.vertical {
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 10px;
-  cursor: ns-resize;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 10px;
+    cursor: ns-resize;
 }
 
 .slider.vertical .track {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 8px;
-  margin-left: -4px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 8px;
+    margin-left: -4px;
 }
 
 .slider.horizontal {
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 10px;
-  cursor: ew-resize;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 10px;
+    cursor: ew-resize;
 }
 
 .slider.horizontal .track {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 8px;
-  margin-top: -4px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 8px;
+    margin-top: -4px;
 }
 
 .slider .track {
-  border-radius: 3px;
-  background: #888;
+    border-radius: 3px;
+    background: #888;
 }
 
 .slider .pointer {
-  position: absolute;
-  bottom: 50%;
-  left: 50%;
-  width: 16px;
-  height: 16px;
-  margin-left: -8px;
-  margin-bottom: -8px;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: inset 0 0 0 1px #ccc,0 1px 2px #ccc;
-  will-change: left, bottom;
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin-left: -8px;
+    margin-bottom: -8px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px #ccc, 0 1px 2px #ccc;
+    will-change: left, bottom;
 }
 
 .hue-slider {
-  position: absolute;
-  top: 1em;
-  bottom: 1em;
-  right: 1.3em;
+    position: absolute;
+    top: 1em;
+    bottom: 1em;
+    right: 1.3em;
 }
 
 .hue-slider .track {
-  background: linear-gradient(to bottom, #FF0000 0%, #FF0099 10%, #CD00FF 20%, #3200FF 30%, #0066FF 40%, #00FFFD 50%, #00FF66 60%, #35FF00 70%, #CDFF00 80%, #FF9900 90%, #FF0000 100%);
+    background: linear-gradient(to bottom, #FF0000 0%, #FF0099 10%, #CD00FF 20%, #3200FF 30%, #0066FF 40%, #00FFFD 50%, #00FF66 60%, #35FF00 70%, #CDFF00 80%, #FF9900 90%, #FF0000 100%);
 }
 
 .opacity-slider {
-  position: absolute;
-  bottom: 1.3em;
-  left: 1em;
-  right: 1em;
+    position: absolute;
+    bottom: 1.3em;
+    left: 1em;
+    right: 1em;
 }
 
 .opacity-slider .slider {
-  background: #fff url("data:image/gif;base64,R0lGODdhEAAQAPEAAMvLy8zMzP///wAAACwAAAAAEAAQAEACHYxvosstCAEMrq6Jj812Y59NIDQipdY5XLWqH4sVADs=") repeat;
-  background-size: 8px 8px;
-  height: 8px;
+    background: #fff url("data:image/gif;base64,R0lGODdhEAAQAPEAAMvLy8zMzP///wAAACwAAAAAEAAQAEACHYxvosstCAEMrq6Jj812Y59NIDQipdY5XLWqH4sVADs=") repeat;
+    background-size: 8px 8px;
+    height: 8px;
 }
 
 .opacity-slider .slider .track {
-  height: 8px;
-  margin-top: -4px;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #FFF 100%);
+    height: 8px;
+    margin-top: -4px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #FFF 100%);
 }
 
 .with-opacity-slider .map {
-  bottom: 2em;
+    bottom: 2em;
 }
 
 body {
-  background: #eee;
-  font-family: monospace;
-  font-size: 20px;
+    background: #eee;
+    font-family: monospace;
+    font-size: 20px;
 }
 
 #container {
-  position: absolute;
-  top: 20%;
-  left: 10%;
-  bottom: 20%;
-  right: 10%;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    bottom: 20%;
+    right: 10%;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
 .picker {
-  position: relative;
-  margin-bottom: 1em;
+    position: relative;
+    margin-bottom: 1em;
 }
 
 .picker:after {
-  content: "";
-  display: table;
-  clear: both;
+    content: "";
+    display: table;
+    clear: both;
 }
 
 @media (min-width: 50em) {
-  .picker {
-    width: 50%;
-    float: left;
-  }
+    .picker {
+        width: 50%;
+        float: left;
+    }
 }
 
 .swatch-item {
-  width: 21px;
-  height: 20px;
-  float: left;
-  margin: 2px;
-  border: none;
-  -webkit-transition: -webkit-transform 0.1s;
-  transition: transform 0.1s;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  position: relative;
-  outline: none;
+    width: 21px;
+    height: 20px;
+    float: left;
+    margin: 2px;
+    border: none;
+    -webkit-transition: -webkit-transform 0.1s;
+    transition: transform 0.1s;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    position: relative;
+    outline: none;
 }
 
 .swatch-item:focus {
-  -webkit-transform: scale(1.05);
-  transform: scale(1.05);
-  z-index: 5;
-  border-radius: 3px;
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+    z-index: 5;
+    border-radius: 3px;
 }
 
 .swatch-item.swatch-selected {
-  -webkit-transform: scale(1.2) !important;
-  transform: scale(1.2) !important;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
-  z-index: 10 !important;
+    -webkit-transform: scale(1.2) !important;
+    transform: scale(1.2) !important;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    z-index: 10 !important;
 }
 
 .swatch {
-  overflow: auto;
+    overflow: auto;
 }

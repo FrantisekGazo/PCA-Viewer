@@ -46,8 +46,8 @@ const Map = React.createClass({
             <div
                 className={classes}
                 onMouseDown={this.startUpdates}
-                onTouchStart={this.startUpdates}
-            >
+                onTouchStart={this.startUpdates}>
+
                 <div className="background" style={{backgroundColor}}/>
                 {this.state.rect && (
                     <div className="pointer" style={{
