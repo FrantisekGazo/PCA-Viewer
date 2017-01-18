@@ -16,6 +16,7 @@ const Actions = {
     SELECT_PROJECT: 'SELECT_PROJECT',
     SET_PROJECT: 'SET_PROJECT',
     NEW_DATASET: 'NEW_DATASET',
+    UPDATE_DATASET: 'UPDATE_DATASET',
     DELETE_DATASET: 'DELETE_DATASET',
     SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
     SHOW_PROJECT_ERROR: 'SHOW_PROJECT_ERROR',
@@ -45,6 +46,10 @@ function createSetProjectAction(projectStoreObject) {
 
 function createAddDatasetAction() {
     return createAction(Actions.NEW_DATASET);
+}
+
+function createUpdateDatasetAction(datasetId, datasetChanges) {
+    return createAction(Actions.UPDATE_DATASET, {id: datasetId, changes: datasetChanges});
 }
 
 function createShowDatasetDetailAction(datasetId) {
@@ -155,6 +160,18 @@ function addDataset() {
 }
 
 /**
+ * Updates dataset with given ID.
+ * @param datasetId Dataset ID.
+ * @param datasetChanges Changes made on the dataset.
+ * @returns {Function}
+ */
+function updateDataset(datasetId, datasetChanges) {
+    return function (dispatch, getState) {
+        dispatch(createUpdateDatasetAction(datasetId, datasetChanges));
+    }
+}
+
+/**
  * Shows a detail of dataset with given ID.
  * @param datasetId A dataset ID.
  * @returns {Function}
@@ -236,6 +253,7 @@ module.exports = {
     saveProject,
     closeProject,
     addDataset,
+    updateDataset,
     showDatasetDetail,
     closeDatasetDetail,
     closeAndDeleteDataset,

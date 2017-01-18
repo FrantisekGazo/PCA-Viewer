@@ -73,6 +73,14 @@ function addNewDataset(state, action) {
     });
 }
 
+function updateDataset(state, action) {
+    const { id, changes } = action.payload;
+
+    console.error('TODO update dataset in store', id, changes);
+
+    return state;
+}
+
 function deleteDataset(state, action) {
     const datasetId = action.payload;
 
@@ -192,6 +200,8 @@ const project = (state = initState, action) => {
             return showProjectError(state, action);
         case Actions.NEW_DATASET:
             return addNewDataset(state, action);
+        case Actions.UPDATE_DATASET:
+            return updateDataset(state, action);
         case Actions.DELETE_DATASET:
             return deleteDataset(state, action);
         case Actions.SHOW_DATASET_DETAIL:
