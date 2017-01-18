@@ -7,56 +7,69 @@ const FlatButton = require('material-ui/FlatButton').default;
 const Divider = require('material-ui/Divider').default;
 const TextField = require('material-ui/TextField').default;
 
+const ColorPicker = require('../components/ColorPicker');
 const EntryList = require('./EntryList.jsx');
 const EntrySpectrumPlot = require('./EntrySpectrumPlot.jsx');
 
 const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onCloseClick, onLoadEntriesClick, onEntryClick}) => {
     return (
         <Card id="dataset-detail">
-            <CardHeader
-                avatar={
-                    <Avatar
-                        color="#fff"
-                        backgroundColor={dataset.color}
-                        size={40}
-                        style={{margin: 5}}>
-                        {dataset.name.substr(0, 1)}
-                    </Avatar>
-                }
-                title={
-                    <TextField id="dataset-name"
-                               floatingLabelText={"Name"}
-                               defaultValue={dataset.name}/>
-                }/>
+            <CardActions>
+                <ColorPicker
+                    key={`editable-dataset-avatar-${dataset.id}`}
+                    value={dataset.color}
+                    letter={dataset.name.substr(0, 1)}
+                    onChange={() => {
+                    }}/>
+
+                <TextField
+                    key={`editable-dataset-name-${dataset.id}`}
+                    floatingLabelText={"Name"}
+                    defaultValue={dataset.name}/>
+            </CardActions>
 
             <CardText>
-                <TextField id="dataset-desc"
-                           floatingLabelText={"Description"}
-                           multiLine={true}
-                           underlineShow={true}
-                           fullWidth={true}/>
+                <TextField
+                    key={`editable-dataset-desc-${dataset.id}`}
+                    floatingLabelText={"Description"}
+                    multiLine={true}
+                    underlineShow={true}
+                    fullWidth={true}/>
             </CardText>
 
             <CardMedia>
-                <EntrySpectrumPlot title="Spectrum"
-                                   entries={datasetEntries}
-                                   onPlotClick={(p) => {
-                                       console.error('TODO PLOT CLICK:', p);
-                                   }}/>
+                <EntrySpectrumPlot
+                    title="Spectrum"
+                    entries={datasetEntries}
+                    onPlotClick={(p) => {
+                        console.error('TODO PLOT CLICK:', p);
+                    }}/>
             </CardMedia>
 
             <CardMedia>
-                <EntryList entries={datasetEntries}
-                           onEntryClick={(entryId) => {
-                               onEntryClick(dataset.id, entryId)
-                           }}/>
+                <EntryList
+                    entries={datasetEntries}
+                    onEntryClick={(entryId) => {
+                        onEntryClick(dataset.id, entryId)
+                    }}/>
             </CardMedia>
 
             <CardActions>
-                <FlatButton label="Load Entries" onTouchTap={() => onLoadEntriesClick(dataset.id)}/>
-                <FlatButton label="Save" onTouchTap={() => onSaveClick(dataset.id, [ /* TODO : save name change 1st, then entry changes */ ])}/>
-                <FlatButton label="Close" onTouchTap={() => onCloseClick(dataset.id)}/>
-                <FlatButton label="Delete" onTouchTap={() => onDeleteClick(dataset.id)}/>
+                <FlatButton
+                    label="Load Entries"
+                    onTouchTap={() => onLoadEntriesClick(dataset.id)}/>
+
+                <FlatButton
+                    label="Save"
+                    onTouchTap={() => onSaveClick(dataset.id, [/* TODO : save name change 1st, then entry changes */])}/>
+
+                <FlatButton
+                    label="Close"
+                    onTouchTap={() => onCloseClick(dataset.id)}/>
+
+                <FlatButton
+                    label="Delete"
+                    onTouchTap={() => onDeleteClick(dataset.id)}/>
             </CardActions>
         </Card>
     );

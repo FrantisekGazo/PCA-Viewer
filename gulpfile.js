@@ -81,7 +81,7 @@ function getPackOptions(opts) {
     return Object.assign({
         dir: '.',
         asar: false,
-        version: '1.4.5',
+        version: '1.4.13',
         //platform: '',
         //arch: '',
         out: 'release',
