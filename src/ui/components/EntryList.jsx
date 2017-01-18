@@ -17,14 +17,16 @@ const EntryList = ({entries, onEntryClick}) => {
     });
 
     if (valueCount > 0) {
-        const valueHeaderCells = range(0, valueCount).map(i => (<TableHeaderColumn key={i}>{i + 1}</TableHeaderColumn>));
+        const valueHeaderCells = range(0, valueCount).map(i => {
+            return (<TableHeaderColumn key={i}>{i + 1}</TableHeaderColumn>);
+        });
 
         const itemRows = entries.map(entry => (<EntryListItem key={entry.id}
                                                               entry={entry}
                                                               onClick={() => onEntryClick(entry.id)}/>));
         return (
             <Table fixedHeader={true}
-                   height={400}>
+                   height={'300px'}>
                 <TableHeader adjustForCheckbox={false}
                              displaySelectAll={false}>
                     <TableRow>
