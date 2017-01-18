@@ -1,64 +1,69 @@
 const React = require("react");
 const PureRenderMixin = require("react/lib/ReactComponentWithPureRenderMixin");
-const cx = require("classnames");
+
+const createClassName = require("../util/classnames");
 const DraggableMixin = require("./DraggableMixin.jsx");
 
 
 const Slider = React.createClass({
 
-  mixins : [DraggableMixin, PureRenderMixin],
+    mixins: [DraggableMixin, PureRenderMixin],
 
-  propTypes: {
-    value: React.PropTypes.number.isRequired,
-    vertical: React.PropTypes.bool,
-    background : React.PropTypes.string
-  },
+    propTypes: {
+        value: React.PropTypes.number.isRequired,
+        vertical: React.PropTypes.bool,
+        background: React.PropTypes.string
+    },
 
-  getDefaultProps() {
-    return {
-      value : 0,
-      vertical : false,
-      background : ""
-    };
-  },
+    getDefaultProps() {
+        return {
+            value: 0,
+            vertical: false,
+            background: ""
+        };
+    },
 
-  updatePosition(clientX, clientY) {
-    const { rect } = this.state;
-    let value;
+    updatePosition(clientX, clientY) {
+        const {rect} = this.state;
+        let value;
 
-    if (this.props.vertical) {
-      value = (rect.bottom - clientY) / rect.height;
-    } else {
-      value = (clientX - rect.left) / rect.width;
+        if (this.props.vertical) {
+            value = (rect.bottom - clientY) / rect.height;
+        } else {
+            value = (clientX - rect.left) / rect.width;
+        }
+
+        this.props.onChange(
+            this.getScaledValue(value)
+        );
+    },
+
+    getCss() {
+        const attr = this.props.vertical ? "bottom" : "left";
+
+        return {
+            [attr]: this.getPercentageValue(this.props.value)
+        };
+    },
+
+    render() {
+        const classes = createClassName({
+            "slider": true,
+            "vertical": this.props.vertical,
+            "horizontal": !this.props.vertical
+        });
+        const background = this.props.background;
+
+        return (
+            <div
+                className={classes}
+                onMouseDown={this.startUpdates}
+                onTouchStart={this.startUpdates}>
+                <div className="track" style={{background}}/>
+                {this.state.rect && <div className="pointer" style={this.getCss()}/>}
+            </div>
+        );
     }
-
-    this.props.onChange(
-      this.getScaledValue(value)
-    );
-  },
-
-  getCss() {
-    const attr = this.props.vertical ? "bottom" : "left";
-
-    return {
-      [attr] : this.getPercentageValue(this.props.value)
-    };
-  },
-
-  render() {
-    const classes = cx("slider", (this.props.vertical ? "vertical" : "horizontal"));
-    const background = this.props.background;
-
-    return (
-      <div
-        className={classes}
-        onMouseDown={this.startUpdates}
-        onTouchStart={this.startUpdates}>
-        <div className="track" style={{ background }} />
-        {this.state.rect && <div className="pointer" style={this.getCss()} />}
-      </div>
-    );
-  }
 
 });
 

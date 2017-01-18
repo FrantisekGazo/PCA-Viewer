@@ -6,31 +6,31 @@ const rgb2grayscale = require("pure-color/convert/rgb2grayscale");
 
 
 function parseToHsv(color) {
-  color = parse(color);
-  const hsv  = rgb2hsv(color);
+    color = parse(color);
+    const hsv = rgb2hsv(color);
 
-  const alpha = color.length === 4 ? color[3] : 1;
-  hsv.push(alpha);
+    const alpha = color.length === 4 ? color[3] : 1;
+    hsv.push(alpha);
 
-  return hsv;
+    return hsv;
 }
 
 function toRgbString(hsv) {
-  const rgb = hsv2rgb(hsv);
+    const rgb = hsv2rgb(hsv);
 
-  if(hsv.length === 4) {
-    rgb.push(hsv[3]);
-  }
+    if (hsv.length === 4) {
+        rgb.push(hsv[3]);
+    }
 
-  return rgb2string(rgb);
+    return rgb2string(rgb);
 }
 
 function equals(hsv1, hsv2) {
-  return toRgbString(hsv1) === toRgbString(hsv2);
+    return toRgbString(hsv1) === toRgbString(hsv2);
 }
 
 function isDark(hsv) {
-  return rgb2grayscale(hsv2rgb(hsv)) <= 128;
+    return rgb2grayscale(hsv2rgb(hsv)) <= 128;
 }
 
 module.exports = {

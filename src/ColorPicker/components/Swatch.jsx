@@ -1,13 +1,16 @@
 const React = require('react');
-const cx = require("classnames");
 const PureRenderMixin = require("react/lib/ReactComponentWithPureRenderMixin");
+
+const createClassName = require("../util/classnames");
+
 
 const SwatchItem = React.createClass({
 
     mixins: [PureRenderMixin],
 
     render() {
-        const classes = cx("swatch-item", {"swatch-selected": this.props.selected});
+        const classes = createClassName({"swatch-item": true, "swatch-selected": this.props.selected});
+
         const backgroundColor = this.props.color;
         return (
             <button
