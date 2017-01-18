@@ -2,14 +2,24 @@
 
 const React = require('react');
 const { TableRow, TableRowColumn } = require('material-ui/Table');
+const TextField = require('material-ui/TextField').default;
 
+const tableCell = (key, value) => {
+    return (
+        <TableRowColumn key={key}>
+            <TextField id={`${key}`}
+                       defaultValue={value}
+                       onChange={(event, newValue) => console.log('onChange', event, newValue) } />
+        </TableRowColumn>
+    );
+};
 
-const EntryListItem = ({entry, onClick}) => {
+const EntryListItem = ({entry, onClick, otherProps}) => {
     let i = 1;
-    const valueCells = entry.value.map(v => (<TableRowColumn key={i++}>{v}</TableRowColumn>));
+    const valueCells = entry.value.map(v => tableCell(i++, v));
     return (
         <TableRow onTouchTap={onClick} hoverable={true}>
-            <TableRowColumn key={0}>{entry.name}</TableRowColumn>
+            { tableCell(0, entry.name) }
             { valueCells }
         </TableRow>
     )

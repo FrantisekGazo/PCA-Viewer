@@ -25,14 +25,6 @@ const DatasetDetail = ({dataset, datasetEntries, onDeleteClick, onCloseClick, on
                 title={dataset.name}
                 subtitle={dataset.id}/>
 
-            <CardActions>
-                <FlatButton label="Load Entries" onTouchTap={() => onLoadEntriesClick(dataset.id)} />
-                <FlatButton label="Close" onTouchTap={() => onCloseClick(dataset.id)} />
-                <FlatButton label="Delete" onTouchTap={() => onDeleteClick(dataset.id)} />
-            </CardActions>
-
-            <Divider/>
-
             <CardMedia>
                 <EntrySpectrumPlot title="Spectrum"
                                    entries={datasetEntries}
@@ -47,6 +39,13 @@ const DatasetDetail = ({dataset, datasetEntries, onDeleteClick, onCloseClick, on
                                onEntryClick(dataset.id, entryId)
                            }}/>
             </CardMedia>
+
+            <CardActions>
+                <FlatButton label="Load Entries" onTouchTap={() => onLoadEntriesClick(dataset.id)} />
+                <FlatButton label="Save" onTouchTap={() => console.error('TODO SAVE IMPLEMENTATION')} />
+                <FlatButton label="Close" onTouchTap={() => onCloseClick(dataset.id)} />
+                <FlatButton label="Delete" onTouchTap={() => onDeleteClick(dataset.id)} />
+            </CardActions>
         </Card>
     );
 };

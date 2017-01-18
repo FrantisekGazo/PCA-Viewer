@@ -23,7 +23,8 @@ const EntryList = ({entries, onEntryClick}) => {
                                                               entry={entry}
                                                               onClick={() => onEntryClick(entry.id)}/>));
         return (
-            <Table>
+            <Table fixedHeader={true}
+                   height={400}>
                 <TableHeader adjustForCheckbox={false}
                              displaySelectAll={false}>
                     <TableRow>
@@ -31,7 +32,8 @@ const EntryList = ({entries, onEntryClick}) => {
                         { valueHeaderCells }
                     </TableRow>
                 </TableHeader>
-                <TableBody stripedRows={true} displayRowCheckbox={false}>
+                <TableBody stripedRows={true}
+                           displayRowCheckbox={false}>
                     { itemRows }
                 </TableBody>
             </Table>
