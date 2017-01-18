@@ -9,7 +9,9 @@ const tableCell = (key, value) => {
         <TableRowColumn key={key}>
             <TextField id={`${key}`}
                        defaultValue={value}
-                       onChange={(event, newValue) => console.log('onChange', event, newValue) } />
+                       onChange={(event, newValue) => {
+                           console.error('TODO onChange(event, newValue)', event, newValue)
+                       }}/>
         </TableRowColumn>
     );
 };

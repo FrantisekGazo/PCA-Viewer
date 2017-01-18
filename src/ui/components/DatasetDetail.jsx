@@ -29,7 +29,7 @@ const DatasetDetail = ({dataset, datasetEntries, onDeleteClick, onCloseClick, on
                 <EntrySpectrumPlot title="Spectrum"
                                    entries={datasetEntries}
                                    onPlotClick={(p) => {
-                                       console.log('PLOT CLICK:', p);
+                                       console.error('TODO PLOT CLICK:', p);
                                    }}/>
             </CardMedia>
 
