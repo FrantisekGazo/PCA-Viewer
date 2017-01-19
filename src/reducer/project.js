@@ -78,7 +78,15 @@ function updateDataset(state, action) {
 
     console.error('TODO update dataset in store', id, changes);
 
-    return state;
+    const { dataset, entries } = changes;
+
+    return update(state, {
+        datasets: {
+            [id]: {
+                $merge: dataset
+            }
+        }
+    });
 }
 
 function deleteDataset(state, action) {

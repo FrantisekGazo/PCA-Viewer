@@ -12,6 +12,11 @@ const EntryList = require('./EntryList.jsx');
 const EntrySpectrumPlot = require('./EntrySpectrumPlot.jsx');
 
 const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onCloseClick, onLoadEntriesClick, onEntryClick}) => {
+    let changes = {
+        dataset: {},
+        entries: {}
+    };
+
     return (
         <Card id="dataset-detail">
             <CardActions>
@@ -19,13 +24,17 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
                     key={`editable-dataset-avatar-${dataset.id}`}
                     value={dataset.color}
                     letter={dataset.name.substr(0, 1)}
-                    onChange={() => {
+                    onChange={(newValue) => {
+                        changes.dataset.color = newValue;
                     }}/>
 
                 <TextField
                     key={`editable-dataset-name-${dataset.id}`}
                     floatingLabelText={"Name"}
-                    defaultValue={dataset.name}/>
+                    defaultValue={dataset.name}
+                    onChange={(event, newValue) => {
+                        changes.dataset.name = newValue;
+                    }}/>
             </CardActions>
 
             <CardText>
@@ -61,7 +70,7 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
 
                 <FlatButton
                     label="Save"
-                    onTouchTap={() => onSaveClick(dataset.id, [/* TODO : save name change 1st, then entry changes */])}/>
+                    onTouchTap={() => onSaveClick(dataset.id, changes)}/>
 
                 <FlatButton
                     label="Close"
