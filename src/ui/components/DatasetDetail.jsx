@@ -17,6 +17,37 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
         entries: {}
     };
 
+    let entryInfo = null;
+    if (datasetEntries.length > 0) {
+        entryInfo = (
+            <div>
+                <CardMedia>
+                    <EntrySpectrumPlot
+                        title="Spectrum"
+                        entries={datasetEntries}
+                        onPlotClick={(p) => {
+                            console.error('TODO PLOT CLICK:', p);
+                        }}/>
+                </CardMedia>
+
+                <CardMedia>
+                    <EntryList
+                        entries={datasetEntries}
+                        onEntryClick={(entryId) => {
+                            onEntryClick(dataset.id, entryId)
+                        }}
+                        onChange={(id, index, value) => {
+                            if (value === null) {
+                                delete changes.entries[`${id}/${index}`];
+                            } else {
+                                changes.entries[`${id}/${index}`] = value;
+                            }
+                        }}/>
+                </CardMedia>
+            </div>
+        );
+    }
+
     return (
         <Card id="dataset-detail">
             <CardActions>
@@ -25,7 +56,11 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
                     value={dataset.color}
                     letter={dataset.name.substr(0, 1)}
                     onChange={(newValue) => {
-                        changes.dataset.color = newValue;
+                        if (newValue === dataset.color) {
+                            delete changes.dataset.color;
+                        } else {
+                            changes.dataset.color = newValue;
+                        }
                     }}/>
 
                 <TextField
@@ -33,7 +68,11 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
                     floatingLabelText={"Name"}
                     defaultValue={dataset.name}
                     onChange={(event, newValue) => {
-                        changes.dataset.name = newValue;
+                        if (newValue === dataset.name) {
+                            delete changes.dataset.name;
+                        } else {
+                            changes.dataset.name = newValue;
+                        }
                     }}/>
             </CardActions>
 
@@ -41,27 +80,20 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
                 <TextField
                     key={`editable-dataset-desc-${dataset.id}`}
                     floatingLabelText={"Description"}
+                    defaultValue={dataset.desc}
                     multiLine={true}
                     underlineShow={true}
-                    fullWidth={true}/>
+                    fullWidth={true}
+                    onChange={(event, newValue) => {
+                        if (newValue === dataset.desc) {
+                            delete changes.dataset.desc;
+                        } else {
+                            changes.dataset.desc = newValue;
+                        }
+                    }}/>
             </CardText>
 
-            <CardMedia>
-                <EntrySpectrumPlot
-                    title="Spectrum"
-                    entries={datasetEntries}
-                    onPlotClick={(p) => {
-                        console.error('TODO PLOT CLICK:', p);
-                    }}/>
-            </CardMedia>
-
-            <CardMedia>
-                <EntryList
-                    entries={datasetEntries}
-                    onEntryClick={(entryId) => {
-                        onEntryClick(dataset.id, entryId)
-                    }}/>
-            </CardMedia>
+            { entryInfo }
 
             <CardActions>
                 <FlatButton

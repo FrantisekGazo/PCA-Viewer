@@ -10,10 +10,11 @@ const {Actions} = require('../actions/project');
 /**
  * Creates Dataset structure.
  */
-function newDataset(id, name = 'New Dataset', color = '#000000', entries = []) {
+function newDataset(id, name = 'New Dataset', desc = '', color = '#000000', entries = []) {
     return {
         id,
         name,
+        desc,
         color,
         entries
     }
@@ -76,15 +77,18 @@ function addNewDataset(state, action) {
 function updateDataset(state, action) {
     const { id, changes } = action.payload;
 
-    console.error('TODO update dataset in store', id, changes);
-
     const { dataset, entries } = changes;
+
+
 
     return update(state, {
         datasets: {
             [id]: {
                 $merge: dataset
             }
+        },
+        entries: {
+            $merge: entries
         }
     });
 }

@@ -37,7 +37,7 @@ const DEFAULT_COLORS = [
 const ColorPicker = React.createClass({
 
     getInitialState() {
-        const colors = DEFAULT_COLORS;
+        const colors = DEFAULT_COLORS.slice();
         colors[0] = this.props.value;
         return {
             colors: colors,

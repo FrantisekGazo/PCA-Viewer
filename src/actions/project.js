@@ -167,8 +167,62 @@ function addDataset() {
  */
 function updateDataset(datasetId, datasetChanges) {
     return function (dispatch, getState) {
+        const isEmpty = (obj) => Object.keys(obj).length === 0;
+
+        if (!isEmpty(datasetChanges.entries)) {
+            const changedEntries = {};
+            for (const prop in datasetChanges.entries) {
+                const parts = prop.split('/');
+                const id = parts[0];
+                const index = parts[1];
+                changedEntries[id] = Object.assign({}, changedEntries[id], {[index]: datasetChanges.entries[prop]})
+            }
+
+            const currentEntries = getState().project.entries;
+            datasetChanges.entries = buildEntryUpdate(currentEntries, changedEntries);
+        }
+
+        if (isEmpty(datasetChanges.dataset) && isEmpty(datasetChanges.entries)) {
+            console.log('Nothing for dataset update');
+            return;
+        }
+
+        console.log('Will change dataset with:', datasetChanges);
+
         dispatch(createUpdateDatasetAction(datasetId, datasetChanges));
     }
+}
+
+function buildEntryUpdate(currentEntries, changes) {
+    const newEntries = {};
+
+    Object.keys(changes).map(entryId => {
+        const currentEntry = currentEntries[entryId];
+        const changedEntry = changes[entryId];
+        let newEntry;
+
+        if (changedEntry === undefined) {
+            return; // this shouldn't happen
+        }
+
+        const entryChanges = {};
+        if (changedEntry['-1'] !== undefined) {
+            entryChanges.name = changedEntry['-1'];
+            delete changedEntry['-1'];
+        }
+
+        let index = 0;
+        entryChanges.value = currentEntry.value.map(currentVal => {
+            const val = changedEntry[index++];
+            return (val !== undefined) ? val : currentVal;
+        });
+
+        newEntry = Object.assign({}, currentEntry, entryChanges);
+
+        newEntries[entryId] = newEntry;
+    });
+
+    return newEntries;
 }
 
 /**

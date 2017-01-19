@@ -8,7 +8,7 @@ const EntryListItem = require('./EntryListItem.jsx');
 const { range } = require('../../util/util');
 
 
-const EntryList = ({entries, onEntryClick}) => {
+const EntryList = ({entries, onEntryClick, onChange}) => {
     let valueCount = 0;
     entries.map(entry => {
         if (entry.value.length > valueCount) {
@@ -18,24 +18,32 @@ const EntryList = ({entries, onEntryClick}) => {
 
     if (valueCount > 0) {
         const valueHeaderCells = range(0, valueCount).map(i => {
-            return (<TableHeaderColumn key={i}>{i + 1}</TableHeaderColumn>);
+            return (
+                <TableHeaderColumn key={i}>
+                    {i + 1}
+                </TableHeaderColumn>
+            );
         });
 
-        const itemRows = entries.map(entry => (<EntryListItem key={entry.id}
-                                                              entry={entry}
-                                                              onClick={() => onEntryClick(entry.id)}/>));
+        const itemRows = entries.map(entry => {
+            return (
+                <EntryListItem
+                    key={entry.id}
+                    entry={entry}
+                    onClick={() => onEntryClick(entry.id)}
+                    onChange={onChange}/>
+            )
+        });
+
         return (
-            <Table fixedHeader={true}
-                   height={'300px'}>
-                <TableHeader adjustForCheckbox={false}
-                             displaySelectAll={false}>
+            <Table fixedHeader={true} height={'300px'}>
+                <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                     <TableRow>
-                        <TableHeaderColumn key={0}>Entry Name</TableHeaderColumn>
+                        <TableHeaderColumn key={-1}>Entry Name</TableHeaderColumn>
                         { valueHeaderCells }
                     </TableRow>
                 </TableHeader>
-                <TableBody stripedRows={true}
-                           displayRowCheckbox={false}>
+                <TableBody stripedRows={true} displayRowCheckbox={false}>
                     { itemRows }
                 </TableBody>
             </Table>
@@ -48,6 +56,7 @@ const EntryList = ({entries, onEntryClick}) => {
 EntryList.propTypes = {
     entries: React.PropTypes.array.isRequired,
     onEntryClick: React.PropTypes.func.isRequired,
+    onChange: React.PropTypes.func.isRequired,
 };
 
 module.exports = EntryList;
