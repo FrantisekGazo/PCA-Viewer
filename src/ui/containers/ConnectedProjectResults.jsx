@@ -3,7 +3,7 @@
 const React = require('react');
 const { connect } = require('react-redux');
 
-const ProjectContent = require('../components/ProjectContent.jsx');
+const ProjectResults = require('../components/ProjectResults.jsx');
 
 
 module.exports = connect(
@@ -17,4 +17,4 @@ module.exports = connect(
     (dispatch) => {
         return {};
     }
-)(ProjectContent);
+)(ProjectResults);

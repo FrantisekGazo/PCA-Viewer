@@ -8,7 +8,7 @@ const EigenvaluePlot = require('../components/EigenvaluePlot.jsx');
 const ScatterPlot = require('../components/ScatterPlot.jsx');
 
 
-const ProjectContent = ({pca}) => {
+const ProjectResults = ({pca}) => {
     let content = null;
 
     if (pca.loading) {
@@ -38,8 +38,8 @@ const ProjectContent = ({pca}) => {
     );
 };
 
-ProjectContent.propTypes = {
+ProjectResults.propTypes = {
     pca: React.PropTypes.object.isRequired
 };
 
-module.exports = ProjectContent;
+module.exports = ProjectResults;

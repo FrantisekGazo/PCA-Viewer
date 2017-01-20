@@ -5,7 +5,7 @@ const React = require('react');
 const showMenu = require('../menu/Menu');
 const ConnectedDatasetList = require('../containers/ConnectedDatasetList.jsx');
 const ConnectedDatasetDetail = require('../containers/ConnectedDatasetDetail.jsx');
-const ConnectedProjectContent = require('../containers/ConnectedProjectContent.jsx');
+const ConnectedProjectResults = require('../containers/ConnectedProjectResults.jsx');
 
 
 const ProjectScreen = ({showDetail, onSaveClick, onCloseClick}) => {
@@ -16,7 +16,7 @@ const ProjectScreen = ({showDetail, onSaveClick, onCloseClick}) => {
         <div>
             <ConnectedDatasetList/>
             { showDetail ? <ConnectedDatasetDetail/> : null }
-            <ConnectedProjectContent/>
+            <ConnectedProjectResults/>
         </div>
     );
 };
