@@ -14,9 +14,11 @@
     "pack-mac": "gulp pack-mac",
     "pack-win": "gulp pack-win",
     "pack-lin": "gulp pack-lin",
-    "pack-all": "npm-run-all build-mac build-win build-lin",
-    "clean-build-mac": "npm-run-all clean build pack-mac",
-    "clean-build-all": "npm-run-all clean build pack-all"
+    "pack-all": "npm-run-all pack-mac pack-win pack-lin",
+    "clean-pack-mac": "npm-run-all clean build pack-mac",
+    "clean-pack-win": "npm-run-all clean build pack-win",
+    "clean-pack-lin": "npm-run-all clean build pack-lin",
+    "clean-pack-all": "npm-run-all clean build pack-all"
   },
   "repository": {
     "type": "git",

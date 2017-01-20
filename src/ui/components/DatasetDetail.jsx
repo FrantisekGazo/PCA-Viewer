@@ -7,7 +7,7 @@ const FlatButton = require('material-ui/FlatButton').default;
 const Divider = require('material-ui/Divider').default;
 const TextField = require('material-ui/TextField').default;
 
-const ColorPicker = require('../components/ColorPicker');
+const ColorPicker = require('../components/ColorPicker/components/ColorPicker.jsx');
 const EntryList = require('./EntryList.jsx');
 const EntrySpectrumPlot = require('./EntrySpectrumPlot.jsx');
 
