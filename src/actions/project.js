@@ -190,6 +190,8 @@ function updateDataset(datasetId, datasetChanges) {
         console.log('Will change dataset with:', datasetChanges);
 
         dispatch(createUpdateDatasetAction(datasetId, datasetChanges));
+
+        return recalculatePca(dispatch, getState);
     }
 }
 
@@ -259,11 +261,7 @@ function closeAndDeleteDataset(datasetId) {
         dispatch(createShowDatasetDetailAction(null));
         dispatch(createDeleteDatasetAction(datasetId));
 
-        dispatch(createPcaPendingAction());
-        return execByWorker(WorkerTasks.CALCULATE_PCA, getState())
-            .then((pca) => {
-                dispatch(createPcaReadyAction(pca));
-            });
+        return recalculatePca(dispatch, getState);
     }
 }
 
@@ -283,11 +281,7 @@ function loadEntries(datasetId) {
 
                 // recalculate PCA if values were not empty
                 if (values.length > 0) {
-                    dispatch(createPcaPendingAction());
-                    return execByWorker(WorkerTasks.CALCULATE_PCA, getState())
-                        .then((pca) => {
-                            dispatch(createPcaReadyAction(pca));
-                        });
+                    return recalculatePca(dispatch, getState);
                 } else {
                     return Promise.resolve();
                 }
@@ -296,6 +290,14 @@ function loadEntries(datasetId) {
                 console.log('RECEIVED ERROR: ', err);
             });
     }
+}
+
+function recalculatePca(dispatch, getState) {
+    dispatch(createPcaPendingAction());
+    return execByWorker(WorkerTasks.CALCULATE_PCA, getState())
+        .then((pca) => {
+            dispatch(createPcaReadyAction(pca));
+        });
 }
 
 //endregion Action Dispatchers

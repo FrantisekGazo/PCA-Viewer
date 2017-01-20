@@ -8,7 +8,7 @@ const ConnectedDatasetDetail = require('../containers/ConnectedDatasetDetail.jsx
 const ConnectedProjectContent = require('../containers/ConnectedProjectContent.jsx');
 
 
-const ProjectScreen = ({path, showDetail, showContent, onSaveClick, onCloseClick}) => {
+const ProjectScreen = ({showDetail, onSaveClick, onCloseClick}) => {
 
     showMenu(true, onSaveClick, onCloseClick);
 
@@ -16,15 +16,13 @@ const ProjectScreen = ({path, showDetail, showContent, onSaveClick, onCloseClick
         <div>
             <ConnectedDatasetList/>
             { showDetail ? <ConnectedDatasetDetail/> : null }
-            { showContent ? <ConnectedProjectContent/> : null }
+            <ConnectedProjectContent/>
         </div>
     );
 };
 
 ProjectScreen.propTypes = {
-    path: React.PropTypes.string.isRequired,
     showDetail: React.PropTypes.bool.isRequired,
-    showContent: React.PropTypes.bool.isRequired,
     onSaveClick: React.PropTypes.func.isRequired,
     onCloseClick: React.PropTypes.func.isRequired,
 };
