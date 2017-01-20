@@ -146,7 +146,8 @@ function pcaPending(state, action) {
         pca: {
             $set: {
                 loaded: false,
-                loading: true
+                loading: true,
+                hash: (state.pca.hash + 1)
             }
         }
     });
@@ -157,7 +158,8 @@ function pcaReady(state, action) {
     if (model) {
         const pca = Object.assign({}, model, {
             loaded: true,
-            loading: false
+            loading: false,
+            hash: (state.pca.hash + 1)
         });
 
         return update(state, {
@@ -168,7 +170,8 @@ function pcaReady(state, action) {
             pca: {
                 $set: {
                     loaded: false,
-                    loading: false
+                    loading: false,
+                    hash: (state.pca.hash + 1)
                 }
             }
         });
@@ -198,7 +201,8 @@ const initState = {
         cumulativeVariance: [],
         eigenvalues: [],
         eigenvectors: [],
-        transformedEntries: []
+        transformedEntries: [],
+        hash: 0
     },
     usedEigenpairs: []
 };
