@@ -3,8 +3,11 @@
 const React = require('react');
 const Avatar = require('material-ui/Avatar').default;
 const { Card, CardActions, CardHeader, CardMedia, CardText } = require('material-ui/Card');
-const FlatButton = require('material-ui/FlatButton').default;
-const Divider = require('material-ui/Divider').default;
+const IconButton = require('material-ui/IconButton').default;
+const IconClose = require('material-ui/svg-icons/navigation/close').default;
+const IconDelete = require('material-ui/svg-icons/action/delete').default;
+const IconSave = require('material-ui/svg-icons/content/save').default;
+const IconOpenFile = require('material-ui/svg-icons/file/folder-open').default;
 const TextField = require('material-ui/TextField').default;
 
 const ColorPicker = require('../components/ColorPicker/components/ColorPicker.jsx');
@@ -74,6 +77,30 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
                             changes.dataset.name = newValue;
                         }
                     }}/>
+
+                <IconButton
+                    tooltip="Open file"
+                    onTouchTap={() => onLoadEntriesClick(dataset.id)}>
+                    <IconOpenFile/>
+                </IconButton>
+
+                <IconButton
+                    tooltip="Save"
+                    onTouchTap={() => onSaveClick(dataset.id, changes)}>
+                    <IconSave/>
+                </IconButton>
+
+                <IconButton
+                    tooltip="Delete"
+                    onTouchTap={() => onDeleteClick(dataset.id)}>
+                    <IconDelete color={'#ae0000'}/>
+                </IconButton>
+
+                <IconButton
+                    tooltip="Close"
+                    onTouchTap={() => onCloseClick(dataset.id)}>
+                    <IconClose/>
+                </IconButton>
             </CardActions>
 
             <CardText>
@@ -94,24 +121,6 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
             </CardText>
 
             { entryInfo }
-
-            <CardActions>
-                <FlatButton
-                    label="Load Entries"
-                    onTouchTap={() => onLoadEntriesClick(dataset.id)}/>
-
-                <FlatButton
-                    label="Save"
-                    onTouchTap={() => onSaveClick(dataset.id, changes)}/>
-
-                <FlatButton
-                    label="Close"
-                    onTouchTap={() => onCloseClick(dataset.id)}/>
-
-                <FlatButton
-                    label="Delete"
-                    onTouchTap={() => onDeleteClick(dataset.id)}/>
-            </CardActions>
         </Card>
     );
 };
