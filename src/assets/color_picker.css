@@ -160,12 +160,6 @@
     bottom: 2em;
 }
 
-body {
-    background: #eee;
-    font-family: monospace;
-    font-size: 20px;
-}
-
 #container {
     position: absolute;
     top: 20%;

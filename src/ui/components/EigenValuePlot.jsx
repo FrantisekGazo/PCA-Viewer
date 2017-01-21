@@ -14,13 +14,13 @@ class EigenvaluePlot extends React.Component {
 
         const data = [
             {
-                name: 'Eigenvalues',
+                name: 'E',
                 x: x,
                 y: this.props.values,
                 type: 'bar'
             },
             {
-                name: 'Cumulative Explained Variance',
+                name: 'CEV',
                 x: x,
                 y: this.props.cumulativeVariance,
                 yaxis: 'y2',

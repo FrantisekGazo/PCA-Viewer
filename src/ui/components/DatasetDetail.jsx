@@ -1,7 +1,6 @@
 "use strict";
 
 const React = require('react');
-const Avatar = require('material-ui/Avatar').default;
 const { Card, CardActions, CardHeader, CardMedia, CardText } = require('material-ui/Card');
 const IconButton = require('material-ui/IconButton').default;
 const IconClose = require('material-ui/svg-icons/navigation/close').default;
@@ -67,6 +66,9 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
                     }}/>
 
                 <TextField
+                    style={{
+                        width: '300px'
+                    }}
                     key={`editable-dataset-name-${dataset.id}`}
                     floatingLabelText={"Name"}
                     defaultValue={dataset.name}

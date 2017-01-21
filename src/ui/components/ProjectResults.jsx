@@ -36,7 +36,7 @@ class ProjectResults extends React.Component {
 
         return (
             <Card id="content">
-                <CardHeader title="Results"/>
+                <CardHeader title="Results:"/>
                 { content }
             </Card>
         );
