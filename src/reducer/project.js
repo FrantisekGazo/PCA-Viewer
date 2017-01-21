@@ -70,7 +70,8 @@ function addNewDataset(state, action) {
             }
         },
         usedDatasetIds: {$push: [datasetId]},
-        lastDatasetId: {$set: datasetId}
+        lastDatasetId: {$set: datasetId},
+        detail: {$set: datasetId}
     });
 }
 
