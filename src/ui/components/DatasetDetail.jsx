@@ -5,8 +5,10 @@ const { Card, CardActions, CardHeader, CardMedia, CardText } = require('material
 const IconButton = require('material-ui/IconButton').default;
 const IconClose = require('material-ui/svg-icons/navigation/close').default;
 const IconDelete = require('material-ui/svg-icons/action/delete').default;
+const IconMenu = require('material-ui/IconMenu').default;
+const IconMore = require('material-ui/svg-icons/navigation/more-vert').default;
 const IconSave = require('material-ui/svg-icons/content/save').default;
-const IconOpenFile = require('material-ui/svg-icons/file/folder-open').default;
+const MenuItem = require('material-ui/MenuItem').default;
 const TextField = require('material-ui/TextField').default;
 
 const ColorPicker = require('../components/ColorPicker/components/ColorPicker.jsx');
@@ -22,7 +24,11 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
     let entryInfo = null;
     if (datasetEntries.length > 0) {
         entryInfo = (
-            <div>
+            <Card style={{
+                marginTop: '10px'
+            }}>
+                <CardHeader title='Entries:'/>
+
                 <CardMedia>
                     <EntrySpectrumPlot
                         title="Spectrum"
@@ -46,84 +52,105 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
                             }
                         }}/>
                 </CardMedia>
-            </div>
+            </Card>
         );
     }
 
+
     return (
-        <Card id="dataset-detail">
-            <CardActions>
-                <ColorPicker
-                    key={`editable-dataset-avatar-${dataset.id}`}
-                    value={dataset.color}
-                    letter={dataset.name.substr(0, 1)}
-                    onChange={(newValue) => {
-                        if (newValue === dataset.color) {
-                            delete changes.dataset.color;
-                        } else {
-                            changes.dataset.color = newValue;
-                        }
-                    }}/>
+        <div>
+            <Card>
+                <CardActions>
+                    <ColorPicker
+                        key={`editable-dataset-avatar-${dataset.id}`}
+                        value={dataset.color}
+                        letter={dataset.name.substr(0, 1)}
+                        onChange={(newValue) => {
+                            if (newValue === dataset.color) {
+                                delete changes.dataset.color;
+                            } else {
+                                changes.dataset.color = newValue;
+                            }
+                        }}/>
 
-                <TextField
-                    style={{
-                        width: '300px'
-                    }}
-                    key={`editable-dataset-name-${dataset.id}`}
-                    floatingLabelText={"Name"}
-                    defaultValue={dataset.name}
-                    onChange={(event, newValue) => {
-                        if (newValue === dataset.name) {
-                            delete changes.dataset.name;
-                        } else {
-                            changes.dataset.name = newValue;
-                        }
-                    }}/>
+                    <TextField
+                        style={{
+                            width: '300px'
+                        }}
+                        key={`editable-dataset-name-${dataset.id}`}
+                        floatingLabelText={"Name"}
+                        defaultValue={dataset.name}
+                        onChange={(event, newValue) => {
+                            if (newValue === dataset.name) {
+                                delete changes.dataset.name;
+                            } else {
+                                changes.dataset.name = newValue;
+                            }
+                        }}/>
+                </CardActions>
 
-                <IconButton
-                    tooltip="Open file"
-                    onTouchTap={() => onLoadEntriesClick(dataset.id)}>
-                    <IconOpenFile/>
-                </IconButton>
+                <CardText>
+                    <TextField
+                        key={`editable-dataset-desc-${dataset.id}`}
+                        floatingLabelText={"Description"}
+                        defaultValue={dataset.desc}
+                        multiLine={true}
+                        underlineShow={true}
+                        fullWidth={true}
+                        onChange={(event, newValue) => {
+                            if (newValue === dataset.desc) {
+                                delete changes.dataset.desc;
+                            } else {
+                                changes.dataset.desc = newValue;
+                            }
+                        }}/>
+                </CardText>
 
-                <IconButton
-                    tooltip="Save"
-                    onTouchTap={() => onSaveClick(dataset.id, changes)}>
-                    <IconSave/>
-                </IconButton>
+                <CardActions
+                        style={{
+                            position: 'relative',
+                            width: '230px',
+                            right: 0,
+                            margin: '0 0 0 auto',
+                        }}>
 
-                <IconButton
-                    tooltip="Delete"
-                    onTouchTap={() => onDeleteClick(dataset.id)}>
-                    <IconDelete color={'#ae0000'}/>
-                </IconButton>
+                    <IconButton
+                        tooltip="Save"
+                        onTouchTap={() => onSaveClick(dataset.id, changes)}>
+                        <IconSave/>
+                    </IconButton>
 
-                <IconButton
-                    tooltip="Close"
-                    onTouchTap={() => onCloseClick(dataset.id)}>
-                    <IconClose/>
-                </IconButton>
-            </CardActions>
+                    <IconButton
+                        tooltip="Delete"
+                        onTouchTap={() => onDeleteClick(dataset.id)}>
+                        <IconDelete color={'#ae0000'}/>
+                    </IconButton>
 
-            <CardText>
-                <TextField
-                    key={`editable-dataset-desc-${dataset.id}`}
-                    floatingLabelText={"Description"}
-                    defaultValue={dataset.desc}
-                    multiLine={true}
-                    underlineShow={true}
-                    fullWidth={true}
-                    onChange={(event, newValue) => {
-                        if (newValue === dataset.desc) {
-                            delete changes.dataset.desc;
-                        } else {
-                            changes.dataset.desc = newValue;
-                        }
-                    }}/>
-            </CardText>
+                    <IconButton
+                        tooltip="Close"
+                        onTouchTap={() => onCloseClick(dataset.id)}>
+                        <IconClose/>
+                    </IconButton>
+
+                    <IconMenu
+                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                        iconButtonElement={
+                            <IconButton><IconMore /></IconButton>
+                        }>
+
+                        <MenuItem
+                            primaryText="Load Data"
+                            onTouchTap={() => onLoadEntriesClick(dataset.id)}/>
+                        <MenuItem
+                            primaryText="Load Stream"
+                            onTouchTap={() => console.error('IMPLEMENT LOAD STREAM')}/>
+                    </IconMenu>
+                </CardActions>
+            </Card>
 
             { entryInfo }
-        </Card>
+        </div>
     );
 };
 

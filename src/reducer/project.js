@@ -7,28 +7,38 @@ const {Actions} = require('../actions/project');
 
 // HELPER FUNCTIONS ----------------------------------------------------------------------
 
+const DEFAULT_SAMPLING = 10;
+
 /**
  * Creates Dataset structure.
  */
-function newDataset(id, name = 'New Dataset', desc = '', color = '#000000', entries = []) {
+function newDataset(id) {
     return {
-        id,
-        name,
-        desc,
-        color,
-        entries
+        id: id,
+        name: `Dataset ${id}`,
+        desc: '',
+        color: '#000000',
+        // raw data
+        entries: [], // entry IDs
+        // stream data
+        stream: [], // values
+        streamFilters: [], // filter IDs
+        filteredStream: [], // values
+        sampling: DEFAULT_SAMPLING, // number of stream values in 1 entry
+        streamEntries: [] // entry IDs - for entries sampled from the stream
     }
 }
 
 /**
  * Creates Entry structure.
  */
-function newEntry(id, name = 'New Entry', color = null, value = []) {
+function newEntry(id) {
     return {
-        id,
-        name,
-        color,
-        value
+        id: id,
+        name: `E${id}`,
+        color: undefined,
+        value: [],
+        streamPosition: undefined
     }
 }
 
@@ -125,7 +135,8 @@ function addEntries(state, action) {
     const entryIds = [];
     for (let i = 0; i < values.length; i++) {
         entryId += 1;
-        const entry = newEntry(entryId, `New Entry ${entryId}`, null, values[i]);
+        const entry = newEntry(entryId);
+        entry.value = values[i];
 
         entryMap[entry.id] = entry;
         entryIds.push(entry.id);

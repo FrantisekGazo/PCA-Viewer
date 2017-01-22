@@ -14,21 +14,6 @@ const ConnectedDatasetDetail = require('../containers/ConnectedDatasetDetail.jsx
 const ConnectedProjectResults = require('../containers/ConnectedProjectResults.jsx');
 
 
-const AppBarMenu = ({}) => {
-    return (
-        <IconMenu
-            targetOrigin={{horizontal: 'right', vertical: 'top'}}
-            anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-            iconButtonElement={
-                <IconButton><IconMore color={'#ffffff'}/></IconButton>
-            }>
-
-            <MenuItem primaryText="Settings"/>
-            <MenuItem primaryText="Help"/>
-        </IconMenu>
-    );
-};
-
 const ProjectScreen = ({path, showDetail, onSaveClick, onCloseClick}) => {
 
     showMenu(true, onSaveClick, onCloseClick);
@@ -62,16 +47,37 @@ const ProjectScreen = ({path, showDetail, onSaveClick, onCloseClick}) => {
                         <IconClose />
                     </IconButton>
                 }
-                iconElementRight={<AppBarMenu />} />
-            <div>
+                iconElementRight={
+                    <IconMenu
+                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                        iconButtonElement={
+                            <IconButton><IconMore /></IconButton>
+                        }>
+
+                        <MenuItem primaryText="Settings"/>
+                        <MenuItem primaryText="Help"/>
+                    </IconMenu>
+                }/>
+
+
+            <div
+                id='content'
+                style={{
+                    position: 'absolute',
+                    top: '70px',
+                    left: '20px',
+                    right: '10px',
+                    bottom: '10px',
+                }}>
 
                 <div style={{
                     display: 'inline-block',
                     position: 'absolute',
-                    top: '70px',
-                    left: '20px',
-                    right: '60%',
-                    bottom: '10px',
+                    width: '40%',
+                    top: '0px',
+                    bottom: '0px',
+                    left: '0px',
                     transform: 'translate(-10px)',
                 }}>
                     <ConnectedDatasetList/>
@@ -81,10 +87,10 @@ const ProjectScreen = ({path, showDetail, onSaveClick, onCloseClick}) => {
                 <div style={{
                     display: 'inline-block',
                     position: 'absolute',
-                    top: '70px',
-                    left: '40%',
-                    right: '10px',
-                    bottom: '10px',
+                    top: '0px',
+                    bottom: '0px',
+                    right: '0px',
+                    width: '60%',
                 }}>
                     <ConnectedProjectResults/>
                 </div>
