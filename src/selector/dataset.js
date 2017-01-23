@@ -7,6 +7,8 @@ const getDataset = (state, props) => state.project.datasets[props.datasetId];
 
 const getDetailDataset = (state) => getDataset(state, {datasetId: state.project.detail});
 
+const getLastEntryId = (state) => state.project.lastEntryId;
+
 const getDatasetEntries = (state, props) => {
     const dataset = getDataset(state, props);
     return dataset.entries.map(entryId => state.project.entries[entryId])
@@ -34,6 +36,7 @@ module.exports = {
     getDatasetEntries,
     getDetailDataset,
     getDetailDatasetEntries,
+    getLastEntryId,
     getUsedEntries,
     isDetailShown,
 };

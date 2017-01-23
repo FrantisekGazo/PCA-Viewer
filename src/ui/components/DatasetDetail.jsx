@@ -15,98 +15,196 @@ const ColorPicker = require('../components/ColorPicker/components/ColorPicker.js
 const EntryList = require('./EntryList.jsx');
 const EntrySpectrumPlot = require('./EntrySpectrumPlot.jsx');
 
-const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onCloseClick, onLoadEntriesClick, onEntryClick}) => {
-    let changes = {
-        dataset: {},
-        entries: {}
-    };
+const DatasetService = require('../../service/DatasetService');
+const DialogService = require('../../service/DialogService');
+const FileService = require('../../service/FileService');
 
-    let entryInfo = null;
-    if (datasetEntries.length > 0) {
-        entryInfo = (
-            <Card style={{
-                marginTop: '10px'
-            }}>
-                <CardHeader title='Entries:'/>
+class DatasetDetail extends React.Component {
 
-                <CardMedia>
-                    <EntrySpectrumPlot
-                        title="Spectrum"
-                        entries={datasetEntries}
-                        onPlotClick={(p) => {
-                            console.error('TODO PLOT CLICK:', p);
-                        }}/>
-                </CardMedia>
+    constructor(props) {
+        super(props);
 
-                <CardMedia>
-                    <EntryList
-                        entries={datasetEntries}
-                        onEntryClick={(entryId) => {
-                            onEntryClick(dataset.id, entryId)
-                        }}
-                        onChange={(id, index, value) => {
-                            if (value === null) {
-                                delete changes.entries[`${id}/${index}`];
-                            } else {
-                                changes.entries[`${id}/${index}`] = value;
-                            }
-                        }}/>
-                </CardMedia>
-            </Card>
-        );
+        // make copy
+        const entryMap = {};
+        for (let i = 0; i < props.datasetEntries.length; i++) {
+            const entry = props.datasetEntries[i];
+            entryMap[entry.id] = entry;
+        }
+        const dataset = Object.assign({}, props.dataset);
+        dataset.entries = props.dataset.entries.slice();
+
+        this.state = {
+            dataset,
+            entryMap,
+            entries: props.datasetEntries.slice(), // make copy
+            update: 0
+        };
+        this.changed = false;
     }
 
+    onDatasetChange(key, value) {
+        this.state.dataset[key] = value;
+        this.changed = true;
+    }
 
-    return (
-        <div>
-            <Card>
-                <CardActions>
-                    <ColorPicker
-                        key={`editable-dataset-avatar-${dataset.id}`}
-                        value={dataset.color}
-                        letter={dataset.name.substr(0, 1)}
-                        onChange={(newValue) => {
-                            if (newValue === dataset.color) {
-                                delete changes.dataset.color;
-                            } else {
-                                changes.dataset.color = newValue;
-                            }
-                        }}/>
+    onEntryChange(key, value) {
+        // FIXME
+        // if (value === null) {
+        //     delete this.changes.entries[key];
+        // } else {
+        //     this.changes.entries[key] = value;
+        // }
+    }
 
-                    <TextField
-                        style={{
-                            width: '300px'
-                        }}
-                        key={`editable-dataset-name-${dataset.id}`}
-                        floatingLabelText={"Name"}
-                        defaultValue={dataset.name}
-                        onChange={(event, newValue) => {
-                            if (newValue === dataset.name) {
-                                delete changes.dataset.name;
-                            } else {
-                                changes.dataset.name = newValue;
-                            }
-                        }}/>
-                </CardActions>
+    onLoadDataClicked() {
+        DialogService.showOpenFileDialog()
+            .then((filePath) => {
+                return FileService.readValuesFromFile(filePath);
+            })
+            .then((values) => {
+                const dataset = Object.assign({}, this.state.dataset); // make copy
+                return DatasetService.valuesToEntries(dataset, values, this.props.lastEntryId);
+            })
+            .then(({dataset, entries}) => {
 
-                <CardText>
-                    <TextField
-                        key={`editable-dataset-desc-${dataset.id}`}
-                        floatingLabelText={"Description"}
-                        defaultValue={dataset.desc}
-                        multiLine={true}
-                        underlineShow={true}
-                        fullWidth={true}
-                        onChange={(event, newValue) => {
-                            if (newValue === dataset.desc) {
-                                delete changes.dataset.desc;
-                            } else {
-                                changes.dataset.desc = newValue;
-                            }
-                        }}/>
-                </CardText>
+                const entryMap = {};
+                for (let i = 0; i < this.state.entries.length; i++) {
+                    const entry = this.state.entries[i];
+                    entryMap[entry.id] = entry;
+                }
+                for (let i = 0; i < entries.length; i++) {
+                    const entry = entries[i];
+                    entryMap[entry.id] = entry;
+                }
 
-                <CardActions
+                this.changed = true;
+                this.setState({
+                    dataset: dataset,
+                    entryMap: entryMap,
+                    entries: entries.concat(this.state.entries),
+                    update: this.state.update + 1
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
+
+    onLoadStreamClicked() {
+        console.error('TODO : onLoadStreamClicked');
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        // re-render if different dataset will be shown
+        return nextProps.dataset.id !== this.props.dataset.id
+            // re-render if update is allowed
+            || nextState.update !== this.state.update
+            // re-render if nothing was changed
+            || !this.changed;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // set state if different dataset will be shown
+        if (nextProps.dataset.id !== this.state.dataset.id) {
+
+            const entryMap = {};
+            for (let i = 0; i < nextProps.datasetEntries.length; i++) {
+                const entry = nextProps.datasetEntries[i];
+                entryMap[entry.id] = entry;
+            }
+            const dataset = Object.assign({}, nextProps.dataset);
+            dataset.entries = nextProps.dataset.entries.slice();
+            this.state = {
+                dataset,
+                entryMap,
+                entries: nextProps.datasetEntries.slice(), // make copy
+                update: 0
+            };
+        }
+    }
+
+    render() {
+        const {
+            dataset,
+            entries
+        } = this.state;
+        const {
+            onSaveClick,
+            onDeleteClick,
+            onCloseClick,
+            onEntryClick
+        } = this.props;
+
+        let entryInfo = null;
+        if (entries.length > 0) {
+            entryInfo = (
+                <Card style={{
+                    marginTop: '10px'
+                }}>
+                    <CardHeader title='Entries:'/>
+
+                    <CardMedia>
+                        <EntrySpectrumPlot
+                            title="Spectrum"
+                            entries={entries}
+                            onPlotClick={(p) => {
+                                console.error('TODO PLOT CLICK:', p);
+                            }}/>
+                    </CardMedia>
+
+                    <CardMedia>
+                        <EntryList
+                            entries={entries}
+                            onEntryClick={(entryId) => {
+                                onEntryClick(dataset.id, entryId)
+                            }}
+                            onChange={(id, index, value) => {
+                                this.onEntryChange(`${id}/${index}`, value);
+                            }}/>
+                    </CardMedia>
+                </Card>
+            );
+        }
+
+
+        return (
+            <div key={`dataset-${dataset.id}`}>
+                <Card>
+                    <CardActions>
+                        <ColorPicker
+                            key={`editable-dataset-avatar-${dataset.id}`}
+                            value={dataset.color}
+                            letter={dataset.name.substr(0, 1)}
+                            onChange={(newValue) => {
+                                this.onDatasetChange('color', newValue);
+                            }}/>
+
+                        <TextField
+                            style={{
+                                width: '300px'
+                            }}
+                            key={`editable-dataset-name-${dataset.id}`}
+                            floatingLabelText={"Name"}
+                            defaultValue={dataset.name}
+                            onChange={(event, newValue) => {
+                                this.onDatasetChange('name', newValue);
+                            }}/>
+                    </CardActions>
+
+                    <CardText>
+                        <TextField
+                            key={`editable-dataset-desc-${dataset.id}`}
+                            floatingLabelText={"Description"}
+                            defaultValue={dataset.desc}
+                            multiLine={true}
+                            underlineShow={true}
+                            fullWidth={true}
+                            onChange={(event, newValue) => {
+                                this.onDatasetChange('desc', newValue);
+                            }}/>
+                    </CardText>
+
+                    <CardActions
                         style={{
                             position: 'relative',
                             width: '230px',
@@ -114,53 +212,61 @@ const DatasetDetail = ({dataset, datasetEntries, onSaveClick, onDeleteClick, onC
                             margin: '0 0 0 auto',
                         }}>
 
-                    <IconButton
-                        tooltip="Save"
-                        onTouchTap={() => onSaveClick(dataset.id, changes)}>
-                        <IconSave/>
-                    </IconButton>
+                        <IconButton
+                            tooltip="Save"
+                            onTouchTap={() => {
+                                if (this.changed) {
+                                    onSaveClick(dataset.id, {
+                                        dataset: this.state.dataset,
+                                        datasetEntries: this.state.entryMap
+                                    })
+                                }
+                            }}>
+                            <IconSave/>
+                        </IconButton>
 
-                    <IconButton
-                        tooltip="Delete"
-                        onTouchTap={() => onDeleteClick(dataset.id)}>
-                        <IconDelete color={'#ae0000'}/>
-                    </IconButton>
+                        <IconButton
+                            tooltip="Delete"
+                            onTouchTap={() => onDeleteClick(dataset.id)}>
+                            <IconDelete color={'#ae0000'}/>
+                        </IconButton>
 
-                    <IconButton
-                        tooltip="Close"
-                        onTouchTap={() => onCloseClick(dataset.id)}>
-                        <IconClose/>
-                    </IconButton>
+                        <IconButton
+                            tooltip="Close"
+                            onTouchTap={() => onCloseClick(dataset.id)}>
+                            <IconClose/>
+                        </IconButton>
 
-                    <IconMenu
-                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-                        iconButtonElement={
-                            <IconButton><IconMore /></IconButton>
-                        }>
+                        <IconMenu
+                            targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                            anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                            iconButtonElement={
+                                <IconButton><IconMore /></IconButton>
+                            }>
 
-                        <MenuItem
-                            primaryText="Load Data"
-                            onTouchTap={() => onLoadEntriesClick(dataset.id)}/>
-                        <MenuItem
-                            primaryText="Load Stream"
-                            onTouchTap={() => console.error('IMPLEMENT LOAD STREAM')}/>
-                    </IconMenu>
-                </CardActions>
-            </Card>
+                            <MenuItem
+                                primaryText="Load Data"
+                                onTouchTap={this.onLoadDataClicked.bind(this)}/>
+                            <MenuItem
+                                primaryText="Load Stream"
+                                onTouchTap={this.onLoadStreamClicked.bind(this)}/>
+                        </IconMenu>
+                    </CardActions>
+                </Card>
 
-            { entryInfo }
-        </div>
-    );
-};
+                { entryInfo }
+            </div>
+        );
+    }
+}
 
 DatasetDetail.propTypes = {
     dataset: React.PropTypes.object.isRequired,
     datasetEntries: React.PropTypes.array.isRequired,
+    lastEntryId: React.PropTypes.number.isRequired,
     onSaveClick: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired,
     onCloseClick: React.PropTypes.func.isRequired,
-    onLoadEntriesClick: React.PropTypes.func.isRequired,
     onEntryClick: React.PropTypes.func.isRequired
 };
 

@@ -4,8 +4,8 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const DatasetDetail = require('../components/DatasetDetail.jsx');
-const { loadEntries, updateDataset, closeAndDeleteDataset, closeDatasetDetail } = require('../../actions/project');
-const { getDetailDatasetEntries, getDetailDataset } = require('../../selector/dataset');
+const { updateDataset, closeAndDeleteDataset, closeDatasetDetail } = require('../../actions/project');
+const { getDetailDatasetEntries, getDetailDataset, getLastEntryId } = require('../../selector/dataset');
 
 
 module.exports = connect(
@@ -13,23 +13,21 @@ module.exports = connect(
     (state) => {
         return {
             dataset: getDetailDataset(state),
+            lastEntryId: getLastEntryId(state),
             datasetEntries: getDetailDatasetEntries(state)
         };
     },
     // dispatch functions to props
     (dispatch) => {
         return {
-            onSaveClick: (datasetId, datasetChanges) => {
-                dispatch(updateDataset(datasetId, datasetChanges))
+            onSaveClick: (datasetId, changes) => {
+                dispatch(updateDataset(datasetId, changes))
             },
             onCloseClick: (datasetId) => {
                 dispatch(closeDatasetDetail(datasetId))
             },
             onDeleteClick: (datasetId) => {
                 dispatch(closeAndDeleteDataset(datasetId))
-            },
-            onLoadEntriesClick: (datasetId) => {
-                dispatch(loadEntries(datasetId))
             },
             onEntryClick: (datasetId, entryId) => {
                 // TODO

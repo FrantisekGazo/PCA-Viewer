@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { createAction } = require('./index');
-const { showOpenCreateDirDialog, showOpenDirDialog, showOpenFileDialog } = require('../service/DialogService');
+const DialogService = require('../service/DialogService');
 const { WorkerTasks, execByWorker } = require('../service/WorkerService');
 const { readFromFile, writeToFile } = require('../service/FileService');
 
@@ -20,7 +20,6 @@ const Actions = {
     DELETE_DATASET: 'DELETE_DATASET',
     SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
     SHOW_PROJECT_ERROR: 'SHOW_PROJECT_ERROR',
-    ADD_ENTRIES: 'ADD_ENTRIES',
     PCA_PENDING: 'PCA_PENDING',
     PCA_READY: 'PCA_READY',
 };
@@ -48,8 +47,8 @@ function createAddDatasetAction() {
     return createAction(Actions.NEW_DATASET);
 }
 
-function createUpdateDatasetAction(datasetId, datasetChanges) {
-    return createAction(Actions.UPDATE_DATASET, {id: datasetId, changes: datasetChanges});
+function createUpdateDatasetAction(datasetId, changes) {
+    return createAction(Actions.UPDATE_DATASET, {id: datasetId, changes});
 }
 
 function createShowDatasetDetailAction(datasetId) {
@@ -58,10 +57,6 @@ function createShowDatasetDetailAction(datasetId) {
 
 function createDeleteDatasetAction(datasetId) {
     return createAction(Actions.DELETE_DATASET, datasetId);
-}
-
-function createAddEntriesAction(datasetId, values) {
-    return createAction(Actions.ADD_ENTRIES, {datasetId, values});
 }
 
 function createPcaPendingAction() {
@@ -82,7 +77,7 @@ function createPcaReadyAction(pca) {
  */
 function startNewProject() {
     return function (dispatch, getState) {
-        showOpenCreateDirDialog()
+        DialogService.showOpenCreateDirDialog()
             .then((dir) => {
                 dispatch(createSelectProjectAction(dir));
                 dispatch(createGoToProjectScreenAction());
@@ -99,7 +94,7 @@ function startNewProject() {
  */
 function openExistingProject() {
     return function (dispatch, getState) {
-        showOpenDirDialog()
+        DialogService.showOpenDirDialog()
             .then((dir) => {
                 const filePath = path.join(dir, PROJECT_FILE);
                 if (!fs.existsSync(filePath)) {
@@ -162,69 +157,15 @@ function addDataset() {
 /**
  * Updates dataset with given ID.
  * @param datasetId Dataset ID.
- * @param datasetChanges Changes made on the dataset.
+ * @param changes Changes made on the dataset and it's entries.
  * @returns {Function}
  */
-function updateDataset(datasetId, datasetChanges) {
+function updateDataset(datasetId, changes) {
     return function (dispatch, getState) {
-        const isEmpty = (obj) => Object.keys(obj).length === 0;
-
-        if (!isEmpty(datasetChanges.entries)) {
-            const changedEntries = {};
-            for (const prop in datasetChanges.entries) {
-                const parts = prop.split('/');
-                const id = parts[0];
-                const index = parts[1];
-                changedEntries[id] = Object.assign({}, changedEntries[id], {[index]: datasetChanges.entries[prop]})
-            }
-
-            const currentEntries = getState().project.entries;
-            datasetChanges.entries = buildEntryUpdate(currentEntries, changedEntries);
-        }
-
-        if (isEmpty(datasetChanges.dataset) && isEmpty(datasetChanges.entries)) {
-            console.log('Nothing for dataset update');
-            return;
-        }
-
-        console.log('Will change dataset with:', datasetChanges);
-
-        dispatch(createUpdateDatasetAction(datasetId, datasetChanges));
+        dispatch(createUpdateDatasetAction(datasetId, changes));
 
         return recalculatePca(dispatch, getState);
     }
-}
-
-function buildEntryUpdate(currentEntries, changes) {
-    const newEntries = {};
-
-    Object.keys(changes).map(entryId => {
-        const currentEntry = currentEntries[entryId];
-        const changedEntry = changes[entryId];
-        let newEntry;
-
-        if (changedEntry === undefined) {
-            return; // this shouldn't happen
-        }
-
-        const entryChanges = {};
-        if (changedEntry['-1'] !== undefined) {
-            entryChanges.name = changedEntry['-1'];
-            delete changedEntry['-1'];
-        }
-
-        let index = 0;
-        entryChanges.value = currentEntry.value.map(currentVal => {
-            const val = changedEntry[index++];
-            return (val !== undefined) ? val : currentVal;
-        });
-
-        newEntry = Object.assign({}, currentEntry, entryChanges);
-
-        newEntries[entryId] = newEntry;
-    });
-
-    return newEntries;
 }
 
 /**
@@ -265,33 +206,6 @@ function closeAndDeleteDataset(datasetId) {
     }
 }
 
-/**
- * Loads entries from a file to dataset with given ID.
- * @param datasetId A dataset ID
- * @returns {Function}
- */
-function loadEntries(datasetId) {
-    return function (dispatch, getState) {
-        showOpenFileDialog()
-            .then((filePath) => {
-                return execByWorker(WorkerTasks.LOAD_VALUES_FROM_FILE, filePath)
-            })
-            .then((values) => {
-                dispatch(createAddEntriesAction(datasetId, values));
-
-                // recalculate PCA if values were not empty
-                if (values.length > 0) {
-                    return recalculatePca(dispatch, getState);
-                } else {
-                    return Promise.resolve();
-                }
-            })
-            .catch((err) => {
-                console.log('RECEIVED ERROR: ', err);
-            });
-    }
-}
-
 function recalculatePca(dispatch, getState) {
     dispatch(createPcaPendingAction());
     return execByWorker(WorkerTasks.CALCULATE_PCA, getState())
@@ -313,5 +227,4 @@ module.exports = {
     showDatasetDetail,
     closeDatasetDetail,
     closeAndDeleteDataset,
-    loadEntries,
 };

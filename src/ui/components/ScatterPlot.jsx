@@ -2,7 +2,7 @@
 
 const React = require('react');
 const Plotly = require("plotly.js/dist/plotly.js");
-const { hexToRgbString } = require('../../service/ColorService');
+const { hexToRgbString } = require('../../util/ColorUtil');
 
 
 class ScatterPlot extends React.Component {

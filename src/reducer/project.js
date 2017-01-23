@@ -32,12 +32,12 @@ function newDataset(id) {
 /**
  * Creates Entry structure.
  */
-function newEntry(id) {
+function newEntry(id, value=[], color=undefined) {
     return {
         id: id,
         name: `E${id}`,
-        color: undefined,
-        value: [],
+        color: color,
+        value: value,
         streamPosition: undefined
     }
 }
@@ -87,19 +87,16 @@ function addNewDataset(state, action) {
 
 function updateDataset(state, action) {
     const { id, changes } = action.payload;
-
-    const { dataset, entries } = changes;
-
-
+    const { dataset, datasetEntries } = changes;
 
     return update(state, {
         datasets: {
             [id]: {
-                $merge: dataset
+                $set: dataset
             }
         },
         entries: {
-            $merge: entries
+            $merge: datasetEntries
         }
     });
 }
@@ -126,7 +123,7 @@ function showDatasetDetail(state, action) {
     });
 }
 
-function addEntries(state, action) {
+function addEntries(state, action) { // FIXME-F : use
     const {datasetId, values} = action.payload;
 
     let entryId = state.lastEntryId;
@@ -234,8 +231,6 @@ const project = (state = initState, action) => {
             return deleteDataset(state, action);
         case Actions.SHOW_DATASET_DETAIL:
             return showDatasetDetail(state, action);
-        case Actions.ADD_ENTRIES:
-            return addEntries(state, action);
         case Actions.PCA_PENDING:
             return pcaPending(state, action);
         case Actions.PCA_READY:
@@ -246,5 +241,7 @@ const project = (state = initState, action) => {
 };
 
 module.exports = {
-    project
+    project,
+    newEntry,
+    newDataset
 };
