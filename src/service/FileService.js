@@ -9,9 +9,9 @@ const fs = require('fs');
  * @param filePath Path to the file that will be read.
  * @returns {Promise}
  */
-function readValuesFromFile(filePath) {
+function readValuesFromFile(filePath, rowToArray) {
     return new Promise(function (resolve, reject) {
-        const values = [];
+        let values = [];
 
         const rl = readline.createInterface({
             input: fs.createReadStream(filePath)
@@ -19,7 +19,13 @@ function readValuesFromFile(filePath) {
 
         rl.on('line', function (line) {
             const value = line.split(' ').map(stringValue => parseFloat(stringValue));
-            values.push(value);
+            if (rowToArray && value.length > 1) {
+                values.push(value);
+            } else if (!rowToArray) {
+                values.push(value[0]);
+            } else {
+                reject(Error('Each line has to contain at least 2 values'));
+            }
         });
 
         rl.on('close', function () {

@@ -34,13 +34,13 @@ const TableCell = ({id, index, value, onChange, isNumber}) => {
 TableCell.propTypes = {
     id: React.PropTypes.number.isRequired,
     index: React.PropTypes.number.isRequired,
-    value: React.PropTypes.any.isRequired,
+    value: React.PropTypes.any,
     onChange: React.PropTypes.func.isRequired,
     isNumber: React.PropTypes.bool.isRequired,
 };
 
 const EntryListItem = ({entry, onClick, onChange}) => {
-    let i = 0;
+    let i = -1;
     const valueCells = entry.value.map(v => {
         i += 1;
         return (

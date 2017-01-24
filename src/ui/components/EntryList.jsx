@@ -35,11 +35,14 @@ const EntryList = ({entries, onEntryClick, onChange}) => {
             )
         });
 
+        const entryDimension = entries[0].value.length;
+        const tableStyle = {minWidth: `${entryDimension * 80}px`};
+
         return (
-            <Table fixedHeader={true} height={'300px'}>
+            <Table fixedHeader={true} height={'300px'} headerStyle={tableStyle} bodyStyle={tableStyle}>
                 <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                     <TableRow>
-                        <TableHeaderColumn key={-1}>Entry Name</TableHeaderColumn>
+                        <TableHeaderColumn key={-1}>Name</TableHeaderColumn>
                         { valueHeaderCells }
                     </TableRow>
                 </TableHeader>

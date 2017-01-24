@@ -15,6 +15,7 @@ const ColorPicker = require('../components/ColorPicker/components/ColorPicker.js
 const EntryList = require('./EntryList.jsx');
 const EntrySpectrumPlot = require('./EntrySpectrumPlot.jsx');
 
+const update = require('immutability-helper');
 const DatasetService = require('../../service/DatasetService');
 const DialogService = require('../../service/DialogService');
 const FileService = require('../../service/FileService');
@@ -46,22 +47,36 @@ class DatasetDetail extends React.Component {
         this.changed = true;
     }
 
-    onEntryChange(key, value) {
-        console.error('TODO onEntryChange');
-        // FIXME
-        // if (value === null) {
-        //     delete this.changes.entries[key];
-        // } else {
-        //     this.changes.entries[key] = value;
-        // }
+    onEntryChange(id, index, value) {
+        let updatedEntries;
+        if (index === -1) {
+            updatedEntries = update(this.state.entries, {
+                [id]: {
+                    name: {$set: value}
+                }
+            });
+        } else {
+            updatedEntries = update(this.state.entries, {
+                [id]: {
+                    value: {
+                        [index]: {$set: value}
+                    }
+                }
+            });
+        }
+        this.changed = true;
+        this.setState({
+            entries: updatedEntries
+        });
     }
 
     onLoadDataClicked() {
         DialogService.showOpenFileDialog()
             .then((filePath) => {
-                return FileService.readValuesFromFile(filePath);
+                return FileService.readValuesFromFile(filePath, true);
             })
             .then((values) => {
+                console.log('values loaded', values.length);
                 const addedEntryIds = Object.keys(this.state.entries).map(v => parseInt(v));
                 addedEntryIds.push(this.props.lastEntryId);
                 return DatasetService.valuesToEntries(addedEntryIds, values);
@@ -111,7 +126,6 @@ class DatasetDetail extends React.Component {
         const entries = Object.keys(this.state.entries)
                                 .map(id => this.state.entries[id])
                                 .filter(entry => entry !== undefined && entry !== null);
-        console.log('RENDER', dataset, entries);
         const {
             onDeleteClick,
             onCloseClick,
@@ -141,9 +155,7 @@ class DatasetDetail extends React.Component {
                             onEntryClick={(entryId) => {
                                 onEntryClick(dataset.id, entryId)
                             }}
-                            onChange={(id, index, value) => {
-                                this.onEntryChange(`${id}/${index}`, value);
-                            }}/>
+                            onChange={this.onEntryChange.bind(this)}/>
                     </CardMedia>
                 </Card>
             );
