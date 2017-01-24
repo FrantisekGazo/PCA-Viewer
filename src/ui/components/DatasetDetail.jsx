@@ -24,12 +24,21 @@ class DatasetDetail extends React.Component {
     constructor(props) {
         super(props);
 
+        // add also current dataset entries
+        // make sure you do not edit them directly
+        const entries = {};
+        for(let i = 0; i < props.datasetEntries.length; i++) {
+            const entry = props.datasetEntries[i];
+            entries[entry.id] = entry;
+        }
+
         this.state = {
             dataset: {},
-            entries: {},
+            entries: entries,
             update: 0
         };
         this.changed = false;
+        console.log('CONSTRUCTOR', props, this.state);
     }
 
     onDatasetChange(key, value) {
@@ -79,7 +88,10 @@ class DatasetDetail extends React.Component {
         if (this.changed) {
             console.log('trySave - exec');
 
-            console.error('TODO : trySave - set entry IDs to dataset');
+            this.state.dataset.entries = Object.keys(this.state.entries).filter(id => {
+                const entry = this.state.entries[id];
+                return entry !== undefined && entry !== null;
+            });
 
             this.props.onSaveClick(this.props.dataset.id, {
                 dataset: this.state.dataset,
@@ -96,11 +108,10 @@ class DatasetDetail extends React.Component {
     render() {
         // prepare data for UI
         const dataset = Object.assign({}, this.props.dataset, this.state.dataset);
-        let entries = [];
-        entries = entries.concat(this.props.datasetEntries);
-        entries = entries.concat(
-            Object.keys(this.state.entries).map(id => this.state.entries[id]).filter(entry => entry !== undefined && entry !== null)
-        );
+        const entries = Object.keys(this.state.entries)
+                                .map(id => this.state.entries[id])
+                                .filter(entry => entry !== undefined && entry !== null);
+        console.log('RENDER', dataset, entries);
         const {
             onDeleteClick,
             onCloseClick,
