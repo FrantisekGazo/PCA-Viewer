@@ -1,7 +1,7 @@
 "use strict";
 
 
-const isDetailShown = (state, props) => state.project.detail !== null;
+const getDetailId = (state, props) => state.project.detail;
 
 const getDataset = (state, props) => state.project.datasets[props.datasetId];
 
@@ -36,7 +36,7 @@ module.exports = {
     getDatasetEntries,
     getDetailDataset,
     getDetailDatasetEntries,
+    getDetailId,
     getLastEntryId,
     getUsedEntries,
-    isDetailShown,
 };

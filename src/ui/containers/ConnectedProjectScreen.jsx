@@ -5,7 +5,7 @@ const { connect } = require('react-redux');
 
 const ProjectScreen = require('../components/ProjectScreen.jsx');
 const { closeProject, saveProject } = require('../../actions/project');
-const { isDetailShown } = require('../../selector/dataset');
+const { getDetailId } = require('../../selector/dataset');
 
 
 module.exports = connect(
@@ -13,7 +13,7 @@ module.exports = connect(
     (state, props) => {
         return {
             path: state.project.path,
-            showDetail: isDetailShown(state)
+            detailId: getDetailId(state)
         };
     },
     // dispatch functions to props

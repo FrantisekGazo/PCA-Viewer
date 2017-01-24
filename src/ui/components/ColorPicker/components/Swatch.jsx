@@ -41,7 +41,7 @@ const ColorSwatch = React.createClass({
 
     render() {
         return (
-            <div className='swatch'>
+            <div className='swatch' style={{ height: '100px' }}>
                 {this.props.colors.map(this.buildSwatch)}
             </div>
         );

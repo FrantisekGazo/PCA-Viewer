@@ -14,19 +14,19 @@ const ConnectedDatasetDetail = require('../containers/ConnectedDatasetDetail.jsx
 const ConnectedProjectResults = require('../containers/ConnectedProjectResults.jsx');
 
 
-const ProjectScreen = ({path, showDetail, onSaveClick, onCloseClick}) => {
+const ProjectScreen = ({path, detailId, onSaveClick, onCloseClick}) => {
 
     showMenu(true, onSaveClick, onCloseClick);
 
     let detail = null;
-    if (showDetail) {
+    if (detailId !== null) {
         detail = (
             <div
                 style={{
                     marginTop: '10px',
                     marginBottom: '10px'
                 }}>
-                <ConnectedDatasetDetail/>
+                <ConnectedDatasetDetail key={`dataset-${detailId}`}/>
             </div>
         );
     }
@@ -101,7 +101,7 @@ const ProjectScreen = ({path, showDetail, onSaveClick, onCloseClick}) => {
 
 ProjectScreen.propTypes = {
     path: React.PropTypes.string.isRequired,
-    showDetail: React.PropTypes.bool.isRequired,
+    detailId: React.PropTypes.number,
     onSaveClick: React.PropTypes.func.isRequired,
     onCloseClick: React.PropTypes.func.isRequired,
 };

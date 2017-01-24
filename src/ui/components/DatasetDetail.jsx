@@ -24,19 +24,9 @@ class DatasetDetail extends React.Component {
     constructor(props) {
         super(props);
 
-        // make copy
-        const entryMap = {};
-        for (let i = 0; i < props.datasetEntries.length; i++) {
-            const entry = props.datasetEntries[i];
-            entryMap[entry.id] = entry;
-        }
-        const dataset = Object.assign({}, props.dataset);
-        dataset.entries = props.dataset.entries.slice();
-
         this.state = {
-            dataset,
-            entryMap,
-            entries: props.datasetEntries.slice(), // make copy
+            dataset: {},
+            entries: {},
             update: 0
         };
         this.changed = false;
@@ -48,6 +38,7 @@ class DatasetDetail extends React.Component {
     }
 
     onEntryChange(key, value) {
+        console.error('TODO onEntryChange');
         // FIXME
         // if (value === null) {
         //     delete this.changes.entries[key];
@@ -62,26 +53,15 @@ class DatasetDetail extends React.Component {
                 return FileService.readValuesFromFile(filePath);
             })
             .then((values) => {
-                const dataset = Object.assign({}, this.state.dataset); // make copy
-                return DatasetService.valuesToEntries(dataset, values, this.props.lastEntryId);
+                const addedEntryIds = Object.keys(this.state.entries).map(v => parseInt(v));
+                addedEntryIds.push(this.props.lastEntryId);
+                return DatasetService.valuesToEntries(addedEntryIds, values);
             })
-            .then(({dataset, entries}) => {
-
-                const entryMap = {};
-                for (let i = 0; i < this.state.entries.length; i++) {
-                    const entry = this.state.entries[i];
-                    entryMap[entry.id] = entry;
-                }
-                for (let i = 0; i < entries.length; i++) {
-                    const entry = entries[i];
-                    entryMap[entry.id] = entry;
-                }
-
+            .then((entries) => {
+                console.log('entries loaded', entries);
                 this.changed = true;
                 this.setState({
-                    dataset: dataset,
-                    entryMap: entryMap,
-                    entries: entries.concat(this.state.entries),
+                    entries: Object.assign({}, this.state.entries, entries),
                     update: this.state.update + 1
                 });
             })
@@ -94,42 +74,34 @@ class DatasetDetail extends React.Component {
         console.error('TODO : onLoadStreamClicked');
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        // re-render if different dataset will be shown
-        return nextProps.dataset.id !== this.props.dataset.id
-            // re-render if update is allowed
-            || nextState.update !== this.state.update
-            // re-render if nothing was changed
-            || !this.changed;
-    }
+    trySave() {
+        console.log('trySave');
+        if (this.changed) {
+            console.log('trySave - exec');
 
-    componentWillReceiveProps(nextProps) {
-        // set state if different dataset will be shown
-        if (nextProps.dataset.id !== this.state.dataset.id) {
+            console.error('TODO : trySave - set entry IDs to dataset');
 
-            const entryMap = {};
-            for (let i = 0; i < nextProps.datasetEntries.length; i++) {
-                const entry = nextProps.datasetEntries[i];
-                entryMap[entry.id] = entry;
-            }
-            const dataset = Object.assign({}, nextProps.dataset);
-            dataset.entries = nextProps.dataset.entries.slice();
-            this.state = {
-                dataset,
-                entryMap,
-                entries: nextProps.datasetEntries.slice(), // make copy
-                update: 0
-            };
+            this.props.onSaveClick(this.props.dataset.id, {
+                dataset: this.state.dataset,
+                datasetEntries: this.state.entries
+            })
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        // re-render if update is allowed OR if nothing was changed
+        return nextState.update !== this.state.update || !this.changed;
+    }
+
     render() {
+        // prepare data for UI
+        const dataset = Object.assign({}, this.props.dataset, this.state.dataset);
+        let entries = [];
+        entries = entries.concat(this.props.datasetEntries);
+        entries = entries.concat(
+            Object.keys(this.state.entries).map(id => this.state.entries[id]).filter(entry => entry !== undefined && entry !== null)
+        );
         const {
-            dataset,
-            entries
-        } = this.state;
-        const {
-            onSaveClick,
             onDeleteClick,
             onCloseClick,
             onEntryClick
@@ -168,7 +140,7 @@ class DatasetDetail extends React.Component {
 
 
         return (
-            <div key={`dataset-${dataset.id}`}>
+            <div>
                 <Card>
                     <CardActions>
                         <ColorPicker
@@ -214,14 +186,7 @@ class DatasetDetail extends React.Component {
 
                         <IconButton
                             tooltip="Save"
-                            onTouchTap={() => {
-                                if (this.changed) {
-                                    onSaveClick(dataset.id, {
-                                        dataset: this.state.dataset,
-                                        datasetEntries: this.state.entryMap
-                                    })
-                                }
-                            }}>
+                            onTouchTap={this.trySave.bind(this)}>
                             <IconSave/>
                         </IconButton>
 

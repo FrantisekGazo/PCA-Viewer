@@ -2,36 +2,32 @@
 
 
 const { newEntry } = require('../reducer/project');
+const { sortNumArrayDesc } = require('../util/util');
 
-function valuesToEntries(dataset, values, startId) {
+
+/**
+ * Converts given values to entries.
+ * @param addedEntryIds Previously added entry IDs.
+ * @param values The values.
+ * @param startId Last used entry ID by store.
+ * @returns {Promise} that returns an Object of {entryId: entry}
+ */
+function valuesToEntries(addedEntryIds, values) {
     return new Promise(function (resolve, reject) {
-        console.log('ID start:', startId);
+        const newEntries = {};
 
-        let newId = startId;
+        let newId = sortNumArrayDesc(addedEntryIds)[0]; // sort so that the highest ID is first
 
-        // maybe you already loaded entries, so check for higher ID
-        const entryIds = dataset.entries.sort().reverse(); // sort so that the highest ID is first
-        if (entryIds.lenght > 0) {
-            if (startId < entryIds[0]) {
-                newId = entryIds[0];
-            }
-        }
-
-        console.log('ID new:', newId);
-
-        const newEntries = values.map((value) => {
+        values.map((value) => {
             newId += 1;
-            dataset.entries.push(newId);
-            return newEntry(newId, value, dataset.color);
+            newEntries[newId] = newEntry(newId, value, '#f00f00');
         });
 
-        resolve({
-            dataset: dataset,
-            entries: newEntries
-        });
+        resolve(newEntries);
     });
 }
 
+
 module.exports = {
-    valuesToEntries
+    valuesToEntries,
 };

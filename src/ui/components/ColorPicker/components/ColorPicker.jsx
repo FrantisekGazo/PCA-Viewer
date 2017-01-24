@@ -113,7 +113,7 @@ const ColorPicker = React.createClass({
     },
 
     handleColorChange(color) {
-        const colors = [...this.state.colors];
+        const colors = this.state.colors.slice();
         colors[this.state.selected] = color;
         this.setState({colors});
     }

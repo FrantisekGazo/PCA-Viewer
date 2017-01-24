@@ -92,7 +92,7 @@ function updateDataset(state, action) {
     return update(state, {
         datasets: {
             [id]: {
-                $set: dataset
+                $merge: dataset
             }
         },
         entries: {
