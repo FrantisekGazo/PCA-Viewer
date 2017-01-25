@@ -8,25 +8,29 @@ const { hexToRgbString } = require('../../util/ColorUtil');
 class EntrySpectrumPlot extends React.Component {
 
     drawPlot() {
+        if (this.props.entries.length === 0) {
+            return;
+        }
+
         const elementId = "spectrumPlot";
 
-        const data = this.props.entries.map(entry => {
-            let i = 0;
-            const x = entry.value.map(v => i++);
+        let i = 0;
+        const x = this.props.entries[0].value.map(v => i++);
 
+        const data = this.props.entries.map(entry => {
             return {
                 name: entry.name,
                 x: x,
                 y: entry.value,
                 mode: 'lines',
                 line: {
-                    color: hexToRgbString(entry.color)
+                    color: hexToRgbString(entry.color ? entry.color : this.props.defaultColor)
                 }
             }
         });
 
         const layout = {
-            title: this.props.title,
+            title: 'Spectrum',
             hovermode: 'closest',
             margin: 30,
             xaxis: {
@@ -63,7 +67,24 @@ class EntrySpectrumPlot extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return this.props.entries != nextProps.entries;
+        if (this.props.defaultColor !== nextProps.defaultColor) {
+            return true;
+        }
+
+        const currentEntries = this.props.entries;
+        const newEntries = nextProps.entries;
+
+        if (currentEntries.length !== newEntries.length) {
+            return true;
+        }
+
+        for (let i = 0; i < currentEntries.length; i++) {
+            if (currentEntries[i] !== newEntries[i]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     render() {
@@ -74,8 +95,8 @@ class EntrySpectrumPlot extends React.Component {
 }
 
 EntrySpectrumPlot.propTypes = {
-    title: React.PropTypes.string.isRequired,
     entries: React.PropTypes.array.isRequired,
+    defaultColor: React.PropTypes.string.isRequired,
     onPlotClick: React.PropTypes.func.isRequired,
 };
 

@@ -3,7 +3,7 @@
 const PCA = require('ml-pca');
 const Matrix = require('ml-matrix');
 
-const { getUsedEntries } = require('./../selector/dataset');
+const { getUsedEntriesColored } = require('./../selector/dataset');
 
 
 function getOriginalMatrix(usedEntries) {
@@ -33,7 +33,7 @@ function getTransformedEntries(transformedMatrix, usedEntries) {
 }
 
 function calculatePCA(state) {
-    const usedEntries = getUsedEntries(state);
+    const usedEntries = getUsedEntriesColored(state);
 
     if (usedEntries.length > 0) {
         const originalMatrix = getOriginalMatrix(usedEntries);

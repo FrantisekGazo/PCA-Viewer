@@ -8,53 +8,75 @@ const EntryListItem = require('./EntryListItem.jsx');
 const { range } = require('../../util/util');
 
 
-const EntryList = ({entries, onEntryClick, onChange}) => {
-    let valueCount = 0;
-    entries.map(entry => {
-        if (entry.value.length > valueCount) {
-            valueCount = entry.value.length;
+class EntryList extends React.Component {
+
+    shouldComponentUpdate(newProps, newState) {
+        const currentEntries = this.props.entries;
+        const newEntries = newProps.entries;
+
+        if (currentEntries.length !== newEntries.length) {
+            return true;
         }
-    });
 
-    if (valueCount > 0) {
-        const valueHeaderCells = range(0, valueCount).map(i => {
-            return (
-                <TableHeaderColumn key={i}>
-                    {i + 1}
-                </TableHeaderColumn>
-            );
-        });
+        for (let i = 0; i < currentEntries.length; i++) {
+            if (currentEntries[i] !== newEntries[i]) {
+                return true;
+            }
+        }
 
-        const itemRows = entries.map(entry => {
-            return (
-                <EntryListItem
-                    key={entry.id}
-                    entry={entry}
-                    onClick={() => onEntryClick(entry.id)}
-                    onChange={onChange}/>
-            )
-        });
-
-        const entryDimension = entries[0].value.length;
-        const tableStyle = {minWidth: `${entryDimension * 80}px`};
-
-        return (
-            <Table fixedHeader={true} height={'300px'} headerStyle={tableStyle} bodyStyle={tableStyle}>
-                <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
-                    <TableRow>
-                        <TableHeaderColumn key={-1}>Name</TableHeaderColumn>
-                        { valueHeaderCells }
-                    </TableRow>
-                </TableHeader>
-                <TableBody stripedRows={true} displayRowCheckbox={false}>
-                    { itemRows }
-                </TableBody>
-            </Table>
-        );
-    } else {
-        return null;
+        return false;
     }
-};
+
+    render() {
+        const { entries, onChange, onEntryClick } = this.props;
+
+        let valueCount = 0;
+        entries.map(entry => {
+            if (entry.value.length > valueCount) {
+                valueCount = entry.value.length;
+            }
+        });
+
+        if (valueCount > 0) {
+            const valueHeaderCells = range(0, valueCount).map(i => {
+                return (
+                    <TableHeaderColumn key={i}>
+                        {i + 1}
+                    </TableHeaderColumn>
+                );
+            });
+
+            const itemRows = entries.map(entry => {
+                return (
+                    <EntryListItem
+                        key={entry.id}
+                        entry={entry}
+                        onClick={onEntryClick}
+                        onChange={onChange}/>
+                )
+            });
+
+            const entryDimension = entries[0].value.length;
+            const tableStyle = {minWidth: `${entryDimension * 80}px`};
+
+            return (
+                <Table fixedHeader={true} height={'300px'} headerStyle={tableStyle} bodyStyle={tableStyle}>
+                    <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                        <TableRow>
+                            <TableHeaderColumn key={-1}>Name</TableHeaderColumn>
+                            { valueHeaderCells }
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody stripedRows={true} displayRowCheckbox={false}>
+                        { itemRows }
+                    </TableBody>
+                </Table>
+            );
+        } else {
+            return null;
+        }
+    }
+}
 
 EntryList.propTypes = {
     entries: React.PropTypes.array.isRequired,

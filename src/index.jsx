@@ -29,6 +29,10 @@ if (process.env.NODE_ENV === 'development') {
         const nextReducer = require(f);
         store.replaceReducer(nextReducer);
     });
+
+    // uncomment this if you need to test component render calls
+    // const { whyDidYouUpdate } = require('why-did-you-update');
+    // whyDidYouUpdate(React, { include: /^EntrySpectrumPlot/, exclude: /^Connect/ });
 }
 
 // Create an enhanced history that syncs navigation events with the store

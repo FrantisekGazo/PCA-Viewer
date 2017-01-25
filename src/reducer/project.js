@@ -3,6 +3,7 @@
 const update = require('immutability-helper');
 
 const {Actions} = require('../actions/project');
+const { sortNumArrayDesc } = require('../util/util');
 
 
 // HELPER FUNCTIONS ----------------------------------------------------------------------
@@ -32,11 +33,11 @@ function newDataset(id) {
 /**
  * Creates Entry structure.
  */
-function newEntry(id, value=[], color=undefined) {
+function newEntry(id, value=[]) {
     return {
         id: id,
         name: `E${id}`,
-        color: color,
+        color: undefined,
         value: value,
         streamPosition: undefined
     }
@@ -89,15 +90,20 @@ function updateDataset(state, action) {
     const { id, changes } = action.payload;
     const { dataset, datasetEntries } = changes;
 
+    let maxId = 0;
+    if (dataset.entries.length > 0) {
+        maxId = sortNumArrayDesc(dataset.entries)[0];
+    }
+    if (state.lastEntryId > maxId) {
+        maxId = state.lastEntryId;
+    }
+
     return update(state, {
         datasets: {
-            [id]: {
-                $merge: dataset
-            }
+            [id]: {$merge: dataset}
         },
-        entries: {
-            $merge: datasetEntries
-        }
+        entries: {$merge: datasetEntries},
+        lastEntryId: {$set: maxId}
     });
 }
 
@@ -120,33 +126,6 @@ function deleteDataset(state, action) {
 function showDatasetDetail(state, action) {
     return update(state, {
         detail: {$set: action.payload}
-    });
-}
-
-function addEntries(state, action) { // FIXME-F : use
-    const {datasetId, values} = action.payload;
-
-    let entryId = state.lastEntryId;
-
-    const entryMap = {};
-    const entryIds = [];
-    for (let i = 0; i < values.length; i++) {
-        entryId += 1;
-        const entry = newEntry(entryId);
-        entry.value = values[i];
-
-        entryMap[entry.id] = entry;
-        entryIds.push(entry.id);
-    }
-
-    return update(state, {
-        datasets: {
-            [datasetId]: {
-                entries: {$push: entryIds}
-            }
-        },
-        entries: {$merge: entryMap},
-        lastEntryId: {$set: entryId}
     });
 }
 

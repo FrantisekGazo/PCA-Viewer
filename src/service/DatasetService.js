@@ -20,7 +20,7 @@ function valuesToEntries(addedEntryIds, values) {
 
         values.map((value) => {
             newId += 1;
-            newEntries[newId] = newEntry(newId, value, '#f00f00');
+            newEntries[newId] = newEntry(newId, value);
         });
 
         resolve(newEntries);

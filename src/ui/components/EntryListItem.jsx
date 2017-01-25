@@ -39,31 +39,42 @@ TableCell.propTypes = {
     isNumber: React.PropTypes.bool.isRequired,
 };
 
-const EntryListItem = ({entry, onClick, onChange}) => {
-    let i = -1;
-    const valueCells = entry.value.map(v => {
-        i += 1;
+
+class EntryListItem extends React.Component {
+
+    shouldComponentUpdate(newProps, newState) {
+        return this.props.entry.name !== newProps.entry.name
+            || this.props.entry.value !== newProps.entry.value;
+    }
+
+    render() {
+        const { entry, onClick, onChange} = this.props;
+
+        let i = -1;
+        const valueCells = entry.value.map(v => {
+            i += 1;
+            return (
+                <TableCell key={i}
+                           id={entry.id}
+                           index={i}
+                           value={v}
+                           onChange={onChange}
+                           isNumber={true}/>
+            )
+        });
         return (
-            <TableCell key={i}
-                       id={entry.id}
-                       index={i}
-                       value={v}
-                       onChange={onChange}
-                       isNumber={true}/>
-        )
-    });
-    return (
-        <TableRow
-            onTouchTap={onClick}
-            hoverable={true}>
+            <TableRow
+                onTouchTap={onClick}
+                hoverable={true}>
 
-            <TableCell id={entry.id} index={-1} value={entry.name} onChange={onChange} isNumber={false}/>
+                <TableCell id={entry.id} index={-1} value={entry.name} onChange={onChange} isNumber={false}/>
 
-            { valueCells }
+                { valueCells }
 
-        </TableRow>
-    );
-};
+            </TableRow>
+        );
+    }
+}
 
 EntryListItem.propTypes = {
     entry: React.PropTypes.object.isRequired,

@@ -28,7 +28,7 @@ class DatasetDetail extends React.Component {
         // add also current dataset entries
         // make sure you do not edit them directly
         const entries = {};
-        for(let i = 0; i < props.datasetEntries.length; i++) {
+        for (let i = 0; i < props.datasetEntries.length; i++) {
             const entry = props.datasetEntries[i];
             entries[entry.id] = entry;
         }
@@ -38,13 +38,19 @@ class DatasetDetail extends React.Component {
             entries: entries,
             update: 0
         };
-        this.changed = false;
-        console.log('CONSTRUCTOR', props, this.state);
     }
 
     onDatasetChange(key, value) {
-        this.state.dataset[key] = value;
-        this.changed = true;
+        const newDataset = Object.assign({}, this.state.dataset, {
+            [key]: value
+        });
+        this.setState({
+           dataset: newDataset
+        });
+    }
+
+    onEntryClick(id) {
+        this.props.onEntryClick(this.props.dataset.id, id);
     }
 
     onEntryChange(id, index, value) {
@@ -64,26 +70,24 @@ class DatasetDetail extends React.Component {
                 }
             });
         }
-        this.changed = true;
         this.setState({
             entries: updatedEntries
         });
     }
 
-    onLoadDataClicked() {
+    onLoadDataClick() {
         DialogService.showOpenFileDialog()
             .then((filePath) => {
                 return FileService.readValuesFromFile(filePath, true);
             })
             .then((values) => {
-                console.log('values loaded', values.length);
-                const addedEntryIds = Object.keys(this.state.entries).map(v => parseInt(v));
+                console.log('values loaded', values.length, this);
+                const addedEntryIds = Object.keys(this.state.entries).map(id => parseInt(id));
                 addedEntryIds.push(this.props.lastEntryId);
                 return DatasetService.valuesToEntries(addedEntryIds, values);
             })
             .then((entries) => {
                 console.log('entries loaded', entries);
-                this.changed = true;
                 this.setState({
                     entries: Object.assign({}, this.state.entries, entries),
                     update: this.state.update + 1
@@ -94,30 +98,24 @@ class DatasetDetail extends React.Component {
             });
     }
 
-    onLoadStreamClicked() {
-        console.error('TODO : onLoadStreamClicked');
+    onLoadStreamClick() {
+        console.error('TODO : onLoadStreamClick');
+    }
+
+    onPlotClick() {
+        console.error('TODO : onPlotClick');
     }
 
     trySave() {
-        console.log('trySave');
-        if (this.changed) {
-            console.log('trySave - exec');
+        this.state.dataset.entries = Object.keys(this.state.entries).filter(id => {
+            const entry = this.state.entries[id];
+            return entry !== undefined && entry !== null;
+        }).map(id => parseInt(id));
 
-            this.state.dataset.entries = Object.keys(this.state.entries).filter(id => {
-                const entry = this.state.entries[id];
-                return entry !== undefined && entry !== null;
-            });
-
-            this.props.onSaveClick(this.props.dataset.id, {
-                dataset: this.state.dataset,
-                datasetEntries: this.state.entries
-            })
-        }
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        // re-render if update is allowed OR if nothing was changed
-        return nextState.update !== this.state.update || !this.changed;
+        this.props.onSaveClick(this.props.dataset.id, {
+            dataset: this.state.dataset,
+            datasetEntries: this.state.entries
+        })
     }
 
     render() {
@@ -128,8 +126,7 @@ class DatasetDetail extends React.Component {
                                 .filter(entry => entry !== undefined && entry !== null);
         const {
             onDeleteClick,
-            onCloseClick,
-            onEntryClick
+            onCloseClick
         } = this.props;
 
         let entryInfo = null;
@@ -142,19 +139,15 @@ class DatasetDetail extends React.Component {
 
                     <CardMedia>
                         <EntrySpectrumPlot
-                            title="Spectrum"
+                            defaultColor={dataset.color}
                             entries={entries}
-                            onPlotClick={(p) => {
-                                console.error('TODO PLOT CLICK:', p);
-                            }}/>
+                            onPlotClick={this.onPlotClick.bind(this)}/>
                     </CardMedia>
 
                     <CardMedia>
                         <EntryList
                             entries={entries}
-                            onEntryClick={(entryId) => {
-                                onEntryClick(dataset.id, entryId)
-                            }}
+                            onEntryClick={this.onEntryClick.bind(this)}
                             onChange={this.onEntryChange.bind(this)}/>
                     </CardMedia>
                 </Card>
@@ -234,10 +227,10 @@ class DatasetDetail extends React.Component {
 
                             <MenuItem
                                 primaryText="Load Data"
-                                onTouchTap={this.onLoadDataClicked.bind(this)}/>
+                                onTouchTap={this.onLoadDataClick.bind(this)}/>
                             <MenuItem
                                 primaryText="Load Stream"
-                                onTouchTap={this.onLoadStreamClicked.bind(this)}/>
+                                onTouchTap={this.onLoadStreamClick.bind(this)}/>
                         </IconMenu>
                     </CardActions>
                 </Card>
