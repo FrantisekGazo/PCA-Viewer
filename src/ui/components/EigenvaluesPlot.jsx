@@ -10,13 +10,13 @@ class EigenvaluePlot extends React.Component {
         const elementId = "eigenvaluePlot";
 
         let i = 0;
-        const x = this.props.values.map(v => i++);
+        const x = this.props.eigenvalues.map(v => i++);
 
         const data = [
             {
                 name: 'E',
                 x: x,
-                y: this.props.values,
+                y: this.props.eigenvalues,
                 type: 'bar'
             },
             {
@@ -64,7 +64,8 @@ class EigenvaluePlot extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return this.props.values != nextProps.values;
+        return this.props.eigenvalues !== nextProps.eigenvalues
+            || this.props.cumulativeVariance !== nextProps.cumulativeVariance;
     }
 
     render() {
@@ -75,7 +76,7 @@ class EigenvaluePlot extends React.Component {
 }
 
 EigenvaluePlot.propTypes = {
-    values: React.PropTypes.array.isRequired,
+    eigenvalues: React.PropTypes.array.isRequired,
     cumulativeVariance: React.PropTypes.array.isRequired
 };
 
