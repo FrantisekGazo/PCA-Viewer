@@ -14,6 +14,7 @@ const TextField = require('material-ui/TextField').default;
 const ColorPicker = require('../components/ColorPicker/components/ColorPicker.jsx');
 const EntryList = require('./EntryList.jsx');
 const EntrySpectrumPlot = require('./EntrySpectrumPlot.jsx');
+const StreamEditor = require('./StreamEditor.jsx');
 
 const update = require('immutability-helper');
 const DatasetService = require('../../service/DatasetService');
@@ -36,6 +37,7 @@ class DatasetDetail extends React.Component {
         this.state = {
             dataset: {},
             entries: entries,
+            stream: [],
             update: 0
         };
     }
@@ -81,13 +83,11 @@ class DatasetDetail extends React.Component {
                 return FileService.readValuesFromFile(filePath, true);
             })
             .then((values) => {
-                console.log('values loaded', values.length, this);
                 const addedEntryIds = Object.keys(this.state.entries).map(id => parseInt(id));
                 addedEntryIds.push(this.props.lastEntryId);
                 return DatasetService.valuesToEntries(addedEntryIds, values);
             })
             .then((entries) => {
-                console.log('entries loaded', entries);
                 this.setState({
                     entries: Object.assign({}, this.state.entries, entries),
                     update: this.state.update + 1
@@ -99,7 +99,19 @@ class DatasetDetail extends React.Component {
     }
 
     onLoadStreamClick() {
-        console.error('TODO : onLoadStreamClick');
+        DialogService.showOpenFileDialog()
+            .then((filePath) => {
+                return FileService.readValuesFromFile(filePath, false);
+            })
+            .then((values) => {
+                console.log('loaded stream', values.length);
+                this.setState({
+                    stream: values
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
     }
 
     onPlotClick() {
@@ -132,9 +144,7 @@ class DatasetDetail extends React.Component {
         let entryInfo = null;
         if (entries.length > 0) {
             entryInfo = (
-                <Card style={{
-                    marginTop: '10px'
-                }}>
+                <Card>
                     <CardHeader title='Entries:'/>
 
                     <CardMedia>
@@ -235,7 +245,14 @@ class DatasetDetail extends React.Component {
                     </CardActions>
                 </Card>
 
-                { entryInfo }
+                <div style={{ paddingTop: '10px' }}>
+                    <StreamEditor stream={this.state.stream}/>
+                </div>
+
+                <div style={{ paddingTop: '10px' }}>
+                    { entryInfo }
+                </div>
+
             </div>
         );
     }

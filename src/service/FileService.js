@@ -25,6 +25,7 @@ function readValuesFromFile(filePath, rowToArray) {
                 values.push(value[0]);
             } else {
                 reject(Error('Each line has to contain at least 2 values'));
+                rl.close();
             }
         });
 
