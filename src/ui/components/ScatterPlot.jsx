@@ -55,8 +55,13 @@ class ScatterPlot extends React.Component {
                     mode: 'markers',
                     type: 'scatter',
                     marker: {
+                        symbol: 'circle',
                         color: hexToRgbString(entry.color),
-                        size: 8
+                        size: 8,
+                        line: {
+                            color: hexToRgbString('#cccccc'),
+                            width: 1
+                        }
                     }
                 }
             });
@@ -71,8 +76,13 @@ class ScatterPlot extends React.Component {
                     mode: 'markers',
                     type: 'scatter3d',
                     marker: {
+                        symbol: 'circle',
                         color: hexToRgbString(entry.color),
-                        size: 6
+                        size: 8,
+                        line: {
+                            color: hexToRgbString('#cccccc'),
+                            width: 1
+                        }
                     }
                 }
             });
