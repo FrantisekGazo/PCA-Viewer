@@ -12,7 +12,7 @@ const ScatterPlot = require('./ScatterPlot.jsx');
 class ProjectResults extends React.Component {
 
     render() {
-        const { pca } = this.props;
+        const { pca, usedEigenpairs, onEigenpairsChanged } = this.props;
 
         if (pca.loading) {
             return (
@@ -33,13 +33,16 @@ class ProjectResults extends React.Component {
 
                     <Card style={{marginTop: '10px'}}>
                         <EigenvaluesSelector
-                            selected={[0, 1]}
-                            eigenvalues={pca.eigenvalues}/>
+                            eigenvalues={pca.eigenvalues}
+                            selected={usedEigenpairs}
+                            onSelectionChange={onEigenpairsChanged}/>
                     </Card>
 
                     <Card style={{marginTop: '10px', marginBottom: '10px'}}>
                         <CardMedia>
-                            <ScatterPlot entries={pca.transformedEntries}/>
+                            <ScatterPlot
+                                entries={pca.transformedEntries}
+                                usedValues={usedEigenpairs}/>
                         </CardMedia>
                     </Card>
                 </div>
@@ -61,7 +64,9 @@ class ProjectResults extends React.Component {
 }
 
 ProjectResults.propTypes = {
-    pca: React.PropTypes.object.isRequired
+    pca: React.PropTypes.object.isRequired,
+    usedEigenpairs: React.PropTypes.array.isRequired,
+    onEigenpairsChanged: React.PropTypes.func.isRequired,
 };
 
 module.exports = ProjectResults;

@@ -166,6 +166,16 @@ function pcaReady(state, action) {
     }
 }
 
+function setUsedEigenpairs(state, action) {
+    const newIndexes = action.payload;
+    return update(state, {
+        usedEigenpairs: {$set: newIndexes},
+        pca: {
+            hash: {$set: state.pca.hash + 1}
+        }
+    });
+}
+
 const initState = {
     /* path to the project directory */
     path: null,
@@ -192,7 +202,7 @@ const initState = {
         transformedEntries: [],
         hash: 0
     },
-    usedEigenpairs: []
+    usedEigenpairs: [0, 1]
 };
 const project = (state = initState, action) => {
     switch (action.type) {
@@ -214,6 +224,8 @@ const project = (state = initState, action) => {
             return pcaPending(state, action);
         case Actions.PCA_READY:
             return pcaReady(state, action);
+        case Actions.SET_USED_EIGENPAIRS:
+            return setUsedEigenpairs(state, action);
         default:
             return state;
     }

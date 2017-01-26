@@ -5,6 +5,8 @@ const Checkbox = require('material-ui/Checkbox').default;
 const RaisedButton = require('material-ui/RaisedButton').default;
 const Snackbar = require('material-ui/Snackbar').default;
 
+const { sortNumArrayAsc } = require('../../util/util');
+
 
 class EigenvaluesSelector extends React.Component {
 
@@ -43,7 +45,7 @@ class EigenvaluesSelector extends React.Component {
             return;
         }
 
-        console.error('TODO : send update');
+        this.props.onSelectionChange(sortNumArrayAsc(selected));
     }
 
     showMessage(text) {
@@ -61,7 +63,6 @@ class EigenvaluesSelector extends React.Component {
     render() {
         const { eigenvalues } = this.props;
         const { selected } = this.state;
-        console.log('render', this.state.selected);
 
         let i = 0;
         const eigenvaluesPickers = eigenvalues.map(v => {
@@ -99,8 +100,9 @@ class EigenvaluesSelector extends React.Component {
 }
 
 EigenvaluesSelector.propTypes = {
+    eigenvalues: React.PropTypes.array.isRequired,
     selected: React.PropTypes.array.isRequired,
-    eigenvalues: React.PropTypes.array.isRequired
+    onSelectionChange: React.PropTypes.func.isRequired,
 };
 
 module.exports = EigenvaluesSelector;

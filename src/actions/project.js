@@ -22,6 +22,7 @@ const Actions = {
     SHOW_PROJECT_ERROR: 'SHOW_PROJECT_ERROR',
     PCA_PENDING: 'PCA_PENDING',
     PCA_READY: 'PCA_READY',
+    SET_USED_EIGENPAIRS: 'SET_USED_EIGENPAIRS',
 };
 
 //region Action Creators
@@ -65,6 +66,10 @@ function createPcaPendingAction() {
 
 function createPcaReadyAction(pca) {
     return createAction(Actions.PCA_READY, pca);
+}
+
+function createSetUsedEigenpairsAction(newIndexes) {
+    return createAction(Actions.SET_USED_EIGENPAIRS, newIndexes);
 }
 
 //endregion Action Creators
@@ -164,7 +169,7 @@ function updateDataset(datasetId, changes) {
     return function (dispatch, getState) {
         dispatch(createUpdateDatasetAction(datasetId, changes));
 
-        return recalculatePca(dispatch, getState);
+        return _recalculatePca(dispatch, getState);
     }
 }
 
@@ -202,16 +207,22 @@ function closeAndDeleteDataset(datasetId) {
         dispatch(createShowDatasetDetailAction(null));
         dispatch(createDeleteDatasetAction(datasetId));
 
-        return recalculatePca(dispatch, getState);
+        return _recalculatePca(dispatch, getState);
     }
 }
 
-function recalculatePca(dispatch, getState) {
+function _recalculatePca(dispatch, getState) {
     dispatch(createPcaPendingAction());
     return execByWorker(WorkerTasks.CALCULATE_PCA, getState())
         .then((pca) => {
             dispatch(createPcaReadyAction(pca));
         });
+}
+
+function setUsedEigenpairs(newIndexes) {
+    return function (dispatch, getState) {
+        return dispatch(createSetUsedEigenpairsAction(newIndexes));
+    }
 }
 
 //endregion Action Dispatchers
@@ -227,4 +238,5 @@ module.exports = {
     showDatasetDetail,
     closeDatasetDetail,
     closeAndDeleteDataset,
+    setUsedEigenpairs,
 };

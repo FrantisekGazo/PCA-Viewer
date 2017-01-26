@@ -10,44 +10,59 @@ class ScatterPlot extends React.Component {
     drawPlot() {
         const elementId = "scatterPlot";
 
-        const data = this.props.entries.map(entry => {
-            return {
-                name: entry.name,
-                x: [entry.value[0]],
-                y: [entry.value[1]],
-                mode: 'markers',
-                type: 'scatter',
-                marker: {
-                    color: hexToRgbString(entry.color),
-                    size: 12
+        const { usedValues } = this.props;
+
+        const usedIndexX = usedValues[0];
+        const usedIndexY = usedValues[1];
+        const usedIndexZ = usedValues[2];
+
+        if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ === undefined) {
+            // show 2D plot
+            const data = this.props.entries.map(entry => {
+                return {
+                    name: entry.name,
+                    x: [entry.value[usedIndexX]],
+                    y: [entry.value[usedIndexY]],
+                    mode: 'markers',
+                    type: 'scatter',
+                    marker: {
+                        color: hexToRgbString(entry.color),
+                        size: 12
+                    }
                 }
-            }
-        });
+            });
 
-        const layout = {
-            title: 'Scatter Plot',
-            hovermode: 'closest',
-            margin: 30,
-            xaxis: {
-                zeroline: true,
-                title: "X axis"
-            },
-            yaxis: {
-                zeroline: true,
-                title: "Y axis"
-            }
-        };
+            const layout = {
+                title: 'Scatter Plot',
+                hovermode: 'closest',
+                margin: 30,
+                xaxis: {
+                    zeroline: true,
+                    title: "X axis"
+                },
+                yaxis: {
+                    zeroline: true,
+                    title: "Y axis"
+                }
+            };
 
-        const opts = {
-            displayModeBar: true
-        };
+            const opts = {
+                displayModeBar: true
+            };
 
-        Plotly.newPlot(
-            elementId,
-            data,
-            layout,
-            opts
-        );
+            Plotly.newPlot(
+                elementId,
+                data,
+                layout,
+                opts
+            );
+        } else if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ !== undefined) {
+            // show 3D plot
+            console.error('TODO - implement 3D plot support');
+        } else {
+            // other number is not supported
+            console.error('Only 2D and 3D plot is supported', usedValues);
+        }
     }
 
     componentDidMount() {
@@ -59,7 +74,8 @@ class ScatterPlot extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return this.props.entries != nextProps.entries;
+        return this.props.entries !== nextProps.entries
+            || this.props.usedValues !== nextProps.usedValues;
     }
 
     render() {
@@ -71,6 +87,7 @@ class ScatterPlot extends React.Component {
 
 ScatterPlot.propTypes = {
     entries: React.PropTypes.array.isRequired,
+    usedValues: React.PropTypes.array.isRequired
 };
 
 module.exports = ScatterPlot;

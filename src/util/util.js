@@ -17,10 +17,16 @@ function sortNumArrayDesc(a) {
     return a.sort(sortNumber).reverse(sortNumber);
 }
 
+function sortNumArrayAsc(a) {
+    const sortNumber = (a, b) => a - b;
+    return a.sort(sortNumber);
+}
+
 
 module.exports = {
     copyArray,
     isEmpty,
     range,
+    sortNumArrayAsc,
     sortNumArrayDesc,
 };
