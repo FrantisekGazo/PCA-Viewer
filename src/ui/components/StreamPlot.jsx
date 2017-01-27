@@ -5,7 +5,7 @@ const Plotly = require("plotly.js/dist/plotly.js");
 const { hexToRgbString } = require('../../util/ColorUtil');
 
 
-class EntrySpectrumPlot extends React.Component {
+class StreamPlot extends React.Component {
 
     drawPlot() {
         const { stream } = this.props;
@@ -71,8 +71,8 @@ class EntrySpectrumPlot extends React.Component {
     }
 }
 
-EntrySpectrumPlot.propTypes = {
+StreamPlot.propTypes = {
     stream: React.PropTypes.array.isRequired
 };
 
-module.exports = EntrySpectrumPlot;
+module.exports = StreamPlot;
