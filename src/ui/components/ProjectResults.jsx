@@ -5,8 +5,7 @@ const { Card, CardHeader, CardMedia, CardText } = require('material-ui/Card');
 const LinearProgress = require('material-ui/LinearProgress').default;
 
 const EigenvaluesSelector = require('./EigenvaluesSelector.jsx');
-const EigenvaluesPlot = require('./EigenvaluesPlot.jsx');
-const ScatterPlot = require('./ScatterPlot.jsx');
+const { EigenvaluesPlot, ScatterPlot } = require('./Plot');
 
 
 class ProjectResults extends React.Component {

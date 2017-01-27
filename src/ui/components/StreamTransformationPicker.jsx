@@ -88,7 +88,6 @@ class StreamTransformationPicker extends React.Component {
                 <br/>
                 <FlatButton
                     label='Save'
-                    underlineStyle={{padding: '0px'}}
                     onTouchTap={this.handleSave.bind(this)}/>
 
                 <span style={{ color: '#cc0000' }}>{ errorMessage }</span>

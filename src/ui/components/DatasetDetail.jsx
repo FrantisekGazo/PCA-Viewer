@@ -13,7 +13,7 @@ const TextField = require('material-ui/TextField').default;
 
 const ColorPicker = require('../components/ColorPicker/components/ColorPicker.jsx');
 const EntryList = require('./EntryList.jsx');
-const EntrySpectrumPlot = require('./EntrySpectrumPlot.jsx');
+const { EntrySpectrumPlot } = require('./Plot');
 const StreamEditor = require('./StreamEditor.jsx');
 
 const update = require('immutability-helper');

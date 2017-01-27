@@ -2,7 +2,7 @@
 
 const React = require('react');
 const Plotly = require("plotly.js/dist/plotly.js");
-const { hexToRgbString } = require('../../util/ColorUtil');
+const { hexToRgbString } = require('../../../util/ColorUtil');
 
 
 const layout = {

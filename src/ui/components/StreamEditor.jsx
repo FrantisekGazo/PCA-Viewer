@@ -4,7 +4,7 @@ const React = require('react');
 const { Card, CardHeader, CardMedia, CardText } = require('material-ui/Card');
 const Divider = require('material-ui/Divider').default;
 
-const StreamPlot = require('./StreamPlot.jsx');
+const { StreamPlot } = require('./Plot');
 const StreamTransformationPicker = require('./StreamTransformationPicker.jsx');
 
 
