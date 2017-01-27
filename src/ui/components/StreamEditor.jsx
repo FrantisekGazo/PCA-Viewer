@@ -2,8 +2,10 @@
 
 const React = require('react');
 const { Card, CardHeader, CardMedia, CardText } = require('material-ui/Card');
+const Divider = require('material-ui/Divider').default;
 
 const StreamPlot = require('./StreamPlot.jsx');
+const StreamTransformationPicker = require('./StreamTransformationPicker.jsx');
 
 
 class StreamEditor extends React.Component {
@@ -25,6 +27,12 @@ class StreamEditor extends React.Component {
                 <CardText>
                     { firstValues }...
                 </CardText>
+
+                <Divider/>
+
+                <CardMedia>
+                    <StreamTransformationPicker transformation={{}}/>
+                </CardMedia>
             </Card>
         );
     }
