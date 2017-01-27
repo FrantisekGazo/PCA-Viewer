@@ -1,18 +1,27 @@
 "use strict";
 
 const React = require('react');
-const { Card, CardHeader, CardText } = require('material-ui/Card');
+const { Card, CardHeader, CardMedia, CardText } = require('material-ui/Card');
+
+const StreamPlot = require('./StreamPlot.jsx');
 
 
 class StreamEditor extends React.Component {
 
     render() {
-        const firstValues = this.props.stream.slice(0, 100)
+        const { stream } = this.props;
+
+        const firstValues = stream.slice(0, 100)
             .map(v => v.toString()).join(' ');
 
         return (
             <Card>
                 <CardHeader title='Stream'/>
+
+                <CardMedia>
+                    <StreamPlot stream={stream}/>
+                </CardMedia>
+
                 <CardText>
                     { firstValues }...
                 </CardText>
