@@ -11,15 +11,15 @@ const IconSave = require('material-ui/svg-icons/content/save').default;
 const MenuItem = require('material-ui/MenuItem').default;
 const TextField = require('material-ui/TextField').default;
 
-const ColorPicker = require('../components/ColorPicker/components/ColorPicker.jsx');
+const ColorPicker = require('../ColorPicker/components/ColorPicker.jsx');
 const EntryList = require('./EntryList.jsx');
-const { EntrySpectrumPlot } = require('./Plot');
+const { EntrySpectrumPlot } = require('../Plot');
 const StreamEditor = require('./StreamEditor.jsx');
 
 const update = require('immutability-helper');
-const DatasetService = require('../../service/DatasetService');
-const DialogService = require('../../service/DialogService');
-const FileService = require('../../service/FileService');
+const DatasetService = require('../../../service/DatasetService');
+const DialogService = require('../../../service/DialogService');
+const FileService = require('../../../service/FileService');
 
 class DatasetDetail extends React.Component {
 

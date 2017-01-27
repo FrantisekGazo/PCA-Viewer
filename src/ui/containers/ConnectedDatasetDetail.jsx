@@ -3,7 +3,7 @@
 const React = require('react');
 const {connect} = require('react-redux');
 
-const DatasetDetail = require('../components/DatasetDetail.jsx');
+const DatasetDetail = require('../components/DatasetDetail/DatasetDetail.jsx');
 const { updateDataset, closeAndDeleteDataset, closeDatasetDetail } = require('../../actions/project');
 const { getDetailDatasetEntries, getDetailDataset, getLastEntryId } = require('../../selector/dataset');
 
