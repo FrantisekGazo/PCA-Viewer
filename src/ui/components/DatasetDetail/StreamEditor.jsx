@@ -11,7 +11,7 @@ const StreamTransformationPicker = require('./StreamTransformationPicker.jsx');
 class StreamEditor extends React.Component {
 
     render() {
-        const { stream } = this.props;
+        const { stream, transformation, onTransformationChange } = this.props;
 
         const firstValues = stream.slice(0, 100)
             .map(v => v.toString()).join(' ');
@@ -31,7 +31,9 @@ class StreamEditor extends React.Component {
                 <Divider/>
 
                 <CardMedia>
-                    <StreamTransformationPicker transformation={{}}/>
+                    <StreamTransformationPicker
+                        transformation={transformation}
+                        onChange={onTransformationChange}/>
                 </CardMedia>
             </Card>
         );
@@ -40,6 +42,8 @@ class StreamEditor extends React.Component {
 
 StreamEditor.propTypes = {
     stream: React.PropTypes.array.isRequired,
+    transformation: React.PropTypes.object.isRequired,
+    onTransformationChange: React.PropTypes.func.isRequired,
 };
 
 module.exports = StreamEditor;

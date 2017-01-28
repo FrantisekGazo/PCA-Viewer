@@ -27,7 +27,8 @@ class DatasetDetail extends React.Component {
         this.state = {
             dataset: {},
             entries: entries,
-            stream: [],
+            stream: props.dataset.stream.slice(),
+            streamChanged: false,
             update: 0
         };
     }
@@ -38,6 +39,15 @@ class DatasetDetail extends React.Component {
         });
         this.setState({
             dataset: newDataset
+        });
+    }
+
+    handleStreamTransformationChange(transformation) {
+        this.setState({
+            dataset: Object.assign({}, this.state.dataset, {
+                streamTransformationType: transformation.type,
+                streamTransformationValue: transformation.value
+            })
         });
     }
 
@@ -95,9 +105,12 @@ class DatasetDetail extends React.Component {
             })
             .then((values) => {
                 console.log('loaded stream', values.length);
-                this.setState({
-                    stream: values
-                });
+                if (values.length > 0) {
+                    this.setState({
+                        stream: this.state.stream.concat(values),
+                        streamChanged: true
+                    });
+                }
             })
             .catch((err) => {
                 console.error(err);
@@ -114,8 +127,13 @@ class DatasetDetail extends React.Component {
             return entry !== undefined && entry !== null;
         }).map(id => parseInt(id));
 
+        const { dataset, stream, streamChanged } = this.state;
+        if (streamChanged) {
+            dataset.stream = stream;
+        }
+
         this.props.onSaveClick(this.props.dataset.id, {
-            dataset: this.state.dataset,
+            dataset: dataset,
             datasetEntries: this.state.entries
         })
     }
@@ -134,7 +152,10 @@ class DatasetDetail extends React.Component {
         const entries = Object.keys(this.state.entries)
             .map(id => this.state.entries[id])
             .filter(entry => entry !== undefined && entry !== null);
-
+        const transformation = {
+            type: dataset.streamTransformationType,
+            value: dataset.streamTransformationValue
+        };
 
         const content = [];
 
@@ -157,7 +178,9 @@ class DatasetDetail extends React.Component {
                     style={{paddingTop: '10px'}}>
 
                     <StreamEditor
-                        stream={this.state.stream}/>
+                        stream={this.state.stream}
+                        transformation={transformation}
+                        onTransformationChange={this.handleStreamTransformationChange.bind(this)}/>
                 </div>
             );
         }

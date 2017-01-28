@@ -42,8 +42,8 @@ class StreamTransformationPicker extends React.Component {
         }
     }
 
-    handleSave() {
-        const {type, value} = this.state;
+    handleUpdateClick() {
+        const { type, value } = this.state;
         if (type === 2 && value === 0) {
             this.setState({
                 errorMessage: 'Invalid value!',
@@ -51,7 +51,7 @@ class StreamTransformationPicker extends React.Component {
             return;
         }
 
-        console.error('TODO : save TRANFORMATION to store', type, value);
+        this.props.onChange(this.state);
     }
 
     render() {
@@ -87,8 +87,8 @@ class StreamTransformationPicker extends React.Component {
 
                 <br/>
                 <FlatButton
-                    label='Save'
-                    onTouchTap={this.handleSave.bind(this)}/>
+                    label='Update'
+                    onTouchTap={this.handleUpdateClick.bind(this)}/>
 
                 <span style={{ color: '#cc0000' }}>{ errorMessage }</span>
             </div>
@@ -98,6 +98,7 @@ class StreamTransformationPicker extends React.Component {
 
 StreamTransformationPicker.propTypes = {
     transformation: React.PropTypes.object.isRequired,
+    onChange: React.PropTypes.func.isRequired,
 };
 
 module.exports = StreamTransformationPicker;

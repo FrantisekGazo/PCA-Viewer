@@ -23,8 +23,9 @@ function newDataset(id) {
         entries: [], // entry IDs
         // stream data
         stream: [], // values
-        streamFilters: [], // filter IDs
-        filteredStream: [], // values
+        streamTransformationType: 0,
+        streamTransformationValue: null,
+        transformedStream: [], // values
         sampling: DEFAULT_SAMPLING, // number of stream values in 1 entry
         streamEntries: [] // entry IDs - for entries sampled from the stream
     }
