@@ -54,9 +54,7 @@ class StreamPlot extends React.Component {
         };
 
         return (
-            <div>
-                <ReactHighstock config={config}/>
-            </div>
+            <ReactHighstock config={config}/>
         );
     }
 }
