@@ -135,23 +135,39 @@ class DatasetDetail extends React.Component {
             .map(id => this.state.entries[id])
             .filter(entry => entry !== undefined && entry !== null);
 
-        return (
-            <div>
-                <DatasetInfo
-                    dataset={dataset}
-                    onDatasetChange={this.handleDatasetChange.bind(this)}
-                    onDeleteClick={this.handleDeleteClick.bind(this)}
-                    onCloseClick={this.handleCloseClick.bind(this)}
-                    onLoadDataClick={this.handleLoadDataClick.bind(this)}
-                    onLoadStreamClick={this.handleLoadStreamClick.bind(this)}
-                    onSaveClick={this.handleSaveClick.bind(this)}/>
 
-                <div style={{paddingTop: '10px'}}>
+        const content = [];
+
+        content.push(
+            <DatasetInfo
+                key='dataset-info'
+                dataset={dataset}
+                onDatasetChange={this.handleDatasetChange.bind(this)}
+                onDeleteClick={this.handleDeleteClick.bind(this)}
+                onCloseClick={this.handleCloseClick.bind(this)}
+                onLoadDataClick={this.handleLoadDataClick.bind(this)}
+                onLoadStreamClick={this.handleLoadStreamClick.bind(this)}
+                onSaveClick={this.handleSaveClick.bind(this)}/>
+        );
+
+        if (this.state.stream.length > 0) {
+            content.push(
+                <div
+                    key='dataset-stream'
+                    style={{paddingTop: '10px'}}>
+
                     <StreamEditor
                         stream={this.state.stream}/>
                 </div>
+            );
+        }
 
-                <div style={{paddingTop: '10px'}}>
+        if (entries.length > 0) {
+            content.push(
+                <div
+                    key='dataset-entries'
+                    style={{paddingTop: '10px'}}>
+
                     <DatasetEntries
                         entries={entries}
                         color={dataset.color}
@@ -159,8 +175,11 @@ class DatasetDetail extends React.Component {
                         onEntryChange={this.handleEntryChange.bind(this)}
                         onPlotClick={this.handlePlotClick.bind(this)}/>
                 </div>
+            );
+        }
 
-            </div>
+        return (
+            <div>{ content }</div>
         );
     }
 }
