@@ -9,6 +9,24 @@ require('highcharts-exporting')(ReactHighcharts.Highcharts);
 const {hexToRgbString} = require('../../../util/ColorUtil');
 
 
+const createSerie = (data, values) => {
+    return {
+        name: data.name,
+        data: values,
+        color: hexToRgbString(data.color),
+        mode: 'markers',
+        type: 'scatter',
+        marker: {
+            symbol: 'circle',
+            size: 8,
+            line: {
+                color: hexToRgbString('#cccccc'),
+                width: 1
+            }
+        }
+    };
+};
+
 class ScatterPlot extends React.Component {
 
     constructor(props) {
@@ -59,30 +77,6 @@ class ScatterPlot extends React.Component {
         if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ === undefined) {
             // show 2D plot
             console.log('2D');
-            config.plotOptions = {
-                scatter: {
-                    marker: {
-                        radius: 5,
-                        states: {
-                            hover: {
-                                enabled: true,
-                                lineColor: 'rgb(100,100,100)'
-                            }
-                        }
-                    },
-                    states: {
-                        hover: {
-                            marker: {
-                                enabled: false
-                            }
-                        }
-                    },
-                    tooltip: {
-                        headerFormat: '<b>{series.name}</b><br>',
-                        pointFormat: '{point.x}, {point.y}'
-                    }
-                }
-            };
 
             config.series = data.map(d => {
                 const values = [];
@@ -91,21 +85,7 @@ class ScatterPlot extends React.Component {
                     values.push([v[usedIndexX], v[usedIndexY]]);
                 }
 
-                return {
-                    name: d.name,
-                    data: values,
-                    color: hexToRgbString(d.color),
-                    mode: 'markers',
-                    type: 'scatter',
-                    marker: {
-                        symbol: 'circle',
-                        size: 8,
-                        line: {
-                            color: hexToRgbString('#cccccc'),
-                            width: 1
-                        }
-                    }
-                }
+                return createSerie(d, values);
             });
         } else if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ !== undefined) {
             // show 3D plot
@@ -113,12 +93,12 @@ class ScatterPlot extends React.Component {
 
             config.chart.options3d = {
                 enabled: true,
-                    alpha: 10,
-                    beta: 30,
-                    depth: 250,
-                    viewDistance: 5,
-                    fitToPlot: false,
-                    frame: {
+                alpha: 10,
+                beta: 30,
+                depth: 250,
+                viewDistance: 5,
+                fitToPlot: false,
+                frame: {
                     bottom: {size: 1, color: 'rgba(0,0,0,0.02)'},
                     back: {size: 1, color: 'rgba(0,0,0,0.04)'},
                     side: {size: 1, color: 'rgba(0,0,0,0.06)'}
@@ -132,21 +112,7 @@ class ScatterPlot extends React.Component {
                     values.push([v[usedIndexX], v[usedIndexY], v[usedIndexZ]]);
                 }
 
-                return {
-                    name: d.name,
-                    data: values,
-                    color: hexToRgbString(d.color),
-                    mode: 'markers',
-                    type: 'scatter',
-                    marker: {
-                        symbol: 'circle',
-                        size: 8,
-                        line: {
-                            color: hexToRgbString('#cccccc'),
-                            width: 1
-                        }
-                    }
-                }
+                return createSerie(d, values);
             });
         } else {
             // other number is not supported
