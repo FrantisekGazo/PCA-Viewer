@@ -104,7 +104,8 @@ function updateDataset(state, action) {
             [id]: {$merge: dataset}
         },
         entries: {$merge: datasetEntries},
-        lastEntryId: {$set: maxId}
+        lastEntryId: {$set: maxId},
+        resultsVersion: {$set: state.resultsVersion + 1}
     });
 }
 
@@ -114,13 +115,16 @@ function deleteDataset(state, action) {
     const updatedDatasets = Object.assign({}, state.datasets);
     delete updatedDatasets[datasetId];
 
+    const resultsVersion = (state.datasets[datasetId].entries.length > 0) ? state.resultsVersion + 1 : state.resultsVersion;
+
     return update(state, {
         usedDatasetIds: {
             $set: state.usedDatasetIds.filter(id => id !== datasetId)
         },
         datasets: {
             $set: updatedDatasets
-        }
+        },
+        resultsVersion: {$set: resultsVersion}
     });
 }
 
@@ -128,43 +132,6 @@ function showDatasetDetail(state, action) {
     return update(state, {
         detail: {$set: action.payload}
     });
-}
-
-function pcaPending(state, action) {
-    return update(state, {
-        pca: {
-            $set: {
-                loaded: false,
-                loading: true,
-                hash: (state.pca.hash + 1)
-            }
-        }
-    });
-}
-
-function pcaReady(state, action) {
-    const model = action.payload;
-    if (model) {
-        const pca = Object.assign({}, model, {
-            loaded: true,
-            loading: false,
-            hash: (state.pca.hash + 1)
-        });
-
-        return update(state, {
-            pca: {$set: pca}
-        });
-    } else {
-        return update(state, {
-            pca: {
-                $set: {
-                    loaded: false,
-                    loading: false,
-                    hash: (state.pca.hash + 1)
-                }
-            }
-        });
-    }
 }
 
 function setUsedEigenpairs(state, action) {
@@ -194,16 +161,8 @@ const initState = {
     lastEntryId: 0,
     /* all data */
     entries: {},
-    pca: {
-        loading: false,
-        loaded: false,
-        cumulativeVariance: [],
-        eigenvalues: [],
-        eigenvectors: [],
-        transformedEntries: [],
-        hash: 0
-    },
-    usedEigenpairs: [0, 1]
+    /* this needs to be incremented if results needs to be refreshed */
+    resultsVersion: 0
 };
 const project = (state = initState, action) => {
     switch (action.type) {
@@ -221,10 +180,6 @@ const project = (state = initState, action) => {
             return deleteDataset(state, action);
         case Actions.SHOW_DATASET_DETAIL:
             return showDatasetDetail(state, action);
-        case Actions.PCA_PENDING:
-            return pcaPending(state, action);
-        case Actions.PCA_READY:
-            return pcaReady(state, action);
         case Actions.SET_USED_EIGENPAIRS:
             return setUsedEigenpairs(state, action);
         default:

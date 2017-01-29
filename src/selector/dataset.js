@@ -36,6 +36,11 @@ const getUsedEntriesColored = (state) => {
         .reduce((result, entries) => result.concat(entries), []);
 };
 
+const getAllDatasets = (state) => state.project.usedDatasetIds.map(id => state.project.datasets[id]);
+
+const getAllEntriesMap = (state) => state.project.entries;
+
+
 module.exports = {
     getDataset,
     getDatasetEntries,
@@ -45,4 +50,6 @@ module.exports = {
     getDetailId,
     getLastEntryId,
     getUsedEntriesColored,
+    getAllDatasets,
+    getAllEntriesMap,
 };

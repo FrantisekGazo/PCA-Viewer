@@ -37,26 +37,26 @@ class ScatterPlot extends React.Component {
     drawPlot() {
         const elementId = "scatterPlot";
 
-        const { usedValues } = this.props;
+        const { data, usedColumns } = this.props;
 
-        const usedIndexX = usedValues[0];
-        const usedIndexY = usedValues[1];
-        const usedIndexZ = usedValues[2];
+        const usedIndexX = usedColumns[0];
+        const usedIndexY = usedColumns[1];
+        const usedIndexZ = usedColumns[2];
 
-        let data = [];
+        let plotData = [];
 
         if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ === undefined) {
             // show 2D plot
-            data = this.props.entries.map(entry => {
+            plotData = data.map(d => {
                 return {
-                    name: entry.name,
-                    x: [entry.value[usedIndexX]],
-                    y: [entry.value[usedIndexY]],
+                    name: d.name,
+                    x: d.values.map(val => val[usedIndexX]),
+                    y: d.values.map(val => val[usedIndexY]),
                     mode: 'markers',
                     type: 'scatter',
                     marker: {
                         symbol: 'circle',
-                        color: hexToRgbString(entry.color),
+                        color: hexToRgbString(d.color),
                         size: 8,
                         line: {
                             color: hexToRgbString('#cccccc'),
@@ -67,17 +67,17 @@ class ScatterPlot extends React.Component {
             });
         } else if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ !== undefined) {
             // show 3D plot
-            data = this.props.entries.map(entry => {
+            plotData = data.map(d => {
                 return {
-                    name: entry.name,
-                    x: [entry.value[usedIndexX]],
-                    y: [entry.value[usedIndexY]],
-                    z: [entry.value[usedIndexZ]],
+                    name: d.name,
+                    x: d.values.map(val => val[usedIndexX]),
+                    y: d.values.map(val => val[usedIndexY]),
+                    z: d.values.map(val => val[usedIndexZ]),
                     mode: 'markers',
                     type: 'scatter3d',
                     marker: {
                         symbol: 'circle',
-                        color: hexToRgbString(entry.color),
+                        color: hexToRgbString(d.color),
                         size: 8,
                         line: {
                             color: hexToRgbString('#cccccc'),
@@ -88,13 +88,13 @@ class ScatterPlot extends React.Component {
             });
         } else {
             // other number is not supported
-            console.error('Only 2D and 3D plot is supported', usedValues);
+            console.error('Only 2D and 3D plot is supported', usedColumns);
             return;
         }
 
         Plotly.newPlot(
             elementId,
-            data,
+            plotData,
             layout,
             opts
         );
@@ -109,8 +109,8 @@ class ScatterPlot extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return this.props.entries !== nextProps.entries
-            || this.props.usedValues !== nextProps.usedValues;
+        return this.props.data !== nextProps.data
+            || this.props.usedColumns !== nextProps.usedColumns;
     }
 
     render() {
@@ -121,8 +121,10 @@ class ScatterPlot extends React.Component {
 }
 
 ScatterPlot.propTypes = {
-    entries: React.PropTypes.array.isRequired,
-    usedValues: React.PropTypes.array.isRequired
+    // array of data objects
+    data: React.PropTypes.array.isRequired,
+    // array of column indexes
+    usedColumns: React.PropTypes.array.isRequired
 };
 
 module.exports = ScatterPlot;

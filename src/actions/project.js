@@ -20,9 +20,6 @@ const Actions = {
     DELETE_DATASET: 'DELETE_DATASET',
     SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
     SHOW_PROJECT_ERROR: 'SHOW_PROJECT_ERROR',
-    PCA_PENDING: 'PCA_PENDING',
-    PCA_READY: 'PCA_READY',
-    SET_USED_EIGENPAIRS: 'SET_USED_EIGENPAIRS',
 };
 
 //region Action Creators
@@ -58,18 +55,6 @@ function createShowDatasetDetailAction(datasetId) {
 
 function createDeleteDatasetAction(datasetId) {
     return createAction(Actions.DELETE_DATASET, datasetId);
-}
-
-function createPcaPendingAction() {
-    return createAction(Actions.PCA_PENDING);
-}
-
-function createPcaReadyAction(pca) {
-    return createAction(Actions.PCA_READY, pca);
-}
-
-function createSetUsedEigenpairsAction(newIndexes) {
-    return createAction(Actions.SET_USED_EIGENPAIRS, newIndexes);
 }
 
 //endregion Action Creators
@@ -167,9 +152,7 @@ function addDataset() {
  */
 function updateDataset(datasetId, changes) {
     return function (dispatch, getState) {
-        dispatch(createUpdateDatasetAction(datasetId, changes));
-
-        return _recalculatePca(dispatch, getState);
+        return dispatch(createUpdateDatasetAction(datasetId, changes));
     }
 }
 
@@ -206,22 +189,6 @@ function closeAndDeleteDataset(datasetId) {
     return function (dispatch, getState) {
         dispatch(createShowDatasetDetailAction(null));
         dispatch(createDeleteDatasetAction(datasetId));
-
-        return _recalculatePca(dispatch, getState);
-    }
-}
-
-function _recalculatePca(dispatch, getState) {
-    dispatch(createPcaPendingAction());
-    return execByWorker(WorkerTasks.CALCULATE_PCA, getState())
-        .then((pca) => {
-            dispatch(createPcaReadyAction(pca));
-        });
-}
-
-function setUsedEigenpairs(newIndexes) {
-    return function (dispatch, getState) {
-        return dispatch(createSetUsedEigenpairsAction(newIndexes));
     }
 }
 
@@ -238,5 +205,4 @@ module.exports = {
     showDatasetDetail,
     closeDatasetDetail,
     closeAndDeleteDataset,
-    setUsedEigenpairs,
 };

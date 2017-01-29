@@ -58,6 +58,8 @@
   },
   "dependencies": {
     "highcharts": "^5.0.7",
+    "highcharts-3d": "^0.1.2",
+    "highcharts-exporting": "^0.1.2",
     "immutability-helper": "^2.0.0",
     "material-ui": "^0.16.7",
     "ml-matrix": "^2.2.0",

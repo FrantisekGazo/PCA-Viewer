@@ -3,54 +3,64 @@
 const PCA = require('ml-pca');
 const Matrix = require('ml-matrix');
 
-const { getUsedEntriesColored } = require('./../selector/dataset');
 
+/**
+ * Calculates PCA.
+ * @param datasets All datasets
+ * @param entriesMap Map of all entries
+ * @returns {Promise} that will resolve with a calculated PCA or reject with an error.
+ */
+function calculatePCA(datasets, entriesMap) {
+    return new Promise(function (resolve, reject) {
+        const usedEntryValues = [];
+        const datasetStartIndexes = [];
 
-function getOriginalMatrix(usedEntries) {
-    const values = usedEntries.map(entry => entry.value);
+        let datasetEntryIds, entryId, entry;
+        for (let i = 0; i < datasets.length; i++) {
+            datasetEntryIds = datasets[i].entries;
+            datasetStartIndexes.push(usedEntryValues.length);
 
-    if (values.length > 0) {
-        return new Matrix(values);
-    } else {
-        return null;
-    }
-}
+            for (let j = 0; j < datasetEntryIds.length; j++) {
+                entryId = datasetEntryIds[j];
+                entry = entriesMap[entryId];
+                if (entry) {
+                    usedEntryValues.push(entry.value);
+                }
+            }
+        }
 
-function getTransformedEntries(transformedMatrix, usedEntries) {
-    if (transformedMatrix && usedEntries) {
-        let i = 0;
-        return usedEntries.map(entry => {
-            const row = transformedMatrix.getRow(i);
-            i += 1;
-
-            return Object.assign({}, entry, {
-                value: row
+        if (usedEntryValues.length > 0) {
+            const originalMatrix = new Matrix(usedEntryValues);
+            const pca = new PCA(originalMatrix, {
+                scale: true
             });
-        });
-    } else {
-        return [];
-    }
-}
+            const transformedMatrix = pca.predict(originalMatrix);
 
-function calculatePCA(state) {
-    const usedEntries = getUsedEntriesColored(state);
+            const data = [];
+            for (let i = 0; i < datasets.length; i++) {
+                const dataset = datasets[i];
 
-    if (usedEntries.length > 0) {
-        const originalMatrix = getOriginalMatrix(usedEntries);
-        const pca = new PCA(originalMatrix, {
-            scale: true
-        });
-        const transformedMatrix = pca.predict(originalMatrix);
+                const startIndex = datasetStartIndexes[i];
+                const endIndex = (datasetStartIndexes.length >= i + 1) ? datasetStartIndexes[i + 1] : undefined;
 
-        return {
-            eigenvalues: pca.getEigenvalues(),
-            eigenvectors: pca.getEigenvectors(),
-            cumulativeVariance: pca.getCumulativeVariance(),
-            transformedEntries: getTransformedEntries(transformedMatrix, usedEntries),
-        };
-    } else {
-        return null;
-    }
+                data.push({
+                    id: dataset.id,
+                    name: dataset.name,
+                    color: dataset.color,
+                    values: transformedMatrix.slice(startIndex, endIndex)
+                });
+            }
+
+            resolve({
+                eigenvalues: pca.getEigenvalues(),
+                eigenvectors: pca.getEigenvectors(),
+                cumulativeVariance: pca.getCumulativeVariance(),
+                data: data
+            });
+        } else {
+            return null;
+        }
+    });
 }
 
 
