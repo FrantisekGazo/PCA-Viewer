@@ -33,7 +33,6 @@ class ProjectResults extends React.Component {
     }
 
     render() {
-        console.log('render');
         const {loading, loaded, error, pca, usedEigenpairs} = this.state;
 
         if (loading) {
@@ -93,7 +92,6 @@ class ProjectResults extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('shouldComponentUpdate', nextProps.resultsVersion);
         return this.props.resultsVersion !== nextProps.resultsVersion
             || this.state.usedEigenpairs !== nextState.usedEigenpairs
             || this.state.loading !== nextState.loading
@@ -101,11 +99,7 @@ class ProjectResults extends React.Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        console.log('componentWillUpdate', nextProps.resultsVersion);
-
         if (nextProps.resultsVersion !== this.props.resultsVersion) {
-            console.log('recalculate results');
-
             nextState.loading = true;
             nextState.loaded = false;
 
@@ -116,8 +110,6 @@ class ProjectResults extends React.Component {
     recalculatePCA() {
         PcaService.calculatePCA(this.props.datasets, this.props.entries)
             .then((pca) => {
-                console.log('PCA calculation complete', pca);
-
                 this.setState({
                     pca: pca,
                     loading: false,

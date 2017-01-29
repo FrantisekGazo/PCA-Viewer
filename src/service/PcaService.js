@@ -58,7 +58,7 @@ function calculatePCA(datasets, entriesMap) {
                 data: data
             });
         } else {
-            return null;
+            resolve(null);
         }
     });
 }
