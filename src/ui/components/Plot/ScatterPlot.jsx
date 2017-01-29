@@ -8,6 +8,7 @@ const { hexToRgbString } = require('../../../util/ColorUtil');
 const layout = {
     // title: 'Scatter Plot',
     hovermode: 'closest',
+    height: 480,
     margin: {
         l: 30,
         r: 30,
