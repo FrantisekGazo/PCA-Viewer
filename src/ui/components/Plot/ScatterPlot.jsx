@@ -87,6 +87,25 @@ class ScatterPlot extends React.Component {
                     }
                 }
             });
+
+            // Generating random data..
+            //
+            // let x = [], y = [], z = [];
+            // for (let i = 0; i < 50; i++) {
+            //     x.push(10 * Math.random() - 5);
+            //     y.push(10 * Math.random() - 5);
+            //     z.push(10 * Math.random() - 5);
+            // }
+            // // Plotting the mesh
+            // plotData.push({
+            //     opacity: 0.5,
+            //     color: hexToRgbString('#8879ff'),
+            //     type: 'mesh3d',
+            //     x: x,
+            //     y: y,
+            //     z: z,
+            //     alphahull: 0
+            // });
         } else {
             // other number is not supported
             console.error('Only 2D and 3D plot is supported', usedColumns);
