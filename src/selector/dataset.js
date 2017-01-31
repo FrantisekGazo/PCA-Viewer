@@ -1,21 +1,19 @@
 "use strict";
 
 
-const getDetailId = (state, props) => state.project.detail;
+const getDetailId = (state) => state.project.detail;
 
-const getDataset = (state, props) => state.project.datasets[props.datasetId];
-
-const getDetailDataset = (state) => getDataset(state, {datasetId: state.project.detail});
+const getDataset = (state, datasetId) => state.project.datasets[datasetId];
 
 const getLastEntryId = (state) => state.project.lastEntryId;
 
-const getDatasetEntries = (state, props) => {
-    const dataset = getDataset(state, props);
+const getDatasetEntries = (state, datasetId) => {
+    const dataset = getDataset(state, datasetId);
     return dataset.entries.map(entryId => state.project.entries[entryId]);
 };
 
-const getDatasetEntriesColored = (state, props) => {
-    const dataset = getDataset(state, props);
+const getDatasetEntriesColored = (state, datasetId) => {
+    const dataset = getDataset(state, datasetId);
     return dataset.entries.map(entryId => state.project.entries[entryId])
         .map(entry => {
             if (entry.color) {
@@ -26,8 +24,14 @@ const getDatasetEntriesColored = (state, props) => {
         });
 };
 
-const getDetailDatasetEntries = (state) => {
-    return getDatasetEntries(state, {datasetId: state.project.detail});
+const getDatasetStream = (state, datasetId) => {
+    const stream = state.project.streams[`${datasetId}_base`];
+    return stream ? stream : [];
+};
+
+const getDatasetTransformedStream = (state, datasetId) => {
+    const stream = state.project.streams[`${datasetId}_used`];
+    return stream ? stream : [];
 };
 
 const getUsedEntriesColored = (state) => {
@@ -45,8 +49,8 @@ module.exports = {
     getDataset,
     getDatasetEntries,
     getDatasetEntriesColored,
-    getDetailDataset,
-    getDetailDatasetEntries,
+    getDatasetStream,
+    getDatasetTransformedStream,
     getDetailId,
     getLastEntryId,
     getUsedEntriesColored,

@@ -22,10 +22,8 @@ function newDataset(id) {
         // raw data
         entries: [], // entry IDs
         // stream data
-        stream: [], // values
-        streamTransformationType: 0,
-        streamTransformationValue: null,
-        transformedStream: [], // values
+        transformationType: 0, // stream transformation type
+        transformationValue: 0, // stream transformation value
         sampling: DEFAULT_SAMPLING, // number of stream values in 1 entry
         streamEntries: [] // entry IDs - for entries sampled from the stream
     }
@@ -89,7 +87,7 @@ function addNewDataset(state, action) {
 
 function updateDataset(state, action) {
     const { id, changes } = action.payload;
-    const { dataset, datasetEntries } = changes;
+    const { dataset, entries, stream, transformedStream } = changes;
 
     let maxId = 0;
     if (dataset.entries.length > 0) {
@@ -101,10 +99,14 @@ function updateDataset(state, action) {
 
     return update(state, {
         datasets: {
-            [id]: {$merge: dataset}
+            [id]: {$set: dataset}
         },
-        entries: {$merge: datasetEntries},
+        entries: {$merge: entries},
         lastEntryId: {$set: maxId},
+        streams: {
+            [`${id}_base`]: {$set: stream},
+            [`${id}_used`]: {$set: transformedStream}
+        },
         resultsVersion: {$set: state.resultsVersion + 1}
     });
 }
@@ -112,17 +114,20 @@ function updateDataset(state, action) {
 function deleteDataset(state, action) {
     const datasetId = action.payload;
 
-    const updatedDatasets = Object.assign({}, state.datasets);
-    delete updatedDatasets[datasetId];
-
-    const resultsVersion = (state.datasets[datasetId].entries.length > 0) ? state.resultsVersion + 1 : state.resultsVersion;
+    const hasEntries = (state.datasets[datasetId].entries.length > 0);
+    const resultsVersion = (hasEntries) ? state.resultsVersion + 1 : state.resultsVersion;
 
     return update(state, {
         usedDatasetIds: {
             $set: state.usedDatasetIds.filter(id => id !== datasetId)
         },
         datasets: {
-            $set: updatedDatasets
+            [datasetId]: {$set: undefined}
+        },
+        // TODO : remove also entries
+        streams: {
+            [`${id}_base`]: {$set: undefined},
+            [`${id}_used`]: {$set: undefined}
         },
         resultsVersion: {$set: resultsVersion}
     });
@@ -153,14 +158,14 @@ const initState = {
     detail: null,
     /* dataset IDs used by project */
     usedDatasetIds: [],
-    /* last ID assigned to dataset */
-    lastDatasetId: 0,
     /* all datasets */
+    lastDatasetId: 0,
     datasets: {},
-    /* last ID assigned to data */
+    /* all entries */
     lastEntryId: 0,
-    /* all data */
     entries: {},
+    /* all streams */
+    streams: {},
     /* this needs to be incremented if results needs to be refreshed */
     resultsVersion: 0
 };
