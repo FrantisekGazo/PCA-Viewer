@@ -1,6 +1,6 @@
 "use strict";
 
-const { TRANSFORMATIONS } = require('../reducer/project');
+const {TRANSFORMATIONS} = require('../reducer/project');
 
 
 /**
@@ -12,13 +12,11 @@ function transformStream(stream, transformation) {
         if (transformation.type === TRANSFORMATIONS.NONE) {
             resolve(copy(stream));
         } else if (transformation.type === TRANSFORMATIONS.DIFF) {
-            // FIXME : implement DIFF transformation
-            resolve([1, 2, 3, 1]);
+            resolve(diff(stream));
         } else if (transformation.type === TRANSFORMATIONS.COUNT) {
             const value = transformation.value;
             if (transformation.value > 0) {
-                // FIXME : implement COUNT transformation
-                resolve([43, 78, 8, 61]);
+                resolve(count(stream, value));
             } else {
                 reject(Error('Invalid value of stream transformation ' + transformation.type));
             }
@@ -29,6 +27,58 @@ function transformStream(stream, transformation) {
 }
 
 const copy = (stream) => stream.slice();
+
+/**
+ * Calculates new stream which values will be differences between the original values.
+ * @param stream
+ * @returns {Array}
+ */
+function diff(stream) {
+    let resultStream = [];
+
+    let lastValue = 0;
+    let currentValue;
+
+    for (let i = 0; i < stream.length; i++) {
+        currentValue = stream[i];
+        resultStream.push(currentValue - lastValue);
+        lastValue = currentValue;
+    }
+
+    return resultStream;
+}
+
+/**
+ * Calculates new stream which values will be counts of the original values in the given interval.
+ * @param stream
+ * @param interval
+ * @returns {Array}
+ */
+function count(stream, interval) {
+    let resultStream = [];
+
+    let intervalStart = undefined;
+    let intervalCount = undefined;
+    let currentValue;
+
+    for (let i = 0; i < stream.length; i++) {
+        currentValue = stream[i];
+
+        if (intervalStart === undefined) {
+            intervalStart = currentValue;
+            intervalCount = 1;
+        } else if ((currentValue - intervalStart) < interval) {
+            intervalCount += 1;
+        } else {
+            resultStream.push(intervalCount);
+
+            intervalStart = currentValue;
+            intervalCount = 1;
+        }
+    }
+
+    return resultStream;
+}
 
 
 module.exports = {
