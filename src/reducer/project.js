@@ -22,7 +22,7 @@ function newDataset(id) {
         // raw data
         entries: [], // entry IDs
         // stream data
-        transformationType: 0, // stream transformation type
+        transformationType: TRANSFORMATIONS.NONE, // stream transformation type
         transformationValue: 0, // stream transformation value
         sampling: DEFAULT_SAMPLING, // number of stream values in 1 entry
         streamEntries: [] // entry IDs - for entries sampled from the stream
@@ -41,6 +41,12 @@ function newEntry(id, value=[]) {
         streamPosition: undefined
     }
 }
+
+const TRANSFORMATIONS = {
+    NONE: 1,
+    DIFF: 2,
+    COUNT: 3
+};
 
 // REDUCER FUNCTIONS ----------------------------------------------------------------------
 
@@ -193,6 +199,7 @@ const project = (state = initState, action) => {
 };
 
 module.exports = {
+    TRANSFORMATIONS,
     project,
     newEntry,
     newDataset

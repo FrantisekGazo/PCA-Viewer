@@ -6,6 +6,8 @@ const MenuItem = require('material-ui/MenuItem').default;
 const TextField = require('material-ui/TextField').default;
 const FlatButton = require('material-ui/FlatButton').default;
 
+const { TRANSFORMATIONS } = require('../../../reducer/project');
+
 
 class StreamTransformationPicker extends React.Component {
 
@@ -13,7 +15,7 @@ class StreamTransformationPicker extends React.Component {
         super(props);
 
         this.state = {
-            type: props.transformation.type ? props.transformation.type : 0,
+            type: props.transformation.type ? props.transformation.type : TRANSFORMATIONS.NONE,
             value: props.transformation.value ? props.transformation.value : 0,
             errorMessage: ''
         };
@@ -44,7 +46,7 @@ class StreamTransformationPicker extends React.Component {
 
     handleUpdateClick() {
         const { type, value } = this.state;
-        if (type === 2 && value === 0) {
+        if (type === TRANSFORMATIONS.COUNT && value === 0) {
             this.setState({
                 errorMessage: 'Invalid value!',
             });
@@ -59,7 +61,7 @@ class StreamTransformationPicker extends React.Component {
 
         let input = null;
 
-        if (type === 2) {
+        if (type === TRANSFORMATIONS.COUNT) {
             input = (
                 <TextField
                     key={`transformation-value-${type}`}
@@ -77,9 +79,9 @@ class StreamTransformationPicker extends React.Component {
                               value={type}
                               onChange={this.handleTypeChange.bind(this)}>
 
-                    <MenuItem value={0} key={0} primaryText="Transformation"/>
-                    <MenuItem value={1} key={1} primaryText="Diff"/>
-                    <MenuItem value={2} key={2} primaryText="Count in"/>
+                    <MenuItem value={TRANSFORMATIONS.NONE} key={TRANSFORMATIONS.NONE} primaryText="Select Transformation"/>
+                    <MenuItem value={TRANSFORMATIONS.DIFF} key={TRANSFORMATIONS.DIFF} primaryText="Diff"/>
+                    <MenuItem value={TRANSFORMATIONS.COUNT} key={TRANSFORMATIONS.COUNT} primaryText="Count in"/>
 
                 </DropDownMenu>
 
