@@ -8,24 +8,27 @@ const { StreamPlot } = require('../Plot');
 const StreamTransformationPicker = require('./StreamTransformationPicker.jsx');
 
 
+const firstValues = (s) => s.slice(0, 100).map(v => v.toString()).join(' ');
+
 class StreamEditor extends React.Component {
 
     render() {
-        const { stream, transformation, onTransformationChange } = this.props;
-
-        const firstValues = stream.slice(0, 100)
-            .map(v => v.toString()).join(' ');
+        const { stream, transformedStream, transformation, onTransformationChange } = this.props;
 
         return (
             <Card>
                 <CardHeader title='Stream'/>
 
                 <CardMedia>
-                    <StreamPlot stream={stream}/>
+                    <StreamPlot stream={transformedStream}/>
                 </CardMedia>
 
                 <CardText>
-                    { firstValues }...
+                    Stream: { firstValues(stream) }...
+                </CardText>
+
+                <CardText>
+                    Transformed Stream: { firstValues(transformedStream) }...
                 </CardText>
 
                 <Divider/>
@@ -42,6 +45,7 @@ class StreamEditor extends React.Component {
 
 StreamEditor.propTypes = {
     stream: React.PropTypes.array.isRequired,
+    transformedStream: React.PropTypes.array.isRequired,
     transformation: React.PropTypes.object.isRequired,
     onTransformationChange: React.PropTypes.func.isRequired,
 };

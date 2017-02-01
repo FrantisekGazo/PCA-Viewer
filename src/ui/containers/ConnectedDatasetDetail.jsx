@@ -5,7 +5,7 @@ const {connect} = require('react-redux');
 
 const DatasetDetail = require('../components/DatasetDetail/DatasetDetail.jsx');
 const { updateDataset, closeAndDeleteDataset, closeDatasetDetail } = require('../../actions/project');
-const { getDataset, getDatasetEntries, getDatasetStream, getDetailId, getLastEntryId } = require('../../selector/dataset');
+const { getDataset, getDatasetEntries, getDatasetStream, getDatasetTransformedStream, getDetailId, getLastEntryId } = require('../../selector/dataset');
 
 
 module.exports = connect(
@@ -15,8 +15,9 @@ module.exports = connect(
 
         return {
             dataset: getDataset(state, datasetId),
-            datasetEntries: getDatasetEntries(state, datasetId),
-            datasetStream: getDatasetStream(state, datasetId),
+            entries: getDatasetEntries(state, datasetId),
+            stream: getDatasetStream(state, datasetId),
+            transformedStream: getDatasetTransformedStream(state, datasetId),
             lastEntryId: getLastEntryId(state),
         };
     },

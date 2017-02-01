@@ -16,19 +16,20 @@ class DatasetDetail extends React.Component {
     constructor(props) {
         super(props);
 
-        const { dataset, datasetEntries, datasetStream } = props;
+        const { dataset, entries, stream, transformedStream } = props;
         // add also current dataset entries
         // make sure you do not edit them directly
-        const entries = {};
-        for (let i = 0; i < datasetEntries.length; i++) {
-            const entry = datasetEntries[i];
-            entries[entry.id] = entry;
+        const entriesMap = {};
+        for (let i = 0; i < entries.length; i++) {
+            const entry = entries[i];
+            entriesMap[entry.id] = entry;
         }
 
         this.state = {
             dataset: Object.assign({}, dataset),
-            entries: entries,
-            stream: datasetStream.slice(),
+            entries: entriesMap,
+            stream: stream.slice(),
+            transformedStream: transformedStream.slice(),
             update: 0
         };
     }
@@ -109,6 +110,8 @@ class DatasetDetail extends React.Component {
                     this.setState({
                         stream: this.state.stream.concat(values),
                     });
+
+                    // TODO: update also the transformedStream
                 }
             })
             .catch((err) => {
@@ -121,7 +124,7 @@ class DatasetDetail extends React.Component {
     }
 
     handleSaveClick() {
-        const { dataset, entries, stream } = this.state;
+        const { dataset, entries, stream, transformedStream } = this.state;
 
         const entryIds = Object.keys(entries).filter(id => {
             const entry = entries[id];
@@ -132,8 +135,9 @@ class DatasetDetail extends React.Component {
             dataset: Object.assign({}, dataset, {
                 entries: entryIds
             }),
-            entries: this.state.entries,
-            stream: stream
+            entries: entries,
+            stream: stream,
+            transformedStream: transformedStream
         };
 
         this.props.onSaveClick(this.props.dataset.id, changes);
@@ -180,6 +184,7 @@ class DatasetDetail extends React.Component {
 
                     <StreamEditor
                         stream={this.state.stream}
+                        transformedStream={this.state.transformedStream}
                         transformation={transformation}
                         onTransformationChange={this.handleStreamTransformationChange.bind(this)}/>
                 </div>
@@ -212,9 +217,11 @@ DatasetDetail.propTypes = {
     // dataset object
     dataset: React.PropTypes.object.isRequired,
     // array of dataset entries
-    datasetEntries: React.PropTypes.array.isRequired,
+    entries: React.PropTypes.array.isRequired,
     // array of stream values
-    datasetStream: React.PropTypes.array.isRequired,
+    stream: React.PropTypes.array.isRequired,
+    // array of transformed stream values
+    transformedStream: React.PropTypes.array.isRequired,
     // last used entry ID
     lastEntryId: React.PropTypes.number.isRequired,
     // callbacks
