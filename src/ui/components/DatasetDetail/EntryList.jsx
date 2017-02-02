@@ -14,6 +14,10 @@ class EntryList extends React.Component {
         const currentEntries = this.props.entries;
         const newEntries = newProps.entries;
 
+        if (this.props.selectedEntryIds !== newProps.selectedEntryIds) {
+            return true;
+        }
+
         if (currentEntries.length !== newEntries.length) {
             return true;
         }
@@ -25,6 +29,10 @@ class EntryList extends React.Component {
         }
 
         return false;
+    }
+
+    isEntrySelected(entryId) {
+        return this.props.selectedEntryIds.indexOf(entryId) >= 0;
     }
 
     render() {
@@ -51,6 +59,7 @@ class EntryList extends React.Component {
                     <EntryListItem
                         key={entry.id}
                         entry={entry}
+                        isEntrySelected={this.isEntrySelected(entry.id)}
                         onClick={onEntryClick}/>
                 )
             });
@@ -78,7 +87,10 @@ class EntryList extends React.Component {
 }
 
 EntryList.propTypes = {
+    // entries
     entries: React.PropTypes.array.isRequired,
+    selectedEntryIds: React.PropTypes.array.isRequired,
+    // callback
     onEntryClick: React.PropTypes.func.isRequired,
 };
 

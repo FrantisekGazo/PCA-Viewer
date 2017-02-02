@@ -13,6 +13,7 @@ class DatasetEntries extends React.Component {
         const {
             color,
             entries,
+            selectedEntryIds,
             onEntrySelected
         } = this.props;
 
@@ -31,6 +32,7 @@ class DatasetEntries extends React.Component {
                     <CardMedia>
                         <EntryList
                             entries={entries}
+                            selectedEntryIds={selectedEntryIds}
                             onEntryClick={onEntrySelected}/>
                     </CardMedia>
                 </Card>
@@ -42,8 +44,12 @@ class DatasetEntries extends React.Component {
 }
 
 DatasetEntries.propTypes = {
+    // dataset color
     color: React.PropTypes.string.isRequired,
+    // entries
     entries: React.PropTypes.array.isRequired,
+    selectedEntryIds: React.PropTypes.array.isRequired,
+    // callbacks
     onEntryAdd: React.PropTypes.func.isRequired, // TODO : implement
     onEntryRemove: React.PropTypes.func.isRequired, // TODO : implement
     onEntrySelected: React.PropTypes.func.isRequired,

@@ -6,9 +6,10 @@ const { TableRow, TableRowColumn } = require('material-ui/Table');
 
 class EntryListItem extends React.Component {
 
-    shouldComponentUpdate(newProps, newState) {
-        return this.props.entry.name !== newProps.entry.name
-            || this.props.entry.value !== newProps.entry.value;
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.isEntrySelected !== nextProps.isEntrySelected
+            || this.props.entry.name !== nextProps.entry.name
+            || this.props.entry.value !== nextProps.entry.value;
     }
 
     handleClick() {
@@ -16,7 +17,7 @@ class EntryListItem extends React.Component {
     }
 
     render() {
-        const { entry } = this.props;
+        const { entry, isEntrySelected } = this.props;
 
         let i = -1;
         const valueCells = entry.value.map(v => {
@@ -27,6 +28,9 @@ class EntryListItem extends React.Component {
         });
         return (
             <TableRow
+                style={{
+                    color: (isEntrySelected ? '#ff0000' : '#000000') //TODO
+                }}
                 onTouchTap={this.handleClick.bind(this)}
                 hoverable={true}>
 
@@ -41,6 +45,7 @@ class EntryListItem extends React.Component {
 
 EntryListItem.propTypes = {
     entry: React.PropTypes.object.isRequired,
+    isEntrySelected: React.PropTypes.bool.isRequired,
     onClick: React.PropTypes.func.isRequired,
 };
 

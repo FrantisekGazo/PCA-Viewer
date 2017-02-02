@@ -5,20 +5,21 @@ const {connect} = require('react-redux');
 
 const DatasetDetail = require('../components/DatasetDetail/DatasetDetail.jsx');
 const { closeAndDeleteDataset, closeDatasetDetail, updateDataset, selectEntry } = require('../../actions/project');
-const { getDataset, getDatasetEntries, getDatasetStream, getDatasetTransformedStream, getDetailId, getLastEntryId } = require('../../selector/dataset');
+const selector = require('../../selector/dataset');
 
 
 module.exports = connect(
     // state to props
     (state) => {
-        const datasetId = getDetailId(state);
+        const datasetId = selector.getDetailDatasetId(state);
 
         return {
-            dataset: getDataset(state, datasetId),
-            entries: getDatasetEntries(state, datasetId),
-            stream: getDatasetStream(state, datasetId),
-            transformedStream: getDatasetTransformedStream(state, datasetId),
-            lastEntryId: getLastEntryId(state),
+            dataset: selector.getDataset(state, datasetId),
+            entries: selector.getDatasetEntries(state, datasetId),
+            selectedEntryIds: selector.getDetailEntryIds(state),
+            stream: selector.getDatasetStream(state, datasetId),
+            transformedStream: selector.getDatasetTransformedStream(state, datasetId),
+            lastEntryId: selector.getLastEntryId(state),
         };
     },
     // dispatch functions to props

@@ -205,6 +205,7 @@ class DatasetDetail extends React.Component {
 
                     <DatasetEntries
                         entries={entries}
+                        selectedEntryIds={this.props.selectedEntryIds}
                         color={dataset.color}
                         onEntrySelected={this.props.onEntrySelected}
                         onEntryAdd={this.handleEntryAdd.bind(this)}
@@ -224,6 +225,7 @@ DatasetDetail.propTypes = {
     dataset: React.PropTypes.object.isRequired,
     // array of dataset entries
     entries: React.PropTypes.array.isRequired,
+    selectedEntryIds: React.PropTypes.array.isRequired,
     // array of stream values
     stream: React.PropTypes.array.isRequired,
     // array of transformed stream values

@@ -1,7 +1,9 @@
 "use strict";
 
 
-const getDetailId = (state) => state.project.detailDatasetId;
+const getDetailDatasetId = (state) => state.project.detailDatasetId;
+
+const getDetailEntryIds = (state) => (state.project.detailEntryIds !== null) ? state.project.detailEntryIds : [];
 
 const getDataset = (state, datasetId) => state.project.datasets[datasetId];
 
@@ -51,7 +53,8 @@ module.exports = {
     getDatasetEntriesColored,
     getDatasetStream,
     getDatasetTransformedStream,
-    getDetailId,
+    getDetailDatasetId,
+    getDetailEntryIds,
     getLastEntryId,
     getUsedEntriesColored,
     getAllDatasets,

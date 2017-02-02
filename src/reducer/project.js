@@ -149,7 +149,7 @@ function selectEntry(state, action) {
     const { datasetId, entryIds } = action.payload;
 
     return update(state, {
-        detailDatasetId: {$set: datasetId},
+        detailDatasetId: {$set: datasetId ? datasetId : state.detailDatasetId},
         detailEntryIds: {$set: entryIds}
     });
 }
