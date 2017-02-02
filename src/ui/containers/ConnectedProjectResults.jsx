@@ -4,6 +4,7 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const ProjectResults = require('../components/Results/ProjectResults.jsx');
+const { selectEntry } = require('../../actions/project');
 const { getAllDatasets, getAllEntriesMap } = require('../../selector/dataset');
 
 
@@ -20,7 +21,7 @@ module.exports = connect(
     (dispatch) => {
         return {
             onEntrySelected: (datasetId, entryId) => {
-                console.error('Selected entry ids', datasetId, entryId); //TODO
+                dispatch(selectEntry(datasetId, entryId));
             }
         };
     }

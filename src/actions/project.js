@@ -20,6 +20,7 @@ const Actions = {
     DELETE_DATASET: 'DELETE_DATASET',
     SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
     SHOW_PROJECT_ERROR: 'SHOW_PROJECT_ERROR',
+    SELECT_ENTRY: 'SELECT_ENTRY',
 };
 
 //region Action Creators
@@ -55,6 +56,10 @@ function createShowDatasetDetailAction(datasetId) {
 
 function createDeleteDatasetAction(datasetId) {
     return createAction(Actions.DELETE_DATASET, datasetId);
+}
+
+function createSelectEntryAction(datasetId, entryIds) {
+    return createAction(Actions.SELECT_ENTRY, {datasetId: datasetId, entryIds: entryIds});
 }
 
 //endregion Action Creators
@@ -192,6 +197,18 @@ function closeAndDeleteDataset(datasetId) {
     }
 }
 
+/**
+ * Selects an entry.
+ * @param datasetId A dataset ID.
+ * @param entryId An entry ID.
+ * @returns {Function}
+ */
+function selectEntry(datasetId, entryId) {
+    return function (dispatch, getState) {
+        dispatch(createSelectEntryAction(datasetId, [entryId]));
+    }
+}
+
 //endregion Action Dispatchers
 
 module.exports = {
@@ -205,4 +222,5 @@ module.exports = {
     showDatasetDetail,
     closeDatasetDetail,
     closeAndDeleteDataset,
+    selectEntry,
 };

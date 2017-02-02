@@ -1,7 +1,7 @@
 "use strict";
 
 
-const getDetailId = (state) => state.project.detail;
+const getDetailId = (state) => state.project.detailDatasetId;
 
 const getDataset = (state, datasetId) => state.project.datasets[datasetId];
 

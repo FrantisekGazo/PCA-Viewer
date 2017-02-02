@@ -4,7 +4,7 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const DatasetDetail = require('../components/DatasetDetail/DatasetDetail.jsx');
-const { updateDataset, closeAndDeleteDataset, closeDatasetDetail } = require('../../actions/project');
+const { closeAndDeleteDataset, closeDatasetDetail, updateDataset, selectEntry } = require('../../actions/project');
 const { getDataset, getDatasetEntries, getDatasetStream, getDatasetTransformedStream, getDetailId, getLastEntryId } = require('../../selector/dataset');
 
 
@@ -34,7 +34,7 @@ module.exports = connect(
                 dispatch(closeAndDeleteDataset(datasetId))
             },
             onEntrySelected: (datasetId, entryId) => {
-                console.error('Selected entry ids', datasetId, entryId); //TODO
+                dispatch(selectEntry(datasetId, entryId));
             }
         };
     }

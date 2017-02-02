@@ -87,7 +87,7 @@ function addNewDataset(state, action) {
         },
         usedDatasetIds: {$push: [datasetId]},
         lastDatasetId: {$set: datasetId},
-        detail: {$set: datasetId}
+        detailDatasetId: {$set: datasetId}
     });
 }
 
@@ -141,17 +141,16 @@ function deleteDataset(state, action) {
 
 function showDatasetDetail(state, action) {
     return update(state, {
-        detail: {$set: action.payload}
+        detailDatasetId: {$set: action.payload}
     });
 }
 
-function setUsedEigenpairs(state, action) {
-    const newIndexes = action.payload;
+function selectEntry(state, action) {
+    const { datasetId, entryIds } = action.payload;
+
     return update(state, {
-        usedEigenpairs: {$set: newIndexes},
-        pca: {
-            hash: {$set: state.pca.hash + 1}
-        }
+        detailDatasetId: {$set: datasetId},
+        detailEntryIds: {$set: entryIds}
     });
 }
 
@@ -161,7 +160,8 @@ const initState = {
     /* error */
     error: '',
     /* show detail for dataset */
-    detail: null,
+    detailDatasetId: null,
+    detailEntryIds: null,
     /* dataset IDs used by project */
     usedDatasetIds: [],
     /* all datasets */
@@ -191,8 +191,8 @@ const project = (state = initState, action) => {
             return deleteDataset(state, action);
         case Actions.SHOW_DATASET_DETAIL:
             return showDatasetDetail(state, action);
-        case Actions.SET_USED_EIGENPAIRS:
-            return setUsedEigenpairs(state, action);
+        case Actions.SELECT_ENTRY:
+            return selectEntry(state, action);
         default:
             return state;
     }
