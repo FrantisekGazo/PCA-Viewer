@@ -6,11 +6,11 @@ const DatasetInfo = require('./DatasetInfo.jsx');
 const StreamEditor = require('./StreamEditor.jsx');
 const DatasetEntries = require('./DatasetEntries.jsx');
 
-const update = require('immutability-helper');
 const DatasetService = require('../../../service/DatasetService');
 const DialogService = require('../../../service/DialogService');
 const FileService = require('../../../service/FileService');
 const StreamService = require('../../../service/StreamService');
+
 
 class DatasetDetail extends React.Component {
 
@@ -52,25 +52,19 @@ class DatasetDetail extends React.Component {
         this.props.onEntryClick(this.props.dataset.id, id);
     }
 
-    handleEntryChange(id, index, value) {
-        let updatedEntries;
-        if (index === -1) {
-            updatedEntries = update(this.state.entries, {
-                [id]: {
-                    name: {$set: value}
-                }
-            });
-        } else {
-            updatedEntries = update(this.state.entries, {
-                [id]: {
-                    value: {
-                        [index]: {$set: value}
-                    }
-                }
-            });
-        }
+    handleEntryAdd(entry) {
         this.setState({
-            entries: updatedEntries
+            entries: Object.assign({}, this.state.entries, {
+                [entry.id]: entry
+            })
+        });
+    }
+
+    handleEntryRemove(entryId) {
+        this.setState({
+            entries: Object.assign({}, this.state.entries, {
+                [entryId]: undefined
+            })
         });
     }
 
@@ -221,7 +215,8 @@ class DatasetDetail extends React.Component {
                         entries={entries}
                         color={dataset.color}
                         onEntryClick={this.handleEntryClick.bind(this)}
-                        onEntryChange={this.handleEntryChange.bind(this)}
+                        onEntryAdd={this.handleEntryAdd.bind(this)}
+                        onEntryRemove={this.handleEntryRemove.bind(this)}
                         onPlotClick={this.handlePlotClick.bind(this)}/>
                 </div>
             );

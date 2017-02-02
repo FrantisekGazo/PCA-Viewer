@@ -28,7 +28,7 @@ class EntryList extends React.Component {
     }
 
     render() {
-        const { entries, onChange, onEntryClick } = this.props;
+        const { entries, onEntryClick } = this.props;
 
         let valueCount = 0;
         entries.map(entry => {
@@ -51,8 +51,7 @@ class EntryList extends React.Component {
                     <EntryListItem
                         key={entry.id}
                         entry={entry}
-                        onClick={onEntryClick}
-                        onChange={onChange}/>
+                        onClick={onEntryClick}/>
                 )
             });
 
@@ -81,7 +80,6 @@ class EntryList extends React.Component {
 EntryList.propTypes = {
     entries: React.PropTypes.array.isRequired,
     onEntryClick: React.PropTypes.func.isRequired,
-    onChange: React.PropTypes.func.isRequired,
 };
 
 module.exports = EntryList;
