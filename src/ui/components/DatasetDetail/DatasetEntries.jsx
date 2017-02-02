@@ -24,8 +24,10 @@ class DatasetEntries extends React.Component {
 
                     <CardMedia>
                         <EntrySpectrumPlot
-                            defaultColor={color}
                             entries={entries}
+                            selectedEntryIds={selectedEntryIds}
+                            defaultColor={color}
+                            selectedColor={'#ff0000'}
                             onPlotClick={onEntrySelected}/>
                     </CardMedia>
 

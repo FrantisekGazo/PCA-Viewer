@@ -2,8 +2,9 @@
 
 const React = require('react');
 const Plotly = require("plotly.js/dist/plotly.js");
-const { hexToRgbString } = require('../../../util/ColorUtil');
 
+
+const ELEMENT_ID = "spectrumPlot";
 
 class EntrySpectrumPlot extends React.Component {
 
@@ -24,19 +25,22 @@ class EntrySpectrumPlot extends React.Component {
             return;
         }
 
-        const elementId = "spectrumPlot";
+        const { entries, selectedEntryIds, selectedColor, defaultColor } = this.props;
 
         let i = 0;
-        const x = this.props.entries[0].value.map(v => i++);
+        const x = entries[0].value.map(v => i++);
 
-        const data = this.props.entries.map(entry => {
+        const data = entries.map(entry => {
+            const isSelected = (selectedEntryIds.indexOf(entry.id) >= 0);
             return {
                 name: entry.name,
                 x: x,
                 y: entry.value,
                 mode: 'lines',
+                opacity: isSelected ? .9 : .4,
                 line: {
-                    color: hexToRgbString(entry.color ? entry.color : this.props.defaultColor)
+                    color: isSelected ? selectedColor : defaultColor,
+                    width: isSelected ? 3 : 1
                 }
             }
         });
@@ -61,13 +65,34 @@ class EntrySpectrumPlot extends React.Component {
         };
 
         Plotly.newPlot(
-            elementId,
+            ELEMENT_ID,
             data,
             layout,
             opts
         );
         // set click callback
-        document.getElementById(elementId).on('plotly_click', this.handlePlotClick.bind(this));
+        document.getElementById(ELEMENT_ID).on('plotly_click', this.handlePlotClick.bind(this));
+    }
+
+    updatePlotColors(nextProps) {
+        const { entries } = this.props; // entries are the same
+        const { selectedEntryIds, selectedColor, defaultColor } = nextProps;
+        const plot = document.getElementById(ELEMENT_ID);
+
+        let entry, d;
+        for (let i = 0; i < entries.length; i++) {
+            entry = entries[i];
+            const isSelected = (selectedEntryIds.indexOf(entry.id) >= 0);
+
+            d = plot.data[i];
+            d.opacity = isSelected ? .9 : .4;
+            d.line = {
+                color: isSelected ? selectedColor : defaultColor,
+                width: isSelected ? 3 : 1
+            };
+        }
+
+        Plotly.redraw(plot);
     }
 
     componentDidMount() {
@@ -78,11 +103,7 @@ class EntrySpectrumPlot extends React.Component {
         this.drawPlot();
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.defaultColor !== nextProps.defaultColor) {
-            return true;
-        }
-
+    didValuesChange(nextProps) {
         const currentEntries = this.props.entries;
         const newEntries = nextProps.entries;
 
@@ -99,16 +120,37 @@ class EntrySpectrumPlot extends React.Component {
         return false;
     }
 
+    didColorsChange(nextProps) {
+        return this.props.defaultColor !== nextProps.defaultColor
+            || this.props.selectedColor !== nextProps.selectedColor
+            || this.props.selectedEntryIds !== nextProps.selectedEntryIds;
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const valuesChanged = this.didValuesChange(nextProps);
+
+        if (valuesChanged) {
+            return true;
+        } else {
+            if (this.didColorsChange(nextProps)) {
+                this.updatePlotColors(nextProps);
+            }
+            return false;
+        }
+    }
+
     render() {
         return (
-            <div id="spectrumPlot"></div>
+            <div id={ELEMENT_ID}></div>
         );
     }
 }
 
 EntrySpectrumPlot.propTypes = {
     entries: React.PropTypes.array.isRequired,
+    selectedEntryIds: React.PropTypes.array.isRequired,
     defaultColor: React.PropTypes.string.isRequired,
+    selectedColor: React.PropTypes.string.isRequired,
     // click callback
     onPlotClick: React.PropTypes.func.isRequired,
 };
