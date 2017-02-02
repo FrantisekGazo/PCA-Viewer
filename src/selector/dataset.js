@@ -1,6 +1,9 @@
 "use strict";
 
 
+const { baseStreamId, transformedStreamId } = require('../reducer/project');
+
+
 const getDetailDatasetId = (state) => state.project.detailDatasetId;
 
 const getDetailEntryIds = (state) => (state.project.detailEntryIds !== null) ? state.project.detailEntryIds : [];
@@ -27,12 +30,12 @@ const getDatasetEntriesColored = (state, datasetId) => {
 };
 
 const getDatasetStream = (state, datasetId) => {
-    const stream = state.project.streams[`${datasetId}_base`];
+    const stream = state.project.streams[baseStreamId(datasetId)];
     return stream ? stream : [];
 };
 
 const getDatasetTransformedStream = (state, datasetId) => {
-    const stream = state.project.streams[`${datasetId}_used`];
+    const stream = state.project.streams[transformedStreamId(datasetId)];
     return stream ? stream : [];
 };
 

@@ -48,6 +48,10 @@ const TRANSFORMATIONS = {
     COUNT: 3
 };
 
+const baseStreamId = (datasetId) => `${datasetId}_base`;
+
+const transformedStreamId = (datasetId) => `${datasetId}_used`;
+
 // REDUCER FUNCTIONS ----------------------------------------------------------------------
 
 function setProject(state, action) {
@@ -103,6 +107,8 @@ function updateDataset(state, action) {
         maxId = state.lastEntryId;
     }
 
+    const bsid = baseStreamId(id);
+    const tsid = transformedStreamId(id);
     return update(state, {
         datasets: {
             [id]: {$set: dataset}
@@ -110,8 +116,8 @@ function updateDataset(state, action) {
         entries: {$merge: entries},
         lastEntryId: {$set: maxId},
         streams: {
-            [`${id}_base`]: {$set: stream},
-            [`${id}_used`]: {$set: transformedStream}
+            [bsid]: {$set: stream},
+            [tsid]: {$set: transformedStream}
         },
         resultsVersion: {$set: state.resultsVersion + 1}
     });
@@ -123,6 +129,8 @@ function deleteDataset(state, action) {
     const hasEntries = (state.datasets[datasetId].entries.length > 0);
     const resultsVersion = (hasEntries) ? state.resultsVersion + 1 : state.resultsVersion;
 
+    const bsid = baseStreamId(datasetId);
+    const tsid = transformedStreamId(datasetId);
     return update(state, {
         usedDatasetIds: {
             $set: state.usedDatasetIds.filter(id => id !== datasetId)
@@ -130,10 +138,10 @@ function deleteDataset(state, action) {
         datasets: {
             [datasetId]: {$set: undefined}
         },
-        // TODO : remove also entries
+        /* TODO : remove also entries */
         streams: {
-            [`${id}_base`]: {$set: undefined},
-            [`${id}_used`]: {$set: undefined}
+            [bsid]: {$set: undefined},
+            [tsid]: {$set: undefined}
         },
         resultsVersion: {$set: resultsVersion}
     });
@@ -202,5 +210,7 @@ module.exports = {
     TRANSFORMATIONS,
     project,
     newEntry,
-    newDataset
+    newDataset,
+    baseStreamId,
+    transformedStreamId,
 };
