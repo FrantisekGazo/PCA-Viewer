@@ -8,7 +8,7 @@ const { StreamPlot } = require('../Plot');
 const StreamTransformationPicker = require('./StreamTransformationPicker.jsx');
 
 
-const firstValues = (s) => s.slice(0, 100).map(v => v.toString()).join(' ');
+const firstValues = (s) => s.slice(0, 10).map(v => v.toString()).join(', ');
 
 class StreamEditor extends React.Component {
 
@@ -24,11 +24,11 @@ class StreamEditor extends React.Component {
                 </CardMedia>
 
                 <CardText>
-                    Stream: { firstValues(stream) }...
+                    Stream: { firstValues(stream) }... ({stream.length} values)
                 </CardText>
 
                 <CardText>
-                    Transformed Stream: { firstValues(transformedStream) }...
+                    Transformed Stream: { firstValues(transformedStream) }... ({transformedStream.length} values)
                 </CardText>
 
                 <Divider/>
