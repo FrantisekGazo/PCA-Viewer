@@ -33,7 +33,7 @@ class ProjectResults extends React.Component {
     }
 
     render() {
-        const {loading, loaded, error, pca, usedEigenpairs} = this.state;
+        const { loading, loaded, error, pca, usedEigenpairs } = this.state;
 
         if (loading) {
             return (
@@ -64,7 +64,8 @@ class ProjectResults extends React.Component {
                             <CardMedia>
                                 <ScatterPlot
                                     data={pca.data}
-                                    usedColumns={usedEigenpairs}/>
+                                    usedColumns={usedEigenpairs}
+                                    onPlotClick={this.props.onEntrySelected}/>
                             </CardMedia>
                         </Card>
                     </div>
@@ -135,6 +136,8 @@ ProjectResults.propTypes = {
     datasets: React.PropTypes.array.isRequired,
     // map of all entries
     entries: React.PropTypes.object.isRequired,
+    // callback
+    onEntrySelected: React.PropTypes.func.isRequired,
 };
 
 module.exports = ProjectResults;

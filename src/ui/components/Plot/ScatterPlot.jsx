@@ -35,6 +35,20 @@ const opts = {
 
 class ScatterPlot extends React.Component {
 
+    handlePlotClick(event) {
+        const points = event.points;
+
+        if (points.length > 0) {
+            const point = points[0];
+
+            const d = this.props.data[point.curveNumber];
+            const datasetId = d.id;
+            const entryId = d.entryIds[point.pointNumber];
+
+            this.props.onPlotClick(datasetId, entryId);
+        }
+    }
+
     drawPlot() {
         const elementId = "scatterPlot";
 
@@ -118,6 +132,8 @@ class ScatterPlot extends React.Component {
             layout,
             opts
         );
+        // set click callback
+        document.getElementById(elementId).on('plotly_click', this.handlePlotClick.bind(this));
     }
 
     componentDidMount() {
@@ -144,7 +160,9 @@ ScatterPlot.propTypes = {
     // array of data objects
     data: React.PropTypes.array.isRequired,
     // array of column indexes
-    usedColumns: React.PropTypes.array.isRequired
+    usedColumns: React.PropTypes.array.isRequired,
+    // click callback
+    onPlotClick: React.PropTypes.func.isRequired,
 };
 
 module.exports = ScatterPlot;

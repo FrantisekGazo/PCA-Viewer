@@ -13,8 +13,7 @@ class DatasetEntries extends React.Component {
         const {
             color,
             entries,
-            onEntryClick,
-            onPlotClick
+            onEntrySelected
         } = this.props;
 
         if (entries.length > 0) {
@@ -26,13 +25,13 @@ class DatasetEntries extends React.Component {
                         <EntrySpectrumPlot
                             defaultColor={color}
                             entries={entries}
-                            onPlotClick={onPlotClick}/>
+                            onPlotClick={onEntrySelected}/>
                     </CardMedia>
 
                     <CardMedia>
                         <EntryList
                             entries={entries}
-                            onEntryClick={onEntryClick}/>
+                            onEntryClick={onEntrySelected}/>
                     </CardMedia>
                 </Card>
             );
@@ -45,10 +44,9 @@ class DatasetEntries extends React.Component {
 DatasetEntries.propTypes = {
     color: React.PropTypes.string.isRequired,
     entries: React.PropTypes.array.isRequired,
-    onEntryClick: React.PropTypes.func.isRequired,
     onEntryAdd: React.PropTypes.func.isRequired, // TODO : implement
     onEntryRemove: React.PropTypes.func.isRequired, // TODO : implement
-    onPlotClick: React.PropTypes.func.isRequired,
+    onEntrySelected: React.PropTypes.func.isRequired,
 };
 
 module.exports = DatasetEntries;

@@ -33,9 +33,8 @@ module.exports = connect(
             onDeleteClick: (datasetId) => {
                 dispatch(closeAndDeleteDataset(datasetId))
             },
-            onEntryClick: (datasetId, entryId) => {
-                // TODO
-                console.log(`DO SOMETHING ON DATA CLICK! ${datasetId} ${entryId}`);
+            onEntrySelected: (datasetId, entryId) => {
+                console.error('Selected entry ids', datasetId, entryId); //TODO
             }
         };
     }

@@ -13,6 +13,7 @@ const Matrix = require('ml-matrix');
 function calculatePCA(datasets, entriesMap) {
     return new Promise(function (resolve, reject) {
         const usedEntryValues = [];
+        const usedEntryIds = [];
         const datasetStartIndexes = [];
 
         let datasetEntryIds, entryId, entry;
@@ -25,6 +26,7 @@ function calculatePCA(datasets, entriesMap) {
                 entry = entriesMap[entryId];
                 if (entry) {
                     usedEntryValues.push(entry.value);
+                    usedEntryIds.push(entry.id);
                 }
             }
         }
@@ -47,7 +49,8 @@ function calculatePCA(datasets, entriesMap) {
                     id: dataset.id,
                     name: dataset.name,
                     color: dataset.color,
-                    values: transformedMatrix.slice(startIndex, endIndex)
+                    values: transformedMatrix.slice(startIndex, endIndex),
+                    entryIds: usedEntryIds.slice(startIndex, endIndex)
                 });
             }
 

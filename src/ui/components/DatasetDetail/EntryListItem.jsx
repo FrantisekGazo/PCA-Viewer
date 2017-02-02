@@ -11,8 +11,12 @@ class EntryListItem extends React.Component {
             || this.props.entry.value !== newProps.entry.value;
     }
 
+    handleClick() {
+        this.props.onClick(undefined, this.props.entry.id);
+    }
+
     render() {
-        const { entry, onClick } = this.props;
+        const { entry } = this.props;
 
         let i = -1;
         const valueCells = entry.value.map(v => {
@@ -23,7 +27,7 @@ class EntryListItem extends React.Component {
         });
         return (
             <TableRow
-                onTouchTap={onClick}
+                onTouchTap={this.handleClick.bind(this)}
                 hoverable={true}>
 
                 <TableRowColumn key={-1}>{ entry.name }</TableRowColumn>

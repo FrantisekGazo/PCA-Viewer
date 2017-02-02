@@ -48,10 +48,6 @@ class DatasetDetail extends React.Component {
         });
     }
 
-    handleEntryClick(id) {
-        this.props.onEntryClick(this.props.dataset.id, id);
-    }
-
     handleEntryAdd(entry) {
         this.setState({
             entries: Object.assign({}, this.state.entries, {
@@ -135,10 +131,6 @@ class DatasetDetail extends React.Component {
             });
     }
 
-    handlePlotClick() {
-        console.error('TODO : handlePlotClick');
-    }
-
     handleSaveClick() {
         const { dataset, entries, stream, transformedStream, transformation } = this.state;
 
@@ -214,10 +206,9 @@ class DatasetDetail extends React.Component {
                     <DatasetEntries
                         entries={entries}
                         color={dataset.color}
-                        onEntryClick={this.handleEntryClick.bind(this)}
+                        onEntrySelected={this.props.onEntrySelected}
                         onEntryAdd={this.handleEntryAdd.bind(this)}
-                        onEntryRemove={this.handleEntryRemove.bind(this)}
-                        onPlotClick={this.handlePlotClick.bind(this)}/>
+                        onEntryRemove={this.handleEntryRemove.bind(this)}/>
                 </div>
             );
         }
@@ -243,7 +234,7 @@ DatasetDetail.propTypes = {
     onSaveClick: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired,
     onCloseClick: React.PropTypes.func.isRequired,
-    onEntryClick: React.PropTypes.func.isRequired
+    onEntrySelected: React.PropTypes.func.isRequired
 };
 
 module.exports = DatasetDetail;

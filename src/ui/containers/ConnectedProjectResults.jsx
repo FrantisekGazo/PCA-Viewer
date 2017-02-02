@@ -18,6 +18,10 @@ module.exports = connect(
     },
     // dispatch functions to props
     (dispatch) => {
-        return {};
+        return {
+            onEntrySelected: (datasetId, entryId) => {
+                console.error('Selected entry ids', datasetId, entryId); //TODO
+            }
+        };
     }
 )(ProjectResults);

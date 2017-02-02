@@ -7,6 +7,18 @@ const { hexToRgbString } = require('../../../util/ColorUtil');
 
 class EntrySpectrumPlot extends React.Component {
 
+    handlePlotClick(event) {
+        const points = event.points;
+
+        if (points.length > 0) {
+            const point = points[0];
+
+            const entry = this.props.entries[point.curveNumber];
+
+            this.props.onPlotClick(undefined, entry.id);
+        }
+    }
+
     drawPlot() {
         if (this.props.entries.length === 0) {
             return;
@@ -55,7 +67,7 @@ class EntrySpectrumPlot extends React.Component {
             opts
         );
         // set click callback
-        document.getElementById(elementId).on('plotly_click', this.props.onPlotClick)
+        document.getElementById(elementId).on('plotly_click', this.handlePlotClick.bind(this));
     }
 
     componentDidMount() {
@@ -97,6 +109,7 @@ class EntrySpectrumPlot extends React.Component {
 EntrySpectrumPlot.propTypes = {
     entries: React.PropTypes.array.isRequired,
     defaultColor: React.PropTypes.string.isRequired,
+    // click callback
     onPlotClick: React.PropTypes.func.isRequired,
 };
 

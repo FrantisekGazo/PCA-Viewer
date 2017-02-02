@@ -71,27 +71,29 @@ const ProjectScreen = ({path, detailId, onSaveClick, onCloseClick}) => {
                     bottom: '10px',
                 }}>
 
-                <div style={{
-                    display: 'inline-block',
-                    position: 'absolute',
-                    width: '40%',
-                    top: '0px',
-                    bottom: '0px',
-                    left: '0px',
-                    transform: 'translate(-10px)',
-                }}>
+                <div
+                    style={{
+                        display: 'inline-block',
+                        position: 'absolute',
+                        width: '40%',
+                        top: '0px',
+                        bottom: '0px',
+                        left: '0px',
+                        transform: 'translate(-10px)',
+                    }}>
                     <ConnectedDatasetList/>
                     { detail }
                 </div>
 
-                <div style={{
-                    display: 'inline-block',
-                    position: 'absolute',
-                    top: '0px',
-                    bottom: '0px',
-                    right: '0px',
-                    width: '60%',
-                }}>
+                <div
+                    style={{
+                        display: 'inline-block',
+                        position: 'absolute',
+                        top: '0px',
+                        bottom: '0px',
+                        right: '0px',
+                        width: '60%',
+                    }}>
                     <ConnectedProjectResults/>
                 </div>
             </div>
