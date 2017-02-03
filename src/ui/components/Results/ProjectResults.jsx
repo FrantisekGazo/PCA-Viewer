@@ -18,12 +18,13 @@ class ProjectResults extends React.Component {
             loading: true,
             loaded: false,
             pca: null,
-            usedEigenpairs: [0, 1]
+            usedEigenpairs: [0, 1],
+            error: null
         };
     }
 
     componentDidMount() {
-        this.recalculatePCA();
+        this.recalculatePCA(this.props);
     }
 
     handleEigenPairsChange(newIndexes) {
@@ -34,6 +35,7 @@ class ProjectResults extends React.Component {
 
     render() {
         const { loading, loaded, error, pca, usedEigenpairs } = this.state;
+        const { resultsVersion, selectedEntryIds, onEntrySelected } = this.props;
 
         if (loading) {
             return (
@@ -63,9 +65,12 @@ class ProjectResults extends React.Component {
                         <Card style={{marginTop: '10px', marginBottom: '10px'}}>
                             <CardMedia>
                                 <ScatterPlot
+                                    selectedEntryIds={selectedEntryIds}
+                                    selectedColor={'#ff0000'}
                                     data={pca.data}
+                                    dataVersion={resultsVersion}
                                     usedColumns={usedEigenpairs}
-                                    onPlotClick={this.props.onEntrySelected}/>
+                                    onPlotClick={onEntrySelected}/>
                             </CardMedia>
                         </Card>
                     </div>
@@ -92,37 +97,33 @@ class ProjectResults extends React.Component {
         }
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.props.resultsVersion !== nextProps.resultsVersion
-            || this.state.usedEigenpairs !== nextState.usedEigenpairs
-            || this.state.loading !== nextState.loading
-            || this.state.loaded !== nextState.loaded;
-    }
-
     componentWillUpdate(nextProps, nextState) {
+        console.log('pca', this.props.resultsVersion, nextProps.resultsVersion);
         if (nextProps.resultsVersion !== this.props.resultsVersion) {
             nextState.loading = true;
             nextState.loaded = false;
 
-            this.recalculatePCA();
+            this.recalculatePCA(nextProps);
         }
     }
 
-    recalculatePCA() {
-        PcaService.calculatePCA(this.props.datasets, this.props.entries)
+    recalculatePCA(props) {
+        PcaService.calculatePCA(props.datasets, props.entries)
             .then((pca) => {
                 this.setState({
-                    pca: pca,
                     loading: false,
                     loaded: true,
+                    pca: pca,
+                    error: null
                 });
             })
             .catch((error) => {
                 console.error(error);
 
                 this.setState({
-                    pca: null,
                     loading: false,
+                    loaded: false,
+                    pca: null,
                     error: error.message,
                 });
             });
@@ -136,6 +137,8 @@ ProjectResults.propTypes = {
     datasets: React.PropTypes.array.isRequired,
     // map of all entries
     entries: React.PropTypes.object.isRequired,
+    // selected entry IDs
+    selectedEntryIds: React.PropTypes.array.isRequired,
     // callback
     onEntrySelected: React.PropTypes.func.isRequired,
 };

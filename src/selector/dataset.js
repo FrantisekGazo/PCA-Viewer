@@ -4,6 +4,8 @@
 const { baseStreamId, transformedStreamId } = require('../reducer/project');
 
 
+const getResultsVersion = (state) => state.project.resultsVersion;
+
 const getDetailDatasetId = (state) => state.project.detailDatasetId;
 
 const getDetailEntryIds = (state) => (state.project.detailEntryIds !== null) ? state.project.detailEntryIds : [];
@@ -62,4 +64,5 @@ module.exports = {
     getUsedEntriesColored,
     getAllDatasets,
     getAllEntriesMap,
+    getResultsVersion
 };

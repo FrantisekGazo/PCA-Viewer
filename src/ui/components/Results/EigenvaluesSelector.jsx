@@ -60,6 +60,13 @@ class EigenvaluesSelector extends React.Component {
         });
     };
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.eigenvalues !== nextProps.eigenvalues
+            || this.props.selected !== nextProps.selected
+            || this.state.snackbarMsg !== nextState.snackbarMsg
+            || this.state.selected !== nextState.selected;
+    }
+
     render() {
         const { eigenvalues } = this.props;
         const { selected } = this.state;

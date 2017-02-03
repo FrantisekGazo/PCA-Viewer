@@ -74,7 +74,7 @@ class EntrySpectrumPlot extends React.Component {
         document.getElementById(ELEMENT_ID).on('plotly_click', this.handlePlotClick.bind(this));
     }
 
-    updatePlotColors(nextProps) {
+    redrawSelection(nextProps) {
         const { entries } = this.props; // entries are the same
         const { selectedEntryIds, selectedColor, defaultColor } = nextProps;
         const plot = document.getElementById(ELEMENT_ID);
@@ -120,7 +120,7 @@ class EntrySpectrumPlot extends React.Component {
         return false;
     }
 
-    didColorsChange(nextProps) {
+    didSelectionChange(nextProps) {
         return this.props.defaultColor !== nextProps.defaultColor
             || this.props.selectedColor !== nextProps.selectedColor
             || this.props.selectedEntryIds !== nextProps.selectedEntryIds;
@@ -132,8 +132,8 @@ class EntrySpectrumPlot extends React.Component {
         if (valuesChanged) {
             return true;
         } else {
-            if (this.didColorsChange(nextProps)) {
-                this.updatePlotColors(nextProps);
+            if (this.didSelectionChange(nextProps)) {
+                this.redrawSelection(nextProps);
             }
             return false;
         }
@@ -147,9 +147,11 @@ class EntrySpectrumPlot extends React.Component {
 }
 
 EntrySpectrumPlot.propTypes = {
+    // entries
     entries: React.PropTypes.array.isRequired,
-    selectedEntryIds: React.PropTypes.array.isRequired,
     defaultColor: React.PropTypes.string.isRequired,
+    // selection info
+    selectedEntryIds: React.PropTypes.array.isRequired,
     selectedColor: React.PropTypes.string.isRequired,
     // click callback
     onPlotClick: React.PropTypes.func.isRequired,

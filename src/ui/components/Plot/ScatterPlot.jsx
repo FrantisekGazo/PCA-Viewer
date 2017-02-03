@@ -2,7 +2,6 @@
 
 const React = require('react');
 const Plotly = require("plotly.js/dist/plotly.js");
-const { hexToRgbString } = require('../../../util/ColorUtil');
 
 
 const layout = {
@@ -33,7 +32,30 @@ const opts = {
     displayModeBar: true
 };
 
+const ELEMENT_ID = 'scatter_plot';
+
+const areDisjunct = (arr1, arr2) => {
+    for (let i = 0; i < arr1.length; i++) {
+        for (let j = 0; j < arr2.length; j++) {
+            if (arr1[i] === arr2[j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+};
+
+const isSelected = (selectedIds, id) => selectedIds.indexOf(id) >= 0;
+
+
 class ScatterPlot extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        // do not notify about the same selection
+        this.lastSelection = null;
+    }
 
     handlePlotClick(event) {
         const points = event.points;
@@ -45,14 +67,16 @@ class ScatterPlot extends React.Component {
             const datasetId = d.id;
             const entryId = d.entryIds[point.pointNumber];
 
-            this.props.onPlotClick(datasetId, entryId);
+            if (this.lastSelection !== entryId) {
+                this.lastSelection = entryId;
+                this.props.onPlotClick(datasetId, entryId);
+            }
         }
     }
 
     drawPlot() {
-        const elementId = "scatterPlot";
-
-        const { data, usedColumns } = this.props;
+        // FIXME : looks like not all entries are shown on the scatter plot ?!
+        const { data, usedColumns, selectedEntryIds, selectedColor } = this.props;
 
         const usedIndexX = usedColumns[0];
         const usedIndexY = usedColumns[1];
@@ -71,10 +95,10 @@ class ScatterPlot extends React.Component {
                     type: 'scatter',
                     marker: {
                         symbol: 'circle',
-                        color: hexToRgbString(d.color),
+                        color: d.entryIds.map(id => isSelected(selectedEntryIds, id) ? selectedColor : d.color),
                         size: 8,
                         line: {
-                            color: hexToRgbString('#cccccc'),
+                            color: '#cccccc',
                             width: 1
                         }
                     }
@@ -92,10 +116,10 @@ class ScatterPlot extends React.Component {
                     type: 'scatter3d',
                     marker: {
                         symbol: 'circle',
-                        color: hexToRgbString(d.color),
+                        color: d.entryIds.map(id => isSelected(selectedEntryIds, id) ? selectedColor : d.color),
                         size: 8,
                         line: {
-                            color: hexToRgbString('#cccccc'),
+                            color: '#cccccc',
                             width: 1
                         }
                     }
@@ -127,13 +151,13 @@ class ScatterPlot extends React.Component {
         }
 
         Plotly.newPlot(
-            elementId,
+            ELEMENT_ID,
             plotData,
             layout,
             opts
         );
         // set click callback
-        document.getElementById(elementId).on('plotly_click', this.handlePlotClick.bind(this));
+        document.getElementById(ELEMENT_ID).on('plotly_click', this.handlePlotClick.bind(this));
     }
 
     componentDidMount() {
@@ -144,14 +168,61 @@ class ScatterPlot extends React.Component {
         this.drawPlot();
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.props.data !== nextProps.data
+    didDataChange(nextProps) {
+        return this.props.dataVersion !== nextProps.dataVersion
             || this.props.usedColumns !== nextProps.usedColumns;
+    }
+
+    didSelectionChange(nextProps) {
+        return this.props.selectedEntryIds !== nextProps.selectedEntryIds;
+    }
+
+    redrawSelection(nextProps) {
+        const plot = document.getElementById(ELEMENT_ID);
+        const { data } = this.props;
+        const { selectedColor } = nextProps;
+        const newSelectedEntryIds = nextProps.selectedEntryIds;
+        const oldSelectedEntryIds = this.props.selectedEntryIds;
+
+
+        let d, update;
+        for (let i = 0; i < data.length; i++) {
+            d = data[i];
+
+            if (areDisjunct(newSelectedEntryIds, d.entryIds) && areDisjunct(oldSelectedEntryIds, d.entryIds)) {
+                continue;
+            }
+
+            update = {
+                marker: {
+                    color: d.entryIds.map(id => isSelected(newSelectedEntryIds, id) ? selectedColor : d.color),
+                    size: 8,
+                    line: {
+                        color: '#cccccc',
+                        width: 1
+                    }
+                }
+            };
+
+            Plotly.restyle(plot, update, i);
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.didDataChange(nextProps)) {
+            return true;
+        } else {
+            if (this.didSelectionChange(nextProps)) {
+                this.redrawSelection(nextProps);
+            }
+
+            return false;
+        }
     }
 
     render() {
         return (
-            <div id="scatterPlot"></div>
+            <div id={ELEMENT_ID}></div>
         );
     }
 }
@@ -159,6 +230,10 @@ class ScatterPlot extends React.Component {
 ScatterPlot.propTypes = {
     // array of data objects
     data: React.PropTypes.array.isRequired,
+    dataVersion: React.PropTypes.number.isRequired,
+    // selection information
+    selectedEntryIds: React.PropTypes.array.isRequired,
+    selectedColor: React.PropTypes.string.isRequired,
     // array of column indexes
     usedColumns: React.PropTypes.array.isRequired,
     // click callback
