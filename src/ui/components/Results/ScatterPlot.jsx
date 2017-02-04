@@ -96,7 +96,6 @@ class ScatterPlot extends React.Component {
     }
 
     drawPlot() {
-        // FIXME : looks like not all entries are shown on the scatter plot ?!
         const { data, usedColumns, selectedEntryIds, selectedColor } = this.props;
 
         const usedIndexX = usedColumns[0];
@@ -231,6 +230,7 @@ class ScatterPlot extends React.Component {
         } else {
             if (this.didSelectionChange(nextProps)) {
                 this.redrawSelection(nextProps);
+                this.lastSelection = null;
             }
 
             return false;

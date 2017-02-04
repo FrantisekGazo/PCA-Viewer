@@ -214,7 +214,9 @@ function selectEntries(entryIds) {
             }
         }
 
-        dispatch(createSelectEntryAction(ids));
+        if (currentIds.length !== ids) {
+            dispatch(createSelectEntryAction(ids));
+        }
     }
 }
 
