@@ -13,7 +13,7 @@ class EntryListItem extends React.Component {
     }
 
     handleClick() {
-        this.props.onClick(undefined, this.props.entry.id);
+        this.props.onClick([this.props.entry.id]);
     }
 
     render() {

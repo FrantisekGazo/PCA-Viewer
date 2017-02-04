@@ -206,16 +206,21 @@ function selectEntries(entryIds) {
     return function (dispatch, getState) {
         const currentIds = getState().project.detailEntryIds;
 
-        let ids = sortNumArrayAsc(entryIds.concat(currentIds));
-        for(let i = 0; i < ids.length; ++i) {
-            for(let j = i + 1; j < ids.length; ++j) {
-                if(ids[i] === ids[j])
-                    ids.splice(j--, 1);
+        if (currentIds && currentIds.length > 0) {
+            let ids = sortNumArrayAsc(entryIds.concat(currentIds));
+            for (let i = 0; i < ids.length; ++i) {
+                for (let j = i + 1; j < ids.length; ++j) {
+                    if (ids[i] === ids[j]) {
+                        ids.splice(j--, 1);
+                    }
+                }
             }
-        }
 
-        if (currentIds.length !== ids) {
-            dispatch(createSelectEntryAction(ids));
+            if (currentIds.length !== ids.length) {
+                dispatch(createSelectEntryAction(ids));
+            }
+        } else {
+            dispatch(createSelectEntryAction(entryIds));
         }
     }
 }
