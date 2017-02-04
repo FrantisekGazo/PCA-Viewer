@@ -3,6 +3,8 @@
 const React = require('react');
 const Plotly = require("plotly.js/dist/plotly.js");
 
+const { equalArrays } = require('../../../util/util');
+
 
 const layout = {
     // title: 'Scatter Plot',
@@ -52,6 +54,10 @@ const areDisjunct = (arr1, arr2) => {
 
 const isSelected = (selectedIds, id) => selectedIds.indexOf(id) >= 0;
 
+const SIZE_2D = 20;
+const SIZE_3D = 10;
+const OPACITY = .5;
+
 
 class ScatterPlot extends React.Component {
 
@@ -63,19 +69,28 @@ class ScatterPlot extends React.Component {
     }
 
     handlePlotClick(event) {
+        if (event === undefined) {
+            return; // this happens when user uses BOX SELECTION and then clicks outside
+        }
+
         const points = event.points;
 
-        if (points.length > 0) {
-            console.log('selected:', event);
-            const point = points[0];
+        if (points) {
+            let entryIds = [];
 
-            const d = this.props.data[point.curveNumber];
-            const datasetId = d.id;
-            const entryId = d.entryIds[point.pointNumber];
+            let point, d, entryId;
+            for (let i = 0; i < points.length; i++) {
+                point = points[i];
 
-            if (this.lastSelection !== entryId) {
-                this.lastSelection = entryId;
-                this.props.onPlotClick(datasetId, entryId);
+                d = this.props.data[point.curveNumber];
+                entryId = d.entryIds[point.pointNumber];
+
+                entryIds.push(entryId);
+            }
+
+            if (!equalArrays(this.lastSelection, entryIds)) {
+                this.lastSelection = entryIds;
+                this.props.onPlotClick(entryIds);
             }
         }
     }
@@ -102,11 +117,9 @@ class ScatterPlot extends React.Component {
                     marker: {
                         symbol: 'circle',
                         color: d.entryIds.map(id => isSelected(selectedEntryIds, id) ? selectedColor : d.color),
-                        size: 8,
-                        line: {
-                            color: '#cccccc',
-                            width: 1
-                        }
+                        opacity: OPACITY,
+                        size: SIZE_2D,
+                        line: { color: '#cccccc', width: 1 }
                     }
                 }
             });
@@ -123,11 +136,9 @@ class ScatterPlot extends React.Component {
                     marker: {
                         symbol: 'circle',
                         color: d.entryIds.map(id => isSelected(selectedEntryIds, id) ? selectedColor : d.color),
-                        size: 8,
-                        line: {
-                            color: '#cccccc',
-                            width: 1
-                        }
+                        opacity: OPACITY,
+                        size: SIZE_3D,
+                        line: { color: '#cccccc', width: 1 }
                     }
                 }
             });
@@ -162,8 +173,10 @@ class ScatterPlot extends React.Component {
             layout,
             opts
         );
-        // set click callback
-        document.getElementById(ELEMENT_ID).on('plotly_click', this.handlePlotClick.bind(this));
+        // set click/selection callback
+        const callback = this.handlePlotClick.bind(this);
+        document.getElementById(ELEMENT_ID).on('plotly_selected', callback);
+        document.getElementById(ELEMENT_ID).on('plotly_click', callback);
     }
 
     componentDidMount() {
@@ -185,7 +198,7 @@ class ScatterPlot extends React.Component {
 
     redrawSelection(nextProps) {
         const plot = document.getElementById(ELEMENT_ID);
-        const { data } = this.props;
+        const { data, usedColumns } = this.props;
         const { selectedColor } = nextProps;
         const newSelectedEntryIds = nextProps.selectedEntryIds;
         const oldSelectedEntryIds = this.props.selectedEntryIds;
@@ -202,11 +215,9 @@ class ScatterPlot extends React.Component {
             update = {
                 marker: {
                     color: d.entryIds.map(id => isSelected(newSelectedEntryIds, id) ? selectedColor : d.color),
-                    size: 8,
-                    line: {
-                        color: '#cccccc',
-                        width: 1
-                    }
+                    opacity: OPACITY,
+                    size: usedColumns[2] ? SIZE_3D : SIZE_2D,
+                    line: { color: '#cccccc', width: 1 }
                 }
             };
 

@@ -153,11 +153,10 @@ function showDatasetDetail(state, action) {
     });
 }
 
-function selectEntry(state, action) {
-    const { datasetId, entryIds } = action.payload;
+function selectEntries(state, action) {
+    const entryIds = action.payload;
 
     return update(state, {
-        detailDatasetId: {$set: datasetId ? datasetId : state.detailDatasetId},
         detailEntryIds: {$set: entryIds}
     });
 }
@@ -199,8 +198,8 @@ const project = (state = initState, action) => {
             return deleteDataset(state, action);
         case Actions.SHOW_DATASET_DETAIL:
             return showDatasetDetail(state, action);
-        case Actions.SELECT_ENTRY:
-            return selectEntry(state, action);
+        case Actions.SELECT_ENTRIES:
+            return selectEntries(state, action);
         default:
             return state;
     }

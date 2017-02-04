@@ -12,6 +12,7 @@ const showMenu = require('../menu/Menu');
 const ConnectedDatasetList = require('../containers/ConnectedDatasetList.jsx');
 const ConnectedDatasetDetail = require('../containers/ConnectedDatasetDetail.jsx');
 const ConnectedProjectResults = require('../containers/ConnectedProjectResults.jsx');
+const ConnectedEntrySelection = require('../containers/ConnectedEntrySelection.jsx');
 
 
 const ProjectScreen = ({path, detailId, onSaveClick, onCloseClick}) => {
@@ -95,6 +96,14 @@ const ProjectScreen = ({path, detailId, onSaveClick, onCloseClick}) => {
                         width: '60%',
                     }}>
                     <ConnectedProjectResults/>
+
+                    <div
+                        style={{
+                            marginTop: '10px',
+                            marginBottom: '10px'
+                        }}>
+                        <ConnectedEntrySelection/>
+                    </div>
                 </div>
             </div>
         </div>

@@ -6,7 +6,7 @@ const path = require('path');
 
 const { createAction } = require('./index');
 const DialogService = require('../service/DialogService');
-const { WorkerTasks, execByWorker } = require('../service/WorkerService');
+const { sortNumArrayAsc } = require('../util/util');
 const { readFromFile, writeToFile } = require('../service/FileService');
 
 
@@ -20,7 +20,7 @@ const Actions = {
     DELETE_DATASET: 'DELETE_DATASET',
     SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
     SHOW_PROJECT_ERROR: 'SHOW_PROJECT_ERROR',
-    SELECT_ENTRY: 'SELECT_ENTRY',
+    SELECT_ENTRIES: 'SELECT_ENTRIES',
 };
 
 //region Action Creators
@@ -58,8 +58,8 @@ function createDeleteDatasetAction(datasetId) {
     return createAction(Actions.DELETE_DATASET, datasetId);
 }
 
-function createSelectEntryAction(datasetId, entryIds) {
-    return createAction(Actions.SELECT_ENTRY, {datasetId: datasetId, entryIds: entryIds});
+function createSelectEntryAction(entryIds) {
+    return createAction(Actions.SELECT_ENTRIES, entryIds);
 }
 
 //endregion Action Creators
@@ -198,14 +198,33 @@ function closeAndDeleteDataset(datasetId) {
 }
 
 /**
- * Selects an entry.
- * @param datasetId A dataset ID.
- * @param entryId An entry ID.
+ * Selects entries.
+ * @param entryIds Entry IDs.
  * @returns {Function}
  */
-function selectEntry(datasetId, entryId) {
+function selectEntries(entryIds) {
     return function (dispatch, getState) {
-        dispatch(createSelectEntryAction(datasetId, [entryId]));
+        const currentIds = getState().project.detailEntryIds;
+
+        let ids = sortNumArrayAsc(entryIds.concat(currentIds));
+        for(let i = 0; i < ids.length; ++i) {
+            for(let j = i + 1; j < ids.length; ++j) {
+                if(ids[i] === ids[j])
+                    ids.splice(j--, 1);
+            }
+        }
+
+        dispatch(createSelectEntryAction(ids));
+    }
+}
+
+/**
+ * Clears all selected entries.
+ * @returns {Function}
+ */
+function clearSelectedEntries() {
+    return function (dispatch, getState) {
+        dispatch(createSelectEntryAction([]));
     }
 }
 
@@ -222,5 +241,6 @@ module.exports = {
     showDatasetDetail,
     closeDatasetDetail,
     closeAndDeleteDataset,
-    selectEntry,
+    selectEntries,
+    clearSelectedEntries,
 };

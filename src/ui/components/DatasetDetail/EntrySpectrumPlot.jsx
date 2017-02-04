@@ -11,12 +11,17 @@ class EntrySpectrumPlot extends React.Component {
     handlePlotClick(event) {
         const points = event.points;
 
-        if (points.length > 0) {
-            const point = points[0];
+        if (points && points.length > 0) {
+            let entryIds = [];
 
-            const entry = this.props.entries[point.curveNumber];
+            let point, entry;
+            for (let i = 0; i < points.length; i++) {
+                point = points[i];
+                entry = this.props.entries[point.curveNumber];
+                entryIds.push(entry.id);
+            }
 
-            this.props.onPlotClick(undefined, entry.id);
+            this.props.onPlotClick(entryIds);
         }
     }
 
