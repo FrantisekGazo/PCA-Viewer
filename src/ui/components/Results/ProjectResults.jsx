@@ -6,7 +6,8 @@ const LinearProgress = require('material-ui/LinearProgress').default;
 
 const PcaService = require('../../../service/PcaService');
 const EigenvaluesSelector = require('./EigenvaluesSelector.jsx');
-const { EigenvaluesPlot, ScatterPlot } = require('../Plot/index');
+const EigenvaluesPlot = require('./EigenvaluesPlot.jsx');
+const ScatterPlot = require('./ScatterPlot.jsx');
 
 
 class ProjectResults extends React.Component {
@@ -98,7 +99,6 @@ class ProjectResults extends React.Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        console.log('pca', this.props.resultsVersion, nextProps.resultsVersion);
         if (nextProps.resultsVersion !== this.props.resultsVersion) {
             nextState.loading = true;
             nextState.loaded = false;

@@ -4,7 +4,7 @@ const React = require('react');
 const { Card, CardActions, CardHeader, CardMedia } = require('material-ui/Card');
 
 const EntryList = require('./EntryList.jsx');
-const { EntrySpectrumPlot } = require('../Plot');
+const EntrySpectrumPlot = require('./EntrySpectrumPlot.jsx');
 
 
 class DatasetEntries extends React.Component {

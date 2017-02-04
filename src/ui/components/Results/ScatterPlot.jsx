@@ -25,6 +25,11 @@ const layout = {
     zaxis: {
         zeroline: true,
         title: "Z"
+    },
+    // legend
+    showlegend: true,
+    legend: {
+        orientation: "h"
     }
 };
 
@@ -61,6 +66,7 @@ class ScatterPlot extends React.Component {
         const points = event.points;
 
         if (points.length > 0) {
+            console.log('selected:', event);
             const point = points[0];
 
             const d = this.props.data[point.curveNumber];
