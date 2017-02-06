@@ -1,8 +1,10 @@
 "use strict";
 
 const React = require('react');
-const { Card, CardHeader, CardActions } = require('material-ui/Card');
+const { Card, CardHeader, CardActions, CardMedia } = require('material-ui/Card');
 const FlatButton = require('material-ui/FlatButton').default;
+
+const SelectedEntry = require('./SelectedEntry.jsx');
 
 
 class EntrySelection extends React.Component {
@@ -14,10 +16,18 @@ class EntrySelection extends React.Component {
     render() {
         const { selectedEntryIds, onClearClicked } = this.props;
 
+        const selectedEntries = selectedEntryIds.map(id => {
+            return (<SelectedEntry key={`${id}`} entry={id}/>);
+        });
+
         return (
             <Card>
                 <CardHeader
                     title={`${selectedEntryIds.length} Selected:`}/>
+
+                <CardMedia>
+                    { selectedEntries }
+                </CardMedia>
 
                 <CardActions>
                     <FlatButton
@@ -27,7 +37,6 @@ class EntrySelection extends React.Component {
             </Card>
         );
     }
-
 }
 
 EntrySelection.propTypes = {
