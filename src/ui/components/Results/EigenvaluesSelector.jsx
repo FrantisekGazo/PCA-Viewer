@@ -72,7 +72,9 @@ class EigenvaluesSelector extends React.Component {
         const { selected } = this.state;
 
         let i = 0;
-        const eigenvaluesPickers = eigenvalues.map(v => {
+        const eigenvaluesPickers = eigenvalues
+            .slice(0, 5) // show only first 5 at max
+            .map(v => {
             const index = i++;
             const stringIndex = `${index}`;
             return (
