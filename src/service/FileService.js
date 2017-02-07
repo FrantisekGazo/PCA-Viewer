@@ -18,11 +18,26 @@ function readValuesFromFile(filePath, rowToArray) {
         });
 
         rl.on('line', function (line) {
-            const value = line.split(' ').map(stringValue => parseFloat(stringValue));
-            if (rowToArray && value.length > 1) {
-                values.push(value);
+            const numberValues = [];
+
+            const stringValues = line.split(/,?\s+/);
+            let numberValue;
+            for (let i = 0; i < stringValues.length; i++) {
+                numberValue = parseFloat(stringValues[i]);
+                if (!isNaN(numberValue)) {
+                    numberValues.push(numberValue);
+                }
+            }
+
+            console.log('line', line);
+            console.log('numberValues', numberValues);
+
+            if (rowToArray && numberValues.length > 1) {
+                values.push(numberValues);
             } else if (!rowToArray) {
-                values.push(value[0]);
+                for (let i = 0; i < numberValues.length; i++) {
+                    values.push(numberValues[i]);
+                }
             } else {
                 reject(Error('Each line has to contain at least 2 values'));
                 rl.close();
