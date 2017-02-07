@@ -8,7 +8,7 @@ const { sortNumArrayDesc } = require('../util/util');
 
 // HELPER FUNCTIONS ----------------------------------------------------------------------
 
-const DEFAULT_SAMPLING = 10;
+const DEFAULT_SAMPLING = 100;
 
 /**
  * Creates Dataset structure.

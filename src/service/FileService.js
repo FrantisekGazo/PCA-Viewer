@@ -29,9 +29,6 @@ function readValuesFromFile(filePath, rowToArray) {
                 }
             }
 
-            console.log('line', line);
-            console.log('numberValues', numberValues);
-
             if (rowToArray && numberValues.length > 1) {
                 values.push(numberValues);
             } else if (!rowToArray) {

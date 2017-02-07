@@ -5,7 +5,8 @@ const { Card, CardHeader, CardMedia, CardText } = require('material-ui/Card');
 const Divider = require('material-ui/Divider').default;
 
 const StreamPlot = require('./StreamPlotHighcharts.jsx');
-const StreamTransformationPicker = require('./StreamTransformationPicker.jsx');
+const StreamTransformationSelector = require('./StreamTransformationSelector.jsx');
+const StreamSamplingSelector = require('./StreamSamplingSelector.jsx');
 
 
 const firstValues = (s) => s.slice(0, 10).map(v => v.toString()).join(', ');
@@ -13,7 +14,11 @@ const firstValues = (s) => s.slice(0, 10).map(v => v.toString()).join(', ');
 class StreamEditor extends React.Component {
 
     render() {
-        const { stream, transformedStream, transformation, onTransformationChange } = this.props;
+        const {
+            stream, transformedStream,
+            transformation, onTransformationChange,
+            sampling, onSamplingChange
+        } = this.props;
 
         return (
             <Card>
@@ -34,9 +39,17 @@ class StreamEditor extends React.Component {
                 <Divider/>
 
                 <CardMedia>
-                    <StreamTransformationPicker
+                    <StreamTransformationSelector
                         transformation={transformation}
                         onChange={onTransformationChange}/>
+                </CardMedia>
+
+                <Divider/>
+
+                <CardMedia>
+                    <StreamSamplingSelector
+                        sampling={sampling}
+                        onChange={onSamplingChange}/>
                 </CardMedia>
             </Card>
         );
@@ -48,6 +61,8 @@ StreamEditor.propTypes = {
     transformedStream: React.PropTypes.array.isRequired,
     transformation: React.PropTypes.object.isRequired,
     onTransformationChange: React.PropTypes.func.isRequired,
+    sampling: React.PropTypes.number.isRequired,
+    onSamplingChange: React.PropTypes.func.isRequired,
 };
 
 module.exports = StreamEditor;

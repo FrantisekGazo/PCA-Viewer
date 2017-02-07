@@ -1,7 +1,29 @@
 "use strict";
 
-const {TRANSFORMATIONS} = require('../reducer/project');
+const { TRANSFORMATIONS } = require('../reducer/project');
 
+
+/**
+ * Samples given stream based on given sampling count.
+ * @returns {Promise}
+ */
+function sampleStream(stream, sampling) {
+    return new Promise(function (resolve, reject) {
+        let result = [];
+
+        let sample;
+        for (let i = 0; i <= stream.length - sampling; i += sampling) {
+            sample = stream.slice(i, i + sampling);
+            result.push(sample);
+        }
+
+        if (result.length > 0) {
+            resolve(result);
+        } else {
+            reject(Error(`Sampling ${sampling} failed`));
+        }
+    });
+}
 
 /**
  * Transforms given stream based on given transformation.
@@ -82,5 +104,6 @@ function count(stream, interval) {
 
 
 module.exports = {
+    sampleStream,
     transformStream,
 };

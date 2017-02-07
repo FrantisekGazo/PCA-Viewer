@@ -1,6 +1,7 @@
 "use strict";
 
 const React = require('react');
+const Subheader = require('material-ui/Subheader').default;
 const DropDownMenu = require('material-ui/DropDownMenu').default;
 const MenuItem = require('material-ui/MenuItem').default;
 const TextField = require('material-ui/TextField').default;
@@ -9,7 +10,7 @@ const FlatButton = require('material-ui/FlatButton').default;
 const { TRANSFORMATIONS } = require('../../../reducer/project');
 
 
-class StreamTransformationPicker extends React.Component {
+class StreamTransformationSelector extends React.Component {
 
     constructor(props) {
         super(props);
@@ -33,8 +34,8 @@ class StreamTransformationPicker extends React.Component {
         const number = parseFloat(value);
         if (!isNaN(number)) {
             this.setState({
-                value: number,
-                errorMessage: ''
+                    value: number,
+                    errorMessage: ''
             });
         } else {
             this.setState({
@@ -74,6 +75,7 @@ class StreamTransformationPicker extends React.Component {
 
         return (
             <div style={{padding: '5px'}}>
+                <Subheader>Transformation</Subheader>
 
                 <DropDownMenu labelStyle={{marginBottom: '-18px'}}
                               value={type}
@@ -98,9 +100,9 @@ class StreamTransformationPicker extends React.Component {
     }
 }
 
-StreamTransformationPicker.propTypes = {
+StreamTransformationSelector.propTypes = {
     transformation: React.PropTypes.object.isRequired,
     onChange: React.PropTypes.func.isRequired,
 };
 
-module.exports = StreamTransformationPicker;
+module.exports = StreamTransformationSelector;

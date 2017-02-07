@@ -138,6 +138,27 @@ class DatasetDetail extends React.Component {
             });
     }
 
+    handleStreamSamplingChange(sampling) {
+        console.log('changing sampling to', sampling);
+        return StreamService.sampleStream(this.state.transformedStream, sampling)
+            .then((sampledValues) => {
+                console.error('change this to point to the transformedStream instead of duplication the values'); //TODO
+                console.log('sampled stream', sampledValues.length);
+                const addedEntryIds = Object.keys(this.state.entries).map(id => parseInt(id));
+                addedEntryIds.push(this.props.lastEntryId);
+                return DatasetService.valuesToEntries(addedEntryIds, sampledValues);
+            })
+            .then((entries) => {
+                this.setState({
+                    entries: Object.assign({}, this.state.entries, entries),
+                    update: this.state.update + 1
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
+
     handleSaveClick() {
         const { dataset, included, entries, stream, transformedStream, transformation } = this.state;
 
@@ -202,7 +223,9 @@ class DatasetDetail extends React.Component {
                         stream={this.state.stream}
                         transformedStream={this.state.transformedStream}
                         transformation={this.state.transformation}
-                        onTransformationChange={this.handleStreamTransformationChange.bind(this)}/>
+                        onTransformationChange={this.handleStreamTransformationChange.bind(this)}
+                        sampling={dataset.sampling}
+                        onSamplingChange={this.handleStreamSamplingChange.bind(this)}/>
                 </div>
             );
         }
