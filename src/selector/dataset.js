@@ -47,7 +47,15 @@ const getUsedEntriesColored = (state) => {
         .reduce((result, entries) => result.concat(entries), []);
 };
 
-const getAllDatasets = (state) => state.project.usedDatasetIds.map(id => state.project.datasets[id]);
+const getIncludedDatasetIds = (state) => state.project.usedDatasetIds;
+
+const getIncludedDatasets = (state) => getIncludedDatasetIds(state).map(id => state.project.datasets[id]);
+
+const isDatasetIncluded = (state, datasetId) => getIncludedDatasetIds(state).indexOf(datasetId) >= 0;
+
+const getAllDatasets = (state) => Object.keys(state.project.datasets)
+                                        .map(id => state.project.datasets[id])
+                                        .filter(d => d !== undefined && d !== null);
 
 const getAllEntriesMap = (state) => state.project.entries;
 
@@ -62,7 +70,10 @@ module.exports = {
     getDetailEntryIds,
     getLastEntryId,
     getUsedEntriesColored,
+    getIncludedDatasetIds,
+    getIncludedDatasets,
+    isDatasetIncluded,
     getAllDatasets,
     getAllEntriesMap,
-    getResultsVersion
+    getResultsVersion,
 };

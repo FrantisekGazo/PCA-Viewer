@@ -17,7 +17,7 @@ class DatasetDetail extends React.Component {
     constructor(props) {
         super(props);
 
-        const { dataset, entries, stream, transformedStream } = props;
+        const { dataset, included, entries, stream, transformedStream } = props;
         // add also current dataset entries
         // make sure you do not edit them directly
         const entriesMap = {};
@@ -27,6 +27,7 @@ class DatasetDetail extends React.Component {
         }
 
         this.state = {
+            included: included,
             dataset: Object.assign({}, dataset),
             entries: entriesMap,
             stream: stream.slice(),
@@ -37,6 +38,12 @@ class DatasetDetail extends React.Component {
             },
             update: 0
         };
+    }
+
+    handleIncludeChange(value) {
+        this.setState({
+            included: value
+        });
     }
 
     handleDatasetChange(key, value) {
@@ -132,7 +139,7 @@ class DatasetDetail extends React.Component {
     }
 
     handleSaveClick() {
-        const { dataset, entries, stream, transformedStream, transformation } = this.state;
+        const { dataset, included, entries, stream, transformedStream, transformation } = this.state;
 
         const entryIds = Object.keys(entries).filter(id => {
             const entry = entries[id];
@@ -140,6 +147,7 @@ class DatasetDetail extends React.Component {
         }).map(id => parseInt(id));
 
         let changes = {
+            included: included,
             dataset: Object.assign({}, dataset, {
                 entries: entryIds,
                 transformationType: transformation.type,
@@ -174,6 +182,8 @@ class DatasetDetail extends React.Component {
             <DatasetInfo
                 key='dataset-info'
                 dataset={dataset}
+                included={this.state.included}
+                onIncludeChange={this.handleIncludeChange.bind(this)}
                 onDatasetChange={this.handleDatasetChange.bind(this)}
                 onDeleteClick={this.handleDeleteClick.bind(this)}
                 onCloseClick={this.handleCloseClick.bind(this)}
@@ -223,6 +233,7 @@ class DatasetDetail extends React.Component {
 DatasetDetail.propTypes = {
     // dataset object
     dataset: React.PropTypes.object.isRequired,
+    included: React.PropTypes.bool.isRequired,
     // array of dataset entries
     entries: React.PropTypes.array.isRequired,
     selectedEntryIds: React.PropTypes.array.isRequired,

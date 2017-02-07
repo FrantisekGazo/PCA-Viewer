@@ -15,6 +15,7 @@ module.exports = connect(
 
         return {
             dataset: selector.getDataset(state, datasetId),
+            included: selector.isDatasetIncluded(state, datasetId),
             entries: selector.getDatasetEntries(state, datasetId),
             selectedEntryIds: selector.getDetailEntryIds(state),
             stream: selector.getDatasetStream(state, datasetId),

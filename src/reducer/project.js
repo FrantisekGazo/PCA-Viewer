@@ -97,7 +97,19 @@ function addNewDataset(state, action) {
 
 function updateDataset(state, action) {
     const { id, changes } = action.payload;
-    const { dataset, entries, stream, transformedStream } = changes;
+    const { dataset, included, entries, stream, transformedStream } = changes;
+
+    let newUsedDatasetIds = state.usedDatasetIds;
+    const index = state.usedDatasetIds.indexOf(id);
+    const currentlyIncluded = index >= 0;
+    if (included !== currentlyIncluded) {
+        newUsedDatasetIds = [].concat(state.usedDatasetIds);
+        if (included) {
+            newUsedDatasetIds.push(id);
+        } else {
+            newUsedDatasetIds.splice(index, 1);
+        }
+    }
 
     let maxId = 0;
     if (dataset.entries.length > 0) {
@@ -119,6 +131,7 @@ function updateDataset(state, action) {
             [bsid]: {$set: stream},
             [tsid]: {$set: transformedStream}
         },
+        usedDatasetIds: {$set: newUsedDatasetIds},
         resultsVersion: {$set: state.resultsVersion + 1}
     });
 }

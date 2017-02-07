@@ -5,13 +5,15 @@ const {connect} = require('react-redux');
 
 const DatasetList = require('../components/DatasetList.jsx');
 const { addDataset, showDatasetDetail } = require('../../actions/project');
+const selector = require('../../selector/dataset');
 
 
 module.exports = connect(
     // state to props
     (state) => {
         return {
-            datasets: state.project.usedDatasetIds.map(id => state.project.datasets[id])
+            datasets: selector.getAllDatasets(state),
+            includedDatasetIds: selector.getIncludedDatasetIds(state)
         };
     },
     // dispatch functions to props

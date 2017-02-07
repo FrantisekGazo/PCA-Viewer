@@ -17,19 +17,37 @@ const ColorPicker = require('../ColorPicker/components/ColorPicker.jsx');
 class DatasetInfo extends React.Component {
 
     shouldComponentUpdate(nextProps) {
-        return this.props.dataset === nextProps.dataset;
+        return this.props.dataset !== nextProps.dataset
+            || this.props.included !== nextProps.included;
     }
 
     render() {
         const {
             dataset,
+            included,
             onSaveClick,
             onDeleteClick,
             onCloseClick,
             onDatasetChange,
             onLoadDataClick,
-            onLoadStreamClick
+            onLoadStreamClick,
+            onIncludeChange
         } = this.props;
+
+        let extraAction = null;
+        if (included) {
+            extraAction = (
+                <MenuItem
+                    primaryText="Exclude"
+                    onTouchTap={() => onIncludeChange(false)}/>
+            );
+        } else {
+            extraAction = (
+                <MenuItem
+                    primaryText="Include"
+                    onTouchTap={() => onIncludeChange(true)}/>
+            );
+        }
 
         return (
             <Card>
@@ -106,6 +124,7 @@ class DatasetInfo extends React.Component {
                         <MenuItem
                             primaryText="Load Stream"
                             onTouchTap={onLoadStreamClick}/>
+                        { extraAction }
                     </IconMenu>
                 </CardActions>
             </Card>
@@ -115,12 +134,14 @@ class DatasetInfo extends React.Component {
 
 DatasetInfo.propTypes = {
     dataset: React.PropTypes.object.isRequired,
+    included: React.PropTypes.bool.isRequired,
     onDatasetChange: React.PropTypes.func.isRequired,
     onSaveClick: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired,
     onCloseClick: React.PropTypes.func.isRequired,
     onLoadDataClick: React.PropTypes.func.isRequired,
     onLoadStreamClick: React.PropTypes.func.isRequired,
+    onIncludeChange: React.PropTypes.func.isRequired,
 };
 
 module.exports = DatasetInfo;
