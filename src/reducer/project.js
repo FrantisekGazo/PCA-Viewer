@@ -64,19 +64,15 @@ function selectProject(state, action) {
         return Object.assign({}, initState, {path: path});
     } else {
         return update(state, {
-            $merge: {
-                path: path,
-                error: ''
-            }
+            path: {$set: path},
+            error: {$set: ''}
         });
     }
 }
 
 function showProjectError(state, action) {
     return update(state, {
-        $merge: {
-            error: action.payload
-        }
+        error: {$set: action.payload}
     });
 }
 
@@ -85,9 +81,7 @@ function addNewDataset(state, action) {
 
     return update(state, {
         datasets: {
-            $merge: {
-                [datasetId]: newDataset(datasetId)
-            }
+            [datasetId]: {$set: newDataset(datasetId)}
         },
         usedDatasetIds: {$push: [datasetId]},
         lastDatasetId: {$set: datasetId},
