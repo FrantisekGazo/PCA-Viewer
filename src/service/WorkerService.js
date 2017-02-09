@@ -3,7 +3,6 @@ const { ipcRenderer } = require('electron');
 
 
 const WorkerTasks = {
-    LOAD_VALUES_FROM_FILE: 'load-values-from-file',
     CALCULATE_PCA: 'calculate-pca',
 };
 
@@ -28,6 +27,8 @@ function execByWorker(key, arg, progressCallback=null) {
             } else {
                 resolve(output);
             }
+            ipcRenderer.removeAllListeners(workerTaskEnded(key));
+            ipcRenderer.removeAllListeners(workerTaskProgress(key));
         });
 
         if (progressCallback) {

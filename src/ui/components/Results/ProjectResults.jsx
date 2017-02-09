@@ -4,6 +4,7 @@ const React = require('react');
 const {Card, CardHeader, CardMedia, CardText} = require('material-ui/Card');
 const LinearProgress = require('material-ui/LinearProgress').default;
 
+const WorkerService = require('../../../service/WorkerService');
 const PcaService = require('../../../service/PcaService');
 const EigenvaluesSelector = require('./EigenvaluesSelector.jsx');
 const EigenvaluesPlot = require('./EigenvaluesPlot.jsx');
@@ -108,7 +109,7 @@ class ProjectResults extends React.Component {
     }
 
     recalculatePCA(props) {
-        PcaService.calculatePCA(props.datasetsWithEntries)
+        PcaService.calculatePcaAsync(props.datasetsWithEntries)
             .then((pca) => {
                 this.setState({
                     loading: false,
@@ -124,7 +125,7 @@ class ProjectResults extends React.Component {
                     loading: false,
                     loaded: false,
                     pca: null,
-                    error: error.message,
+                    error: 'PCA calculation failed',
                 });
             });
     }

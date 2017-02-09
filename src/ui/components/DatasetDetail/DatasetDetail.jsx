@@ -172,7 +172,6 @@ class DatasetDetail extends React.Component {
         // prepare data for UI
         const dataset = Object.assign({}, this.props.dataset, this.state.dataset);
         const entries = this.state.entries;
-        console.log('state', this.state);
 
         const content = [];
 

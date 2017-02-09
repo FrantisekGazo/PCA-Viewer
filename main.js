@@ -88,7 +88,7 @@ function createMainWindow() {
 
 function createWorkerWindow() {
     if (process.env.NODE_ENV === 'development') {
-        workerWindow = new BrowserWindow({width: 800, height: 200, show: false, parent: mainWindow});
+        workerWindow = new BrowserWindow({width: 800, height: 200, show: true, parent: mainWindow});
         workerWindow.webContents.openDevTools();
         workerWindow.setPosition(300, 700);
     } else {
