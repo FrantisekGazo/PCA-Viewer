@@ -65,13 +65,13 @@ function setProject(state, action) {
 
 function selectProject(state, action) {
     const path = action.payload;
-    if (path == null) {
-        return Object.assign({}, initState, {path: path});
-    } else {
+    if (path !== null) {
         return update(state, {
             path: {$set: path},
             error: {$set: ''}
         });
+    } else {
+        return initState;
     }
 }
 
@@ -123,7 +123,7 @@ function updateDataset(state, action) {
         maxId = state.lastEntryId;
     }
     // prepare entry map
-    const entryMap = Object.assign(state.entries);
+    const entryMap = Object.assign({}, state.entries);
     let entry;
     for (let i = 0; i < entries.length; i++) {
         entry = entries[i];
