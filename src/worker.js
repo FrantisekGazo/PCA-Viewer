@@ -14,12 +14,13 @@ function sendEnd(callerId, task, inArg, result, error) {
     fromWindow.webContents.send(workerTaskEnded(task), inArg, result, error);
 }
 
-ipcRenderer.on(WorkerTasks.CALCULATE_PCA, function (event, datasets, callerId) {
+ipcRenderer.on(WorkerTasks.CALCULATE_PCA, function (event, datasetsJson, callerId) {
     try {
+        const datasets = JSON.parse(datasetsJson);
         const pca = PcaService.calculatePcaSync(datasets);
-        sendEnd(callerId, WorkerTasks.CALCULATE_PCA, datasets, pca, null);
+        sendEnd(callerId, WorkerTasks.CALCULATE_PCA, datasetsJson, pca, null);
     } catch (error) {
-        sendEnd(callerId, WorkerTasks.CALCULATE_PCA, datasets, null, error);
+        sendEnd(callerId, WorkerTasks.CALCULATE_PCA, datasetsJson, null, error);
     }
 });
 
