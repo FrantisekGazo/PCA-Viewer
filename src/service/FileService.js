@@ -20,7 +20,7 @@ function readValuesFromFile(filePath, rowToArray) {
         rl.on('line', function (line) {
             const numberValues = [];
 
-            const stringValues = line.split(/,?\s+/);
+            const stringValues = line.replace(',', '.').split(/\s+/);
             let numberValue;
             for (let i = 0; i < stringValues.length; i++) {
                 numberValue = parseFloat(stringValues[i]);
