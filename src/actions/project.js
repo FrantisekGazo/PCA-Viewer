@@ -99,7 +99,8 @@ function openExistingProject() {
                 return readFromFile(filePath)
                     .then((data) => {
                         const project = JSON.parse(data);
-                        project['path'] = dir;
+                        project.path = dir;
+                        project.detailDatasetId = null; // do not show detail after opening a project
 
                         dispatch(createSetProjectAction(project));
                         dispatch(createGoToProjectScreenAction());
