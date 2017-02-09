@@ -56,11 +56,15 @@ class EigenvaluePlot extends React.Component {
     }
 
     componentDidMount() {
-        this.drawPlot();
+        setTimeout(() => {
+            this.drawPlot();
+        }, 300);
     }
 
     componentDidUpdate() {
-        this.drawPlot();
+        setTimeout(() => {
+            this.drawPlot();
+        }, 300);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
