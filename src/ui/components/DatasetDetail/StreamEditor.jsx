@@ -32,10 +32,6 @@ class StreamEditor extends React.Component {
                     Stream: { firstValues(stream) }... ({stream.length} values)
                 </CardText>
 
-                <CardText>
-                    Transformed Stream: { firstValues(transformedStream) }... ({transformedStream.length} values)
-                </CardText>
-
                 <Divider/>
 
                 <CardMedia>
@@ -43,6 +39,12 @@ class StreamEditor extends React.Component {
                         transformation={transformation}
                         onChange={onTransformationChange}/>
                 </CardMedia>
+
+                <Divider/>
+
+                <CardText>
+                    Transformed Stream: { firstValues(transformedStream) }... ({transformedStream.length} values)
+                </CardText>
 
                 <Divider/>
 
