@@ -10,7 +10,7 @@ class SelectedEntry extends React.Component {
 
         return (
             <div>
-                {entry}
+                { `${entry}` }
             </div>
         );
     }
@@ -18,7 +18,7 @@ class SelectedEntry extends React.Component {
 }
 
 SelectedEntry.propTypes = {
-    entry: React.PropTypes.string.isRequired,
+    entry: React.PropTypes.number.isRequired,
 };
 
 module.exports = SelectedEntry;

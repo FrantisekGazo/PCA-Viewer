@@ -6,24 +6,22 @@ const Matrix = require('ml-matrix');
 
 /**
  * Calculates PCA.
- * @param datasets All datasets
- * @param entriesMap Map of all entries
+ * @param datasets {Array} All datasets with entries
  * @returns {Promise} that will resolve with a calculated PCA or reject with an error.
  */
-function calculatePCA(datasets, entriesMap) {
+function calculatePCA(datasets) {
     return new Promise(function (resolve, reject) {
         const usedEntryValues = [];
         const usedEntryIds = [];
         const datasetStartIndexes = [];
 
-        let datasetEntryIds, entryId, entry;
+        let datasetEntries, entry;
         for (let i = 0; i < datasets.length; i++) {
-            datasetEntryIds = datasets[i].entries;
+            datasetEntries = datasets[i].entries;
             datasetStartIndexes.push(usedEntryValues.length);
 
-            for (let j = 0; j < datasetEntryIds.length; j++) {
-                entryId = datasetEntryIds[j];
-                entry = entriesMap[entryId];
+            for (let j = 0; j < datasetEntries.length; j++) {
+                entry = datasetEntries[j];
                 if (entry) {
                     usedEntryValues.push(entry.value);
                     usedEntryIds.push(entry.id);

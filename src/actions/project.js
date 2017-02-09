@@ -47,7 +47,7 @@ function createAddDatasetAction() {
 }
 
 function createUpdateDatasetAction(datasetId, changes) {
-    return createAction(Actions.UPDATE_DATASET, {id: datasetId, changes});
+    return createAction(Actions.UPDATE_DATASET, {datasetId, changes});
 }
 
 function createShowDatasetDetailAction(datasetId) {

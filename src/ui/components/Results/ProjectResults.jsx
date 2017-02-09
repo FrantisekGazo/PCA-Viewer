@@ -108,7 +108,7 @@ class ProjectResults extends React.Component {
     }
 
     recalculatePCA(props) {
-        PcaService.calculatePCA(props.datasets, props.entries)
+        PcaService.calculatePCA(props.datasetsWithEntries)
             .then((pca) => {
                 this.setState({
                     loading: false,
@@ -133,10 +133,8 @@ class ProjectResults extends React.Component {
 ProjectResults.propTypes = {
     // number that should be incremented each time result needs an update
     resultsVersion: React.PropTypes.number.isRequired,
-    // array of all datasets
-    datasets: React.PropTypes.array.isRequired,
-    // map of all entries
-    entries: React.PropTypes.object.isRequired,
+    // array of all datasets with entries
+    datasetsWithEntries: React.PropTypes.array.isRequired,
     // selected entry IDs
     selectedEntryIds: React.PropTypes.array.isRequired,
     // callback

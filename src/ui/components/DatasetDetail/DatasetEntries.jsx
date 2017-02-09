@@ -53,7 +53,6 @@ DatasetEntries.propTypes = {
     selectedEntryIds: React.PropTypes.array.isRequired,
     // callbacks
     onEntryAdd: React.PropTypes.func.isRequired, // TODO : implement
-    onEntryRemove: React.PropTypes.func.isRequired, // TODO : implement
     onEntrySelected: React.PropTypes.func.isRequired,
 };
 

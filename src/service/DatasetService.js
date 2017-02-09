@@ -12,16 +12,19 @@ const { sortNumArrayDesc } = require('../util/util');
  * @param startId Last used entry ID by store.
  * @returns {Promise} that returns an Object of {entryId: entry}
  */
-function valuesToEntries(addedEntryIds, values) {
+function valuesToEntries(datasetId, addedEntryIds, values) {
     return new Promise(function (resolve, reject) {
-        const newEntries = {};
+        const newEntries = [];
 
         let newId = sortNumArrayDesc(addedEntryIds)[0]; // sort so that the highest ID is first
 
-        values.map((value) => {
+        let value, entry;
+        for (let i = 0; i < values.length; i++) {
+            value = values[i];
             newId += 1;
-            newEntries[newId] = newEntry(newId, value);
-        });
+            entry = newEntry({datasetId: datasetId, id: newId, value: value});
+            newEntries.push(entry);
+        }
 
         resolve(newEntries);
     });

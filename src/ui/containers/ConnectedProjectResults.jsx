@@ -14,8 +14,7 @@ module.exports = connect(
         return {
             resultsVersion: selector.getResultsVersion(state),
             selectedEntryIds: selector.getDetailEntryIds(state),
-            datasets: selector.getIncludedDatasets(state),
-            entries: selector.getAllEntriesMap(state),
+            datasetsWithEntries: selector.getIncludedDatasetsWithEntries(state),
         };
     },
     // dispatch functions to props

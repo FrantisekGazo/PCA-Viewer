@@ -18,18 +18,11 @@ class DatasetDetail extends React.Component {
         super(props);
 
         const { dataset, included, entries, stream, transformedStream } = props;
-        // add also current dataset entries
-        // make sure you do not edit them directly
-        const entriesMap = {};
-        for (let i = 0; i < entries.length; i++) {
-            const entry = entries[i];
-            entriesMap[entry.id] = entry;
-        }
 
         this.state = {
             included: included,
             dataset: Object.assign({}, dataset),
-            entries: entriesMap,
+            entries: entries.slice(),
             stream: stream.slice(),
             transformedStream: transformedStream.slice(),
             transformation: {
@@ -56,18 +49,9 @@ class DatasetDetail extends React.Component {
     }
 
     handleEntryAdd(entry) {
+        this.state.entries.push(entry);
         this.setState({
-            entries: Object.assign({}, this.state.entries, {
-                [entry.id]: entry
-            })
-        });
-    }
-
-    handleEntryRemove(entryId) {
-        this.setState({
-            entries: Object.assign({}, this.state.entries, {
-                [entryId]: undefined
-            })
+            update: this.state.update + 1
         });
     }
 
@@ -77,13 +61,13 @@ class DatasetDetail extends React.Component {
                 return FileService.readValuesFromFile(filePath, true);
             })
             .then((values) => {
-                const addedEntryIds = Object.keys(this.state.entries).map(id => parseInt(id));
+                const addedEntryIds = this.state.entries.map(entry => entry.id);
                 addedEntryIds.push(this.props.lastEntryId);
-                return DatasetService.valuesToEntries(addedEntryIds, values);
+                return DatasetService.valuesToEntries(this.state.dataset.id, addedEntryIds, values);
             })
             .then((entries) => {
                 this.setState({
-                    entries: Object.assign({}, this.state.entries, entries),
+                    entries: this.state.entries.concat(entries),
                     update: this.state.update + 1
                 });
             })
@@ -144,13 +128,13 @@ class DatasetDetail extends React.Component {
             .then((sampledValues) => {
                 console.error('change this to point to the transformedStream instead of duplication the values'); //TODO
                 console.log('sampled stream', sampledValues.length);
-                const addedEntryIds = Object.keys(this.state.entries).map(id => parseInt(id));
+                const addedEntryIds = this.state.entries.map(entry => entry.id);
                 addedEntryIds.push(this.props.lastEntryId);
-                return DatasetService.valuesToEntries(addedEntryIds, sampledValues);
+                return DatasetService.valuesToEntries(this.state.dataset.id, addedEntryIds, sampledValues);
             })
             .then((entries) => {
                 this.setState({
-                    entries: Object.assign({}, this.state.entries, entries),
+                    entries: this.state.entries.concat(entries),
                     update: this.state.update + 1
                 });
             })
@@ -162,15 +146,9 @@ class DatasetDetail extends React.Component {
     handleSaveClick() {
         const { dataset, included, entries, stream, transformedStream, transformation } = this.state;
 
-        const entryIds = Object.keys(entries).filter(id => {
-            const entry = entries[id];
-            return entry !== undefined && entry !== null;
-        }).map(id => parseInt(id));
-
         let changes = {
             included: included,
             dataset: Object.assign({}, dataset, {
-                entries: entryIds,
                 transformationType: transformation.type,
                 transformationValue: transformation.value
             }),
@@ -193,9 +171,8 @@ class DatasetDetail extends React.Component {
     render() {
         // prepare data for UI
         const dataset = Object.assign({}, this.props.dataset, this.state.dataset);
-        const entries = Object.keys(this.state.entries)
-            .map(id => this.state.entries[id])
-            .filter(entry => entry !== undefined && entry !== null);
+        const entries = this.state.entries;
+        console.log('state', this.state);
 
         const content = [];
 
@@ -241,8 +218,7 @@ class DatasetDetail extends React.Component {
                         selectedEntryIds={this.props.selectedEntryIds}
                         color={dataset.color}
                         onEntrySelected={this.props.onEntrySelected}
-                        onEntryAdd={this.handleEntryAdd.bind(this)}
-                        onEntryRemove={this.handleEntryRemove.bind(this)}/>
+                        onEntryAdd={this.handleEntryAdd.bind(this)}/>
                 </div>
             );
         }

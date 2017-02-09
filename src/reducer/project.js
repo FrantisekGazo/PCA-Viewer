@@ -19,27 +19,32 @@ function newDataset(id) {
         name: `Dataset ${id}`,
         desc: '',
         color: '#000000',
-        // raw data
-        entries: [], // entry IDs
-        // stream data
+        // stream info
         transformationType: TRANSFORMATIONS.NONE, // stream transformation type
         transformationValue: 0, // stream transformation value
         sampling: DEFAULT_SAMPLING, // number of stream values in 1 entry
-        streamEntries: [] // entry IDs - for entries sampled from the stream
     }
 }
 
 /**
  * Creates Entry structure.
  */
-function newEntry(id, value=[]) {
-    return {
-        id: id,
-        name: `E${id}`,
-        color: undefined,
-        value: value,
-        streamPosition: undefined
+function newEntry(args) {
+    if (args.id === undefined) {
+        throw new Error("entry is missing an 'id'");
     }
+    if (args.datasetId === undefined) {
+        throw new Error("entry is missing a 'datasetId'");
+    }
+
+    return Object.assign({
+        id: undefined,
+        datasetId: undefined,
+        name: `E${args.id}`,
+        color: undefined,
+        value: undefined,
+        streamPosition: undefined
+    }, args);
 }
 
 const TRANSFORMATIONS = {
@@ -90,36 +95,46 @@ function addNewDataset(state, action) {
 }
 
 function updateDataset(state, action) {
-    const { id, changes } = action.payload;
+    const { datasetId, changes } = action.payload;
     const { dataset, included, entries, stream, transformedStream } = changes;
 
+    // prepare list of all dataset IDs included in PCA
     let newUsedDatasetIds = state.usedDatasetIds;
-    const index = state.usedDatasetIds.indexOf(id);
+    const index = state.usedDatasetIds.indexOf(datasetId);
     const currentlyIncluded = index >= 0;
     if (included !== currentlyIncluded) {
         newUsedDatasetIds = [].concat(state.usedDatasetIds);
         if (included) {
-            newUsedDatasetIds.push(id);
+            newUsedDatasetIds.push(datasetId);
         } else {
             newUsedDatasetIds.splice(index, 1);
         }
     }
-
+    // prepare stream IDs
+    const bsid = baseStreamId(datasetId);
+    const tsid = transformedStreamId(datasetId);
+    // find max ID used
     let maxId = 0;
-    if (dataset.entries.length > 0) {
-        maxId = sortNumArrayDesc(dataset.entries)[0];
+    if (entries.length > 0) {
+        const entryIds = entries.map(entry => entry.id);
+        maxId = sortNumArrayDesc(entryIds)[0];
     }
     if (state.lastEntryId > maxId) {
         maxId = state.lastEntryId;
     }
+    // prepare entry map
+    const entryMap = Object.assign(state.entries);
+    let entry;
+    for (let i = 0; i < entries.length; i++) {
+        entry = entries[i];
+        entryMap[entry.id] = entry;
+    }
 
-    const bsid = baseStreamId(id);
-    const tsid = transformedStreamId(id);
     return update(state, {
         datasets: {
-            [id]: {$set: dataset}
+            [datasetId]: {$set: dataset}
         },
-        entries: {$merge: entries},
+        entries: {$set: entryMap},
         lastEntryId: {$set: maxId},
         streams: {
             [bsid]: {$set: stream},
@@ -133,7 +148,18 @@ function updateDataset(state, action) {
 function deleteDataset(state, action) {
     const datasetId = action.payload;
 
-    const hasEntries = (state.datasets[datasetId].entries.length > 0);
+    let hasEntries = false;
+    let entryMap = Object.assign({}, state.entries);
+    let entry;
+    for (let id in entryMap) {
+        if (!entryMap.hasOwnProperty(id)) continue;
+
+        entry = entryMap[id];
+        if (entry && entry.datasetId !== datasetId) continue; // leave it there
+
+        delete entryMap[id];
+        hasEntries = true;
+    }
     const resultsVersion = (hasEntries) ? state.resultsVersion + 1 : state.resultsVersion;
 
     const bsid = baseStreamId(datasetId);
@@ -145,7 +171,7 @@ function deleteDataset(state, action) {
         datasets: {
             [datasetId]: {$set: undefined}
         },
-        /* TODO : remove also entries */
+        entries: {$set: entryMap},
         streams: {
             [bsid]: {$set: undefined},
             [tsid]: {$set: undefined}
