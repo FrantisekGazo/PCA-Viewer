@@ -8,6 +8,7 @@ const MenuItem = require('material-ui/MenuItem').default;
 const IconClose = require('material-ui/svg-icons/navigation/close').default;
 const IconMore = require('material-ui/svg-icons/navigation/more-vert').default;
 
+const HelpService = require('../../service/HelpService');
 const showMenu = require('../menu/Menu');
 const ConnectedDatasetList = require('../containers/ConnectedDatasetList.jsx');
 const ConnectedDatasetDetail = require('../containers/ConnectedDatasetDetail.jsx');
@@ -57,7 +58,7 @@ const ProjectScreen = ({path, detailId, onSaveClick, onCloseClick}) => {
                         }>
 
                         <MenuItem primaryText="Settings"/>
-                        <MenuItem primaryText="Help"/>
+                        <MenuItem primaryText='Help' onTouchTap={() => HelpService.showHelp()}/>
                     </IconMenu>
                 }/>
 

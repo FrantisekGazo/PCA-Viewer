@@ -4,7 +4,7 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const StartScreen = require('../components/StartScreen.jsx');
-const { startNewProject, openExistingProject } = require('../../actions/project');
+const { setupNewProject, openExistingProject } = require('../../actions/project');
 
 
 module.exports = connect(
@@ -18,10 +18,10 @@ module.exports = connect(
     (dispatch) => {
         return {
             onStartNewClicked: () => {
-                dispatch(startNewProject())
+                dispatch(setupNewProject());
             },
             onOpenExistingClicked: () => {
-                dispatch(openExistingProject())
+                dispatch(openExistingProject());
             }
         };
     }

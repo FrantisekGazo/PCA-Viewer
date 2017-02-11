@@ -26,12 +26,20 @@ const Actions = {
 //region Action Creators
 // these action creators are private and called only internally by action dispatchers
 
+function createGoToStartScreenAction() {
+    return replace({pathname: `/`});
+}
+
+function createGoToSetupScreenAction() {
+    return replace({pathname: `/setup/`});
+}
+
 function createGoToProjectScreenAction() {
     return replace({pathname: `/project/`});
 }
 
-function createSelectProjectAction(projectDir) {
-    return createAction(Actions.SELECT_PROJECT, projectDir);
+function createSelectProjectAction(params) {
+    return createAction(Actions.SELECT_PROJECT, params);
 }
 
 function createProjectErrorAction(errorMessage) {
@@ -67,19 +75,33 @@ function createSelectEntryAction(entryIds) {
 //region Action Dispatchers
 
 /**
- * Creates a new project.
+ * Navigates to setup screen, where user can setup a new project.
  * @returns {Function}
  */
-function startNewProject() {
+function setupNewProject() {
     return function (dispatch, getState) {
-        DialogService.showOpenCreateDirDialog()
-            .then((dir) => {
-                dispatch(createSelectProjectAction(dir));
-                dispatch(createGoToProjectScreenAction());
-            })
-            .catch((err) => {
-                dispatch(createProjectErrorAction(err.message));
-            });
+        dispatch(createGoToSetupScreenAction());
+    }
+}
+
+/**
+ * Navigates back to start screen.
+ * @returns {Function}
+ */
+function goBackFromSetup() {
+    return function (dispatch, getState) {
+        dispatch(createGoToStartScreenAction());
+    }
+}
+
+/**
+ * Creates a new project and navigates to the project screen.
+ * @returns {Function}
+ */
+function startNewProject(params) {
+    return function (dispatch, getState) {
+        dispatch(createSelectProjectAction(params));
+        dispatch(createGoToProjectScreenAction());
     }
 }
 
@@ -133,9 +155,7 @@ function saveProject() {
  */
 function closeProject() {
     return function (dispatch, getState) {
-        const location = {pathname: `/`};
-        dispatch(replace(location));
-
+        dispatch(createGoToStartScreenAction());
         dispatch(createSelectProjectAction(null));
     }
 }
@@ -240,6 +260,8 @@ function clearSelectedEntries() {
 
 module.exports = {
     Actions,
+    setupNewProject,
+    goBackFromSetup,
     startNewProject,
     openExistingProject,
     saveProject,

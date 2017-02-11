@@ -13,6 +13,7 @@ const { syncHistoryWithStore } = require('react-router-redux');
 
 const App = require('./ui/containers/App.jsx');
 const StartScreen = require('./ui/containers/ConnectedStartScreen.jsx');
+const SetupScreen = require('./ui/containers/ConnectedSetupScreen.jsx');
 const ProjectScreen = require('./ui/containers/ConnectedProjectScreen.jsx');
 const store = require('./store/renderer');
 
@@ -44,6 +45,7 @@ ReactDOM.render(
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={StartScreen}/>
+                <Route path="setup/" component={SetupScreen}/>
                 <Route path="project/" component={ProjectScreen}/>
             </Route>
         </Router>
