@@ -10,6 +10,11 @@ const { sortNumArrayDesc } = require('../util/util');
 
 const DEFAULT_SAMPLING = 100;
 
+const PROJECT_TYPE = {
+    OFFLINE_PCA: 1,
+    ONLINE_PCA: 2,
+};
+
 /**
  * Creates Dataset structure.
  */
@@ -64,7 +69,7 @@ function setProject(state, action) {
 }
 
 function selectProject(state, action) {
-    const path = action.payload;
+    const { path } = action.payload;
     if (path !== null) {
         return update(state, {
             path: {$set: path},
@@ -239,6 +244,7 @@ const project = (state = initState, action) => {
 };
 
 module.exports = {
+    PROJECT_TYPE,
     TRANSFORMATIONS,
     project,
     newEntry,
