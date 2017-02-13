@@ -3,7 +3,7 @@
 const React = require('react');
 const { connect } = require('react-redux');
 
-const SetupScreen = require('../components/SetupScreen.jsx');
+const SetupScreen = require('../components/Setup/SetupScreen.jsx');
 const { goBackFromSetup, startNewProject } = require('../../actions/project');
 
 

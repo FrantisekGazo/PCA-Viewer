@@ -2,8 +2,7 @@
 
 const React = require('react');
 const AppBar = require('material-ui/AppBar').default;
-const { Card, CardMedia, CardActions } = require('material-ui/Card');
-const { RadioButton, RadioButtonGroup } = require('material-ui/RadioButton');
+const { Card } = require('material-ui/Card');
 const TextField = require('material-ui/TextField').default;
 const IconButton = require('material-ui/IconButton').default;
 const IconBack = require('material-ui/svg-icons/navigation/arrow-back').default;
@@ -13,12 +12,12 @@ const IconMenu = require('material-ui/IconMenu').default;
 const MenuItem = require('material-ui/MenuItem').default;
 const FlatButton = require('material-ui/FlatButton').default;
 const Snackbar = require('material-ui/Snackbar').default;
-const Checkbox = require('material-ui/Checkbox').default;
 
-const HelpService = require('../../service/HelpService');
-const DialogService = require('../../service/DialogService');
-const { PROJECT_TYPE } = require('../../reducer/project');
-const showMenu = require('../menu/Menu');
+const ProjectTypeSelector = require('./ProjectTypeSelector.jsx');
+const HelpService = require('../../../service/HelpService');
+const DialogService = require('../../../service/DialogService');
+const { PROJECT_TYPE } = require('../../../reducer/project');
+const showMenu = require('../../menu/Menu');
 
 const styles = {
     appBar: {
@@ -37,16 +36,6 @@ const styles = {
     optionsDiv: {
         padding: '10px'
     },
-    typeBlock: {
-        position: 'relative',
-        padding: '10px',
-        width: '200px',
-        display: 'inline-block',
-        verticalAlign: 'top'
-    },
-    radioButton: {
-        marginBottom: 16,
-    },
     actionButtonsDiv: {
         padding: '10px',
         position: 'relative',
@@ -64,8 +53,8 @@ class SetupScreen extends React.Component {
             name: 'New Project',
             path: '',
             type: PROJECT_TYPE.OFFLINE_PCA,
-            useDimension: false,
-            dimension: 10,
+            useConstantSampling: false,
+            sampling: 10,
             error: ''
         };
     }
@@ -84,28 +73,11 @@ class SetupScreen extends React.Component {
         });
     }
 
-    handleTypeChange(event, newValue) {
+    handleTypeChange({type, sampling, useConstantSampling}) {
         this.setState({
-            type: newValue,
-            error: ''
-        });
-    }
-
-    handleUseDimensionChange(event, newValue) {
-        this.setState({
-            useDimension: newValue,
-            error: ''
-        });
-    }
-
-    handleDimensionChange(event, newValue) {
-        let number = parseInt(newValue);
-        if (isNaN(number)) {
-            number = 0;
-        }
-
-        this.setState({
-            dimension: number,
+            type: type,
+            sampling: sampling,
+            useConstantSampling: useConstantSampling,
             error: ''
         });
     }
@@ -124,7 +96,7 @@ class SetupScreen extends React.Component {
     }
 
     handleCreateClick() {
-        const { name, path, useDimension, dimension } = this.state;
+        const { name, path, useConstantSampling, sampling } = this.state;
 
         if (!name) {
             this.setState({
@@ -140,7 +112,7 @@ class SetupScreen extends React.Component {
             return;
         }
 
-        if (useDimension && dimension <= 3) {
+        if (useConstantSampling && sampling <= 3) {
             this.setState({
                 error: 'Dimension must be greater than 3!'
             });
@@ -157,7 +129,7 @@ class SetupScreen extends React.Component {
     }
 
     render() {
-        const { name, path, type, useDimension, dimension, error } = this.state;
+        const { name, path, type, useConstantSampling, sampling, error } = this.state;
 
         showMenu();
 
@@ -208,42 +180,11 @@ class SetupScreen extends React.Component {
                             </IconButton>
 
                             <br/>
-                            <p>Type:</p>
-                            <div style={styles.typeBlock}>
-                                <RadioButtonGroup
-                                    name='project-type'
-                                    valueSelected={type}
-                                    onChange={this.handleTypeChange.bind(this)}>
-                                    <RadioButton
-                                        value={PROJECT_TYPE.OFFLINE_PCA}
-                                        label="Offline PCA"
-                                        style={styles.radioButton}/>
-                                    <RadioButton
-                                        value={PROJECT_TYPE.ONLINE_PCA}
-                                        label="Online PCA"
-                                        style={styles.radioButton}/>
-                                </RadioButtonGroup>
-                            </div>
-
-                            {
-                                (type === PROJECT_TYPE.OFFLINE_PCA) ?
-                                    (
-                                        <div style={styles.typeBlock}>
-                                            <Checkbox
-                                                label="Dimension"
-                                                checked={useDimension}
-                                                style={styles.checkbox}
-                                                onCheck={this.handleUseDimensionChange.bind(this)}/>
-
-                                            <TextField
-                                                id='dimension'
-                                                disabled={!useDimension}
-                                                value={(dimension > 0) ? `${dimension}` : ''}
-                                                onChange={this.handleDimensionChange.bind(this)}/>
-                                        </div>
-                                    )
-                                    : null
-                            }
+                            <ProjectTypeSelector
+                                type={type}
+                                useConstantSampling={useConstantSampling}
+                                sampling={sampling}
+                                onTypeChange={this.handleTypeChange.bind(this)}/>
                         </div>
 
                         <div style={styles.actionButtonsDiv}>
