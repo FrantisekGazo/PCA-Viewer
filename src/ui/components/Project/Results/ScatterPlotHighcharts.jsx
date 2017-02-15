@@ -6,7 +6,7 @@ const ReactHighcharts = require('react-highcharts');
 require('highcharts-3d')(ReactHighcharts.Highcharts);
 require('highcharts-exporting')(ReactHighcharts.Highcharts);
 
-const {hexToRgbString} = require('../../../util/ColorUtil');
+const {hexToRgbString} = require('../../../../util/ColorUtil');
 
 
 const createSerie = (data, values) => {

@@ -2,7 +2,6 @@
 
 const React = require('react');
 const Plotly = require("plotly.js/dist/plotly.js");
-const { hexToRgbString } = require('../../../util/ColorUtil');
 
 
 class StreamPlot extends React.Component {
@@ -21,7 +20,7 @@ class StreamPlot extends React.Component {
             y: stream,
             mode: 'lines',
             line: {
-                color: hexToRgbString('#037eff')
+                color: '#037eff'
             }
         }];
 

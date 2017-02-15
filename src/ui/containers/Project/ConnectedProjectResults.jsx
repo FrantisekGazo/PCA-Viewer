@@ -3,9 +3,9 @@
 const React = require('react');
 const { connect } = require('react-redux');
 
-const ProjectResults = require('../components/Results/ProjectResults.jsx');
-const { selectEntries } = require('../../actions/project');
-const selector = require('../../selector/dataset');
+const ProjectResults = require('../../components/Project/Results/ProjectResults.jsx');
+const { selectEntries } = require('../../../actions/project');
+const selector = require('../../../selector/dataset');
 
 
 module.exports = connect(

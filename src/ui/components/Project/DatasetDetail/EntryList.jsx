@@ -4,7 +4,7 @@ const React = require('react');
 const { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } = require('material-ui/Table');
 
 const EntryListItem = require('./EntryListItem.jsx');
-const { range } = require('../../../util/util');
+const { range } = require('../../../../util/util');
 
 
 class EntryList extends React.Component {

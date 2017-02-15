@@ -6,10 +6,10 @@ const DatasetInfo = require('./DatasetInfo.jsx');
 const StreamEditor = require('./StreamEditor.jsx');
 const DatasetEntries = require('./DatasetEntries.jsx');
 
-const DatasetService = require('../../../service/DatasetService');
-const DialogService = require('../../../service/DialogService');
-const FileService = require('../../../service/FileService');
-const StreamService = require('../../../service/StreamService');
+const DatasetService = require('../../../../service/DatasetService');
+const DialogService = require('../../../../service/DialogService');
+const FileService = require('../../../../service/FileService');
+const StreamService = require('../../../../service/StreamService');
 
 
 class DatasetDetail extends React.Component {

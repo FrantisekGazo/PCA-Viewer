@@ -4,8 +4,8 @@ const React = require('react');
 const {Card, CardHeader, CardMedia, CardText} = require('material-ui/Card');
 const LinearProgress = require('material-ui/LinearProgress').default;
 
-const WorkerService = require('../../../service/WorkerService');
-const PcaService = require('../../../service/PcaService');
+const WorkerService = require('../../../../service/WorkerService');
+const PcaService = require('../../../../service/PcaService');
 const EigenvaluesSelector = require('./EigenvaluesSelector.jsx');
 const EigenvaluesPlot = require('./EigenvaluesPlot.jsx');
 const ScatterPlot = require('./ScatterPlot.jsx');

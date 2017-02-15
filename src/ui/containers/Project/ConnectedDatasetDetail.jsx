@@ -3,9 +3,9 @@
 const React = require('react');
 const {connect} = require('react-redux');
 
-const DatasetDetail = require('../components/DatasetDetail/DatasetDetail.jsx');
-const { closeAndDeleteDataset, closeDatasetDetail, updateDataset, selectEntries } = require('../../actions/project');
-const selector = require('../../selector/dataset');
+const DatasetDetail = require('../../components/Project/DatasetDetail/DatasetDetail.jsx');
+const { closeAndDeleteDataset, closeDatasetDetail, updateDataset, selectEntries } = require('../../../actions/project');
+const selector = require('../../../selector/dataset');
 
 
 module.exports = connect(

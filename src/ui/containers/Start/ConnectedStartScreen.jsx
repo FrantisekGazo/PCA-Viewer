@@ -3,8 +3,8 @@
 const React = require('react');
 const { connect } = require('react-redux');
 
-const StartScreen = require('../components/StartScreen.jsx');
-const { setupNewProject, openExistingProject } = require('../../actions/project');
+const StartScreen = require('../../components/Start/StartScreen.jsx');
+const { setupNewProject, openExistingProject } = require('../../../actions/project');
 
 
 module.exports = connect(

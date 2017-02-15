@@ -5,7 +5,7 @@ const RaisedButton = require('material-ui/RaisedButton').default;
 const IconCreate = require('material-ui/svg-icons/file/create-new-folder').default;
 const IconOpen = require('material-ui/svg-icons/file/folder-open').default;
 
-const showMenu = require('../menu/Menu');
+const showMenu = require('../../menu/Menu');
 
 
 const optionContainerStyle = {

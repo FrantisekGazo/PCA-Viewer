@@ -8,12 +8,12 @@ const MenuItem = require('material-ui/MenuItem').default;
 const IconClose = require('material-ui/svg-icons/navigation/close').default;
 const IconMore = require('material-ui/svg-icons/navigation/more-vert').default;
 
-const HelpService = require('../../service/HelpService');
-const showMenu = require('../menu/Menu');
-const ConnectedDatasetList = require('../containers/ConnectedDatasetList.jsx');
-const ConnectedDatasetDetail = require('../containers/ConnectedDatasetDetail.jsx');
-const ConnectedProjectResults = require('../containers/ConnectedProjectResults.jsx');
-const ConnectedEntrySelection = require('../containers/ConnectedEntrySelection.jsx');
+const HelpService = require('../../../service/HelpService');
+const showMenu = require('../../menu/Menu');
+const ConnectedDatasetList = require('../../containers/Project/ConnectedDatasetList.jsx');
+const ConnectedDatasetDetail = require('../../containers/Project/ConnectedDatasetDetail.jsx');
+const ConnectedProjectResults = require('../../containers/Project/ConnectedProjectResults.jsx');
+const ConnectedEntrySelection = require('../../containers/Project/ConnectedEntrySelection.jsx');
 
 
 const ProjectScreen = ({path, detailId, onSaveClick, onCloseClick}) => {
