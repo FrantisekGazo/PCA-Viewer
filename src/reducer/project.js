@@ -69,8 +69,9 @@ function setProject(state, action) {
 }
 
 function selectProject(state, action) {
-    const { path } = action.payload;
-    if (path !== null) {
+    if (action.payload !== null) {
+        const { path } = action.payload;
+
         return update(state, {
             path: {$set: path},
             error: {$set: ''}
