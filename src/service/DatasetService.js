@@ -1,7 +1,7 @@
 "use strict";
 
 
-const { newEntry } = require('../reducer/project');
+const { newEntry } = require('../reducer/ProjectReducer');
 const { sortNumArrayDesc } = require('../util/util');
 
 

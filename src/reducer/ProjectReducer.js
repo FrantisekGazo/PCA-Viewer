@@ -2,7 +2,7 @@
 
 const update = require('immutability-helper');
 
-const {Actions} = require('../actions/project');
+const { ACTIONS } = require('../actions/ProjectAction');
 const { sortNumArrayDesc } = require('../util/util');
 
 
@@ -223,21 +223,21 @@ const initState = {
 };
 const project = (state = initState, action) => {
     switch (action.type) {
-        case Actions.SET_PROJECT:
+        case ACTIONS.SET_PROJECT:
             return setProject(state, action);
-        case Actions.SELECT_PROJECT:
+        case ACTIONS.SELECT_PROJECT:
             return selectProject(state, action);
-        case Actions.SHOW_PROJECT_ERROR:
+        case ACTIONS.SHOW_PROJECT_ERROR:
             return showProjectError(state, action);
-        case Actions.NEW_DATASET:
+        case ACTIONS.NEW_DATASET:
             return addNewDataset(state, action);
-        case Actions.UPDATE_DATASET:
+        case ACTIONS.UPDATE_DATASET:
             return updateDataset(state, action);
-        case Actions.DELETE_DATASET:
+        case ACTIONS.DELETE_DATASET:
             return deleteDataset(state, action);
-        case Actions.SHOW_DATASET_DETAIL:
+        case ACTIONS.SHOW_DATASET_DETAIL:
             return showDatasetDetail(state, action);
-        case Actions.SELECT_ENTRIES:
+        case ACTIONS.SELECT_ENTRIES:
             return selectEntries(state, action);
         default:
             return state;

@@ -1,8 +1,15 @@
 "use strict";
 
 
-const { baseStreamId, transformedStreamId } = require('../reducer/project');
+const { baseStreamId, transformedStreamId } = require('../reducer/ProjectReducer');
 
+
+/**
+ * Project diirectory path
+ * @param state {Object}
+ * @returns {string}
+ */
+const getPath = (state) => state.project.path;
 
 /**
  * Current version of calculated PCA
@@ -134,6 +141,7 @@ const getIncludedDatasetsWithEntries = (state) => {
 
 
 module.exports = {
+    getPath,
     getDataset,
     getDatasetEntries,
     getDatasetStream,

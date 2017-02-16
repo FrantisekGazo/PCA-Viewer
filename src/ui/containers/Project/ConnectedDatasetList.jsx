@@ -4,16 +4,16 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const DatasetList = require('../../components/Project/DatasetList.jsx');
-const { addDataset, showDatasetDetail } = require('../../../actions/project');
-const selector = require('../../../selector/dataset');
+const { addDataset, showDatasetDetail } = require('../../../actions/ProjectAction');
+const ProjectSelector = require('../../../selector/ProjectSelector');
 
 
 module.exports = connect(
     // state to props
     (state) => {
         return {
-            datasets: selector.getAllDatasets(state),
-            includedDatasetIds: selector.getIncludedDatasetIds(state)
+            datasets: ProjectSelector.getAllDatasets(state),
+            includedDatasetIds: ProjectSelector.getIncludedDatasetIds(state)
         };
     },
     // dispatch functions to props

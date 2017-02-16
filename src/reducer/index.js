@@ -3,7 +3,7 @@
 const { combineReducers } = require("redux");
 const { routerReducer } = require('react-router-redux');
 
-const { project } = require("./project");
+const { project } = require("./ProjectReducer");
 
 
 module.exports = combineReducers({

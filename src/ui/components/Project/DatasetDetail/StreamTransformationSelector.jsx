@@ -7,7 +7,7 @@ const MenuItem = require('material-ui/MenuItem').default;
 const TextField = require('material-ui/TextField').default;
 const FlatButton = require('material-ui/FlatButton').default;
 
-const { TRANSFORMATIONS } = require('../../../../reducer/project');
+const { TRANSFORMATIONS } = require('../../../../reducer/ProjectReducer');
 
 
 class StreamTransformationSelector extends React.Component {

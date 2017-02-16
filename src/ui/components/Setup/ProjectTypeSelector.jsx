@@ -5,7 +5,7 @@ const { RadioButton, RadioButtonGroup } = require('material-ui/RadioButton');
 const TextField = require('material-ui/TextField').default;
 const Checkbox = require('material-ui/Checkbox').default;
 
-const { PROJECT_TYPE } = require('../../../reducer/project');
+const { PROJECT_TYPE } = require('../../../reducer/ProjectReducer');
 
 const styles = {
     typeBlock: {

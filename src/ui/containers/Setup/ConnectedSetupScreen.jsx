@@ -4,7 +4,7 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const SetupScreen = require('../../components/Setup/SetupScreen.jsx');
-const { goBackFromSetup, startNewProject } = require('../../../actions/project');
+const { goBackFromSetup, startNewProject } = require('../../../actions/ProjectAction');
 
 
 module.exports = connect(

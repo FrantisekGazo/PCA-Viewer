@@ -4,15 +4,15 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const EntrySelection = require('../../components/Project/EntrySelection/EntrySelection.jsx');
-const { clearSelectedEntries } = require('../../../actions/project');
-const selector = require('../../../selector/dataset');
+const { clearSelectedEntries } = require('../../../actions/ProjectAction');
+const ProjectSelector = require('../../../selector/ProjectSelector');
 
 
 module.exports = connect(
     // state to props
     (state) => {
         return {
-            selectedEntryIds: selector.getDetailEntryIds(state),
+            selectedEntryIds: ProjectSelector.getDetailEntryIds(state),
         };
     },
     // dispatch functions to props

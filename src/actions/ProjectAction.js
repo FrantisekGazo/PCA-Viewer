@@ -12,7 +12,7 @@ const { readFromFile, writeToFile } = require('../service/FileService');
 
 const PROJECT_FILE = 'project.json';
 
-const Actions = {
+const ACTIONS = {
     SELECT_PROJECT: 'SELECT_PROJECT',
     SET_PROJECT: 'SET_PROJECT',
     NEW_DATASET: 'NEW_DATASET',
@@ -39,35 +39,35 @@ function createGoToProjectScreenAction() {
 }
 
 function createSelectProjectAction(params) {
-    return createAction(Actions.SELECT_PROJECT, params);
+    return createAction(ACTIONS.SELECT_PROJECT, params);
 }
 
 function createProjectErrorAction(errorMessage) {
-    return createAction(Actions.SHOW_PROJECT_ERROR, errorMessage);
+    return createAction(ACTIONS.SHOW_PROJECT_ERROR, errorMessage);
 }
 
 function createSetProjectAction(projectStoreObject) {
-    return createAction(Actions.SET_PROJECT, projectStoreObject);
+    return createAction(ACTIONS.SET_PROJECT, projectStoreObject);
 }
 
 function createAddDatasetAction() {
-    return createAction(Actions.NEW_DATASET);
+    return createAction(ACTIONS.NEW_DATASET);
 }
 
 function createUpdateDatasetAction(datasetId, changes) {
-    return createAction(Actions.UPDATE_DATASET, {datasetId, changes});
+    return createAction(ACTIONS.UPDATE_DATASET, {datasetId, changes});
 }
 
 function createShowDatasetDetailAction(datasetId) {
-    return createAction(Actions.SHOW_DATASET_DETAIL, datasetId);
+    return createAction(ACTIONS.SHOW_DATASET_DETAIL, datasetId);
 }
 
 function createDeleteDatasetAction(datasetId) {
-    return createAction(Actions.DELETE_DATASET, datasetId);
+    return createAction(ACTIONS.DELETE_DATASET, datasetId);
 }
 
 function createSelectEntryAction(entryIds) {
-    return createAction(Actions.SELECT_ENTRIES, entryIds);
+    return createAction(ACTIONS.SELECT_ENTRIES, entryIds);
 }
 
 //endregion Action Creators
@@ -259,7 +259,7 @@ function clearSelectedEntries() {
 //endregion Action Dispatchers
 
 module.exports = {
-    Actions,
+    ACTIONS,
     setupNewProject,
     goBackFromSetup,
     startNewProject,

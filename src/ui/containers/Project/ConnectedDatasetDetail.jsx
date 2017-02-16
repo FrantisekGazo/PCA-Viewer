@@ -4,23 +4,23 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const DatasetDetail = require('../../components/Project/DatasetDetail/DatasetDetail.jsx');
-const { closeAndDeleteDataset, closeDatasetDetail, updateDataset, selectEntries } = require('../../../actions/project');
-const selector = require('../../../selector/dataset');
+const { closeAndDeleteDataset, closeDatasetDetail, updateDataset, selectEntries } = require('../../../actions/ProjectAction');
+const ProjectSelector = require('../../../selector/ProjectSelector');
 
 
 module.exports = connect(
     // state to props
     (state) => {
-        const datasetId = selector.getDetailDatasetId(state);
+        const datasetId = ProjectSelector.getDetailDatasetId(state);
 
         return {
-            dataset: selector.getDataset(state, datasetId),
-            included: selector.isDatasetIncluded(state, datasetId),
-            entries: selector.getDatasetEntries(state, datasetId),
-            selectedEntryIds: selector.getDetailEntryIds(state),
-            stream: selector.getDatasetStream(state, datasetId),
-            transformedStream: selector.getDatasetTransformedStream(state, datasetId),
-            lastEntryId: selector.getLastEntryId(state),
+            dataset: ProjectSelector.getDataset(state, datasetId),
+            included: ProjectSelector.isDatasetIncluded(state, datasetId),
+            entries: ProjectSelector.getDatasetEntries(state, datasetId),
+            selectedEntryIds: ProjectSelector.getDetailEntryIds(state),
+            stream: ProjectSelector.getDatasetStream(state, datasetId),
+            transformedStream: ProjectSelector.getDatasetTransformedStream(state, datasetId),
+            lastEntryId: ProjectSelector.getLastEntryId(state),
         };
     },
     // dispatch functions to props
