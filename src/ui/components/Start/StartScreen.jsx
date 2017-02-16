@@ -6,6 +6,7 @@ const IconCreate = require('material-ui/svg-icons/file/create-new-folder').defau
 const IconOpen = require('material-ui/svg-icons/file/folder-open').default;
 
 const showMenu = require('../../menu/Menu');
+const DialogService = require('../../../service/DialogService');
 
 
 const optionContainerStyle = {
@@ -42,34 +43,45 @@ const errorStyle = {
     color: '#ffffff',
 };
 
-const StartScreen = ({error, onStartNewClicked, onOpenExistingClicked}) => {
-    let errorMsg = (error) ? (<div style={errorStyle}>{error}</div>) : null;
+class StartScreen extends React.Component {
 
-    showMenu();
+    handleOpenExisting() {
+        DialogService.showOpenDirDialog()
+            .then((path) => {
+                this.props.onOpenExistingClicked(path);
+            });
+    }
 
-    return (
-        <div style={optionContainerStyle}>
+    render() {
+        const {error, onStartNewClicked, onOpenExistingClicked} = this.props;
+        let errorMsg = (error) ? (<div style={errorStyle}>{error}</div>) : null;
 
-            <RaisedButton
-                style={optionStyle}
-                onTouchTap={onStartNewClicked}>
+        showMenu();
 
-                <IconCreate style={iconStyle}/>
-                <p style={textStyle}>Start a new project</p>
-            </RaisedButton>
+        return (
+            <div style={optionContainerStyle}>
 
-            <RaisedButton
-                style={optionStyle}
-                onTouchTap={onOpenExistingClicked}>
+                <RaisedButton
+                    style={optionStyle}
+                    onTouchTap={onStartNewClicked}>
 
-                <IconOpen style={iconStyle}/>
-                <p style={textStyle}>Open an existing project</p>
-            </RaisedButton>
+                    <IconCreate style={iconStyle}/>
+                    <p style={textStyle}>Start a new project</p>
+                </RaisedButton>
 
-            { errorMsg }
-        </div>
-    );
-};
+                <RaisedButton
+                    style={optionStyle}
+                    onTouchTap={this.handleOpenExisting.bind(this)}>
+
+                    <IconOpen style={iconStyle}/>
+                    <p style={textStyle}>Open an existing project</p>
+                </RaisedButton>
+
+                { errorMsg }
+            </div>
+        );
+    }
+}
 
 StartScreen.propTypes = {
     error: React.PropTypes.string.isRequired,

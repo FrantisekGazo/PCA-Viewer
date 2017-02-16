@@ -102,26 +102,26 @@ function startNewProject(params) {
 
 /**
  * Opens an existing project.
+ * @param projectPath {string} Path to the project.
  * @returns {Function}
  */
-function openExistingProject() {
+function openExistingProject(projectPath) {
     return function (dispatch, getState) {
-        DialogService.showOpenDirDialog()
-            .then((dir) => {
-                const filePath = path.join(dir, PROJECT_FILE);
-                if (!fs.existsSync(filePath)) {
-                    throw Error('Selected directory is not a PCA project');
-                }
+        const filePath = path.join(projectPath, PROJECT_FILE);
 
-                return readFromFile(filePath)
-                    .then((data) => {
-                        const project = JSON.parse(data);
-                        project.path = dir;
-                        project.detailDatasetId = null; // do not show detail after opening a project
+        // check if project file exists
+        if (!fs.existsSync(filePath)) {
+            return dispatch(createProjectErrorAction('Selected directory is not a PCA project'));
+        }
 
-                        dispatch(createSetProjectAction(project));
-                        dispatch(createGoToProjectScreenAction());
-                    });
+        return readFromFile(filePath)
+            .then((data) => {
+                const project = JSON.parse(data);
+                project.path = projectPath;
+                project.detailDatasetId = null; // do not show detail after opening a project
+
+                dispatch(createSetProjectAction(project));
+                dispatch(createGoToProjectScreenAction());
             })
             .catch((err) => {
                 dispatch(createProjectErrorAction(err.message));
