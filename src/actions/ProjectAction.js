@@ -13,7 +13,6 @@ const { readFromFile, writeToFile } = require('../service/FileService');
 const PROJECT_FILE = 'project.json';
 
 const ACTIONS = {
-    SELECT_PROJECT: 'SELECT_PROJECT',
     SET_PROJECT: 'SET_PROJECT',
     NEW_DATASET: 'NEW_DATASET',
     UPDATE_DATASET: 'UPDATE_DATASET',
@@ -38,16 +37,12 @@ function createGoToProjectScreenAction() {
     return replace({pathname: `/project/`});
 }
 
-function createSelectProjectAction(params) {
-    return createAction(ACTIONS.SELECT_PROJECT, params);
-}
-
 function createProjectErrorAction(errorMessage) {
     return createAction(ACTIONS.SHOW_PROJECT_ERROR, errorMessage);
 }
 
-function createSetProjectAction(projectStoreObject) {
-    return createAction(ACTIONS.SET_PROJECT, projectStoreObject);
+function createSetProjectAction(state) {
+    return createAction(ACTIONS.SET_PROJECT, state);
 }
 
 function createAddDatasetAction() {
@@ -100,7 +95,7 @@ function goBackFromSetup() {
  */
 function startNewProject(params) {
     return function (dispatch, getState) {
-        dispatch(createSelectProjectAction(params));
+        dispatch(createSetProjectAction(params));
         dispatch(createGoToProjectScreenAction());
     }
 }
@@ -156,7 +151,7 @@ function saveProject() {
 function closeProject() {
     return function (dispatch, getState) {
         dispatch(createGoToStartScreenAction());
-        dispatch(createSelectProjectAction(null));
+        dispatch(createSetProjectAction(null));
     }
 }
 

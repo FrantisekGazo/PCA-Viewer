@@ -65,17 +65,10 @@ const transformedStreamId = (datasetId) => `${datasetId}_used`;
 // REDUCER FUNCTIONS ----------------------------------------------------------------------
 
 function setProject(state, action) {
-    return action.payload;
-}
+    const projectState = action.payload;
 
-function selectProject(state, action) {
-    if (action.payload !== null) {
-        const { path } = action.payload;
-
-        return update(state, {
-            path: {$set: path},
-            error: {$set: ''}
-        });
+    if (projectState) {
+        return Object.assign({}, initState, projectState);
     } else {
         return initState;
     }
@@ -225,8 +218,6 @@ const project = (state = initState, action) => {
     switch (action.type) {
         case ACTIONS.SET_PROJECT:
             return setProject(state, action);
-        case ACTIONS.SELECT_PROJECT:
-            return selectProject(state, action);
         case ACTIONS.SHOW_PROJECT_ERROR:
             return showProjectError(state, action);
         case ACTIONS.NEW_DATASET:
