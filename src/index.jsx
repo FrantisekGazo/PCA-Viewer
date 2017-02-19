@@ -36,6 +36,9 @@ if (process.env.NODE_ENV === 'development') {
     // whyDidYouUpdate(React, { include: /^EntrySpectrumPlot/, exclude: /^Connect/ });
 }
 
+// set window IDs
+require('./service/WorkerService').listenForWindowIds();
+
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(hashHistory, store);
 

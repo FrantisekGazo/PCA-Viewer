@@ -53,7 +53,7 @@ class StartScreen extends React.Component {
     }
 
     render() {
-        const {error, onStartNewClicked, onOpenExistingClicked} = this.props;
+        const {error, onStartNewClicked} = this.props;
         let errorMsg = (error) ? (<div style={errorStyle}>{error}</div>) : null;
 
         showMenu();

@@ -76,6 +76,7 @@ function createMainWindow() {
 
     mainWindow.webContents.on('did-finish-load', function () {
         mainWindow.show();
+        mainWindow.webContents.send('set-main-window-id', mainWindow.id);
 
         if (splashWindow) {
             let splashBounds = splashWindow.getBounds();
@@ -97,6 +98,7 @@ function createWorkerWindow() {
     workerWindow.loadURL(getHtmlPath('worker'));
 
     workerWindow.webContents.on('did-finish-load', function () {
+        mainWindow.webContents.send('set-worker-window-id', workerWindow.id);
     });
 }
 
