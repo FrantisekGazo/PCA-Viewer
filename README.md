@@ -16,7 +16,6 @@ Simple desktop app created using these technologies:
 ##Dependencies:
 
 - [react](https://www.npmjs.com/package/react), [react-dom](https://www.npmjs.com/package/react-dom), [react-redux](https://www.npmjs.com/package/react-redux), [redux](https://www.npmjs.com/package/redux): basic React+Redux setup
-- [react-addons-css-transition-group](https://facebook.github.io/react/docs/animation.html#getting-started): add-on component for easily implementing basic CSS animations and transitions  
 - [redux-thunk](https://www.npmjs.com/package/redux-thunk): enables usage of async Redux actions
 - [immutability-helper](https://www.npmjs.com/package/immutability-helper): mutates a copy of data without changing the original source
 - [react-router](https://www.npmjs.com/package/react-router), [react-router-redux](https://www.npmjs.com/package/react-router-redux): simplifies app navigation

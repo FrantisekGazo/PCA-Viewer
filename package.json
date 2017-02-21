@@ -67,7 +67,6 @@
     "plotly.js": "^1.21.2",
     "pure-color": "^1.2.0",
     "react": "^15.3.2",
-    "react-addons-css-transition-group": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-highcharts": "^11.5.0",
     "react-redux": "^4.4.5",
