@@ -33,15 +33,13 @@ gulp.task('bundle-index', function () {
 
     const options = {
         preserveComments: 'license',
-        // FIXME: if mangle is set to true, then I get "SyntaxError: Identifier 'n' has already been declared" ?!
-        // it's not needed, but it would be nice if it worked :)
-        mangle: false
+        mangle: true
     };
 
     return b.bundle()
         .pipe(source('index.js'))
         .pipe(buffer())
-        // FIXME turn off .pipe(minifier(options, uglifyJS))
+        .pipe(minifier(options, uglifyJS))
         .pipe(gulp.dest('./dist/'));
 });
 
@@ -56,9 +54,15 @@ gulp.task('bundle-worker', function () {
         })]
     });
 
+    const options = {
+        preserveComments: 'license',
+        mangle: true
+    };
+
     return b.bundle()
         .pipe(source('worker.js'))
         .pipe(buffer())
+        .pipe(minifier(options, uglifyJS))
         .pipe(gulp.dest('./dist/'));
 });
 
@@ -77,8 +81,8 @@ gulp.task('default', ['html', 'assets', 'bundle-index', 'bundle-worker']);
 
 // PACKAGING
 
-function getPackOptions(opts) {
-    return Object.assign({
+const pack = (opts) => {
+    const options = Object.assign({
         dir: '.',
         asar: false,
         version: '1.4.13',
@@ -98,49 +102,29 @@ function getPackOptions(opts) {
             '^/README.md'
         ]
     }, opts);
-}
-
-gulp.task('pack-mac', function () {
-    const options = getPackOptions({
-        platform: 'darwin',
-        arch: 'x64',
-    });
 
     return packager(options, (err, appPaths) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('Done', appPaths);
-        }
+        (err) ? console.error(err) : console.log('Done', appPaths)
+    });
+};
+
+gulp.task('pack-mac', function () {
+    return pack({
+        platform: 'darwin',
+        arch: 'x64',
     });
 });
 
 gulp.task('pack-win', function () {
-    const options = getPackOptions({
+    return pack({
         platform: 'win32',
         arch: 'x64',
-    });
-
-    return packager(options, (err, appPaths) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('Done', appPaths);
-        }
     });
 });
 
 gulp.task('pack-lin', function () {
-    const options = getPackOptions({
+    return pack({
         platform: 'linux',
         arch: 'x64',
-    });
-
-    return packager(options, (err, appPaths) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('Done', appPaths);
-        }
     });
 });

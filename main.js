@@ -3,9 +3,6 @@
 const { app, BrowserWindow } = require('electron');
 
 
-//console.log(app.getPath('userData')); // TODO : use for PDF storage
-//console.log(app.getPath('temp')); // TODO : use for image download
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
