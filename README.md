@@ -17,6 +17,7 @@ Simple desktop app created using these technologies:
 
 - [react](https://www.npmjs.com/package/react), [react-dom](https://www.npmjs.com/package/react-dom), [react-redux](https://www.npmjs.com/package/react-redux), [redux](https://www.npmjs.com/package/redux): basic React+Redux setup
 - [redux-thunk](https://www.npmjs.com/package/redux-thunk): enables usage of async Redux actions
+- [redux-logic](https://www.npmjs.com/package/redux-logic): creates a place for executing a business logic based on dispached actions (Uses RxJS under the hood)
 - [immutability-helper](https://www.npmjs.com/package/immutability-helper): mutates a copy of data without changing the original source
 - [react-router](https://www.npmjs.com/package/react-router), [react-router-redux](https://www.npmjs.com/package/react-router-redux): simplifies app navigation
 - [material-ui](https://www.npmjs.com/package/material-ui), [react-tap-event-plugin](https://www.npmjs.com/package/react-tap-event-plugin): a Set of React Components that Implement Google's Material Design
@@ -26,7 +27,6 @@ Simple desktop app created using these technologies:
 
 - [electron](https://www.npmjs.com/package/electron): Electron :)
 - [electron-packager](https://www.npmjs.com/package/electron-packager): Electron packager
-- [redux-logger](https://www.npmjs.com/package/redux-logger): logs Redux actions
 - [electron-devtools-installer](https://www.npmjs.com/package/electron-devtools-installer), [redux-devtools](https://www.npmjs.com/package/redux-devtools), [redux-devtools-extension](https://www.npmjs.com/package/redux-devtools-extension): Redux devtools
 - [electron-hot-loader](https://www.npmjs.com/package/electron-hot-loader), [watch-glob](https://www.npmjs.com/package/watch-glob): hot reload
 - [mocha](https://www.npmjs.com/package/mocha), [enzyme](https://www.npmjs.com/package/enzyme), [expect](https://www.npmjs.com/package/expect), [react-addons-test-utils](https://www.npmjs.com/package/react-addons-test-utils): tests

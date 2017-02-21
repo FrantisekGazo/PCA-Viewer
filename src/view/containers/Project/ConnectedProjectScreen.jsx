@@ -20,10 +20,10 @@ module.exports = connect(
     (dispatch) => {
         return {
             onSaveClick: () => {
-                dispatch(ProjectAction.saveProject())
+                dispatch(ProjectAction.saveProject());
             },
             onCloseClick: () => {
-                dispatch(ProjectAction.closeProject())
+                dispatch(ProjectAction.createCloseProjectAction());
             }
         };
     }

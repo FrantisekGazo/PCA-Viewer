@@ -62,6 +62,10 @@ function setProject(state, action) {
     }
 }
 
+function closeProject(state, action) {
+    return initState;
+}
+
 function showProjectError(state, action) {
     return update(state, {
         error: {$set: action.payload}
@@ -206,6 +210,8 @@ const project = (state = initState, action) => {
     switch (action.type) {
         case ACTIONS.SET_PROJECT:
             return setProject(state, action);
+        case ACTIONS.CLOSE_PROJECT:
+            return closeProject(state, action);
         case ACTIONS.SHOW_PROJECT_ERROR:
             return showProjectError(state, action);
         case ACTIONS.NEW_DATASET:

@@ -1,6 +1,5 @@
 "use strict";
 
-const {replace} = require('react-router-redux');
 const fs = require('fs');
 const path = require('path');
 
@@ -14,6 +13,7 @@ const PROJECT_FILE = 'project.json';
 
 const ACTIONS = {
     SET_PROJECT: 'SET_PROJECT',
+    CLOSE_PROJECT: 'CLOSE_PROJECT',
     NEW_DATASET: 'NEW_DATASET',
     UPDATE_DATASET: 'UPDATE_DATASET',
     DELETE_DATASET: 'DELETE_DATASET',
@@ -25,24 +25,16 @@ const ACTIONS = {
 //region Action Creators
 // these action creators are private and called only internally by action dispatchers
 
-function createGoToStartScreenAction() {
-    return replace({pathname: `/`});
-}
-
-function createGoToSetupScreenAction() {
-    return replace({pathname: `/setup/`});
-}
-
-function createGoToProjectScreenAction() {
-    return replace({pathname: `/project/`});
-}
-
 function createProjectErrorAction(errorMessage) {
     return createAction(ACTIONS.SHOW_PROJECT_ERROR, errorMessage);
 }
 
 function createSetProjectAction(state) {
     return createAction(ACTIONS.SET_PROJECT, state);
+}
+
+function createCloseProjectAction() {
+    return createAction(ACTIONS.CLOSE_PROJECT);
 }
 
 function createAddDatasetAction() {
@@ -70,37 +62,6 @@ function createSelectEntryAction(entryIds) {
 //region Action Dispatchers
 
 /**
- * Navigates to setup screen, where user can setup a new project.
- * @returns {Function}
- */
-function setupNewProject() {
-    return function (dispatch, getState) {
-        dispatch(createGoToSetupScreenAction());
-    }
-}
-
-/**
- * Navigates back to start screen.
- * @returns {Function}
- */
-function goBackFromSetup() {
-    return function (dispatch, getState) {
-        dispatch(createGoToStartScreenAction());
-    }
-}
-
-/**
- * Creates a new project and navigates to the project screen.
- * @returns {Function}
- */
-function startNewProject(params) {
-    return function (dispatch, getState) {
-        dispatch(createSetProjectAction(params));
-        dispatch(createGoToProjectScreenAction());
-    }
-}
-
-/**
  * Opens an existing project.
  * @param projectPath {string} Path to the project.
  * @returns {Function}
@@ -121,7 +82,6 @@ function openExistingProject(projectPath) {
                 project.detailDatasetId = null; // do not show detail after opening a project
 
                 dispatch(createSetProjectAction(project));
-                dispatch(createGoToProjectScreenAction());
             })
             .catch((err) => {
                 dispatch(createProjectErrorAction(err.message));
@@ -141,17 +101,6 @@ function saveProject() {
         const json = JSON.stringify(state.project);
 
         return writeToFile(filePath, json);
-    }
-}
-
-/**
- * Closes the open project.
- * @returns {Function}
- */
-function closeProject() {
-    return function (dispatch, getState) {
-        dispatch(createGoToStartScreenAction());
-        dispatch(createSetProjectAction(null));
     }
 }
 
@@ -255,12 +204,10 @@ function clearSelectedEntries() {
 
 module.exports = {
     ACTIONS,
-    setupNewProject,
-    goBackFromSetup,
-    startNewProject,
+    createCloseProjectAction,
+    createSetProjectAction,
     openExistingProject,
     saveProject,
-    closeProject,
     addDataset,
     updateDataset,
     showDatasetDetail,

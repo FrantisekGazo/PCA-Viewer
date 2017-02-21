@@ -5,6 +5,7 @@ const { connect } = require('react-redux');
 
 const StartScreen = require('../../components/Start/StartScreen.jsx');
 const ProjectAction = require('../../../action/ProjectAction');
+const RouterAction = require('../../../action/RouterAction');
 
 
 module.exports = connect(
@@ -18,7 +19,7 @@ module.exports = connect(
     (dispatch) => {
         return {
             onStartNewClicked: () => {
-                dispatch(ProjectAction.setupNewProject());
+                dispatch(RouterAction.createGoToSetupScreenAction());
             },
             onOpenExistingClicked: (path) => {
                 dispatch(ProjectAction.openExistingProject(path));

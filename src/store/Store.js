@@ -1,6 +1,8 @@
 "use strict";
 
 const { createStore, applyMiddleware, compose } = require('redux');
+const { createLogicMiddleware } = require('redux-logic');
+const logic = require('../logic');
 const thunkMiddleware = require('redux-thunk').default;
 const { routerMiddleware } = require('react-router-redux');
 const { hashHistory } = require('react-router');
@@ -10,7 +12,6 @@ const reducer = require('./reducer');
 
 let enhancer;
 if (process.env.NODE_ENV === 'development') {
-    const logger = require('redux-logger');
     const { composeWithDevTools } = require('redux-devtools-extension');
 
     const composeEnhancers = composeWithDevTools({
@@ -18,11 +19,19 @@ if (process.env.NODE_ENV === 'development') {
     });
 
     enhancer = composeEnhancers(
-        applyMiddleware(thunkMiddleware, logger(), routerMiddleware(hashHistory))
+        applyMiddleware(
+            thunkMiddleware,
+            createLogicMiddleware(logic),
+            routerMiddleware(hashHistory)
+        )
     );
 } else { // production
     enhancer = compose(
-        applyMiddleware(thunkMiddleware, routerMiddleware(hashHistory))
+        applyMiddleware(
+            thunkMiddleware,
+            createLogicMiddleware(logic),
+            routerMiddleware(hashHistory)
+        )
     );
 }
 

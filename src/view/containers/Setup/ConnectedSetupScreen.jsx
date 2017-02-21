@@ -5,6 +5,7 @@ const { connect } = require('react-redux');
 
 const SetupScreen = require('../../components/Setup/SetupScreen.jsx');
 const ProjectAction = require('../../../action/ProjectAction');
+const RouterAction = require('../../../action/RouterAction');
 
 
 module.exports = connect(
@@ -16,10 +17,10 @@ module.exports = connect(
     (dispatch) => {
         return {
             onBackClick: () => {
-                dispatch(ProjectAction.goBackFromSetup());
+                dispatch(RouterAction.createGoBackAction());
             },
             onCreateClick: (params) => {
-                dispatch(ProjectAction.startNewProject(params));
+                dispatch(ProjectAction.createSetProjectAction(params));
             }
         };
     }
