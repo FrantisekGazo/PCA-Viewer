@@ -5,7 +5,7 @@ const createClassName = require("../util/classnames");
 const FineTune = require("./FineTune.jsx");
 const { ColorSwatch, SwatchItem } = require('./Swatch.jsx');
 
-//From material-ui
+//From material-view
 const Dialog = require('material-ui/Dialog').default;
 const FlatButton = require('material-ui/FlatButton').default;
 const Avatar = require('material-ui/Avatar').default;

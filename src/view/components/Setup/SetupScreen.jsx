@@ -16,7 +16,7 @@ const Snackbar = require('material-ui/Snackbar').default;
 const ProjectTypeSelector = require('./ProjectTypeSelector.jsx');
 const HelpService = require('../../../service/HelpService');
 const DialogService = require('../../../service/DialogService');
-const { PROJECT_TYPE } = require('../../../reducer/ProjectReducer');
+const { PROJECT_TYPE } = require('../../../store/Constants');
 const showMenu = require('../../menu/Menu');
 
 const styles = {

@@ -5,7 +5,7 @@ const thunkMiddleware = require('redux-thunk').default;
 const { routerMiddleware } = require('react-router-redux');
 const { hashHistory } = require('react-router');
 
-const reducer = require('../reducer');
+const reducer = require('./reducer');
 
 
 let enhancer;

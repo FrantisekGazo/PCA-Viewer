@@ -11,11 +11,11 @@ const {Provider} = require('react-redux');
 const { hashHistory, IndexRoute, Route, Router } = require('react-router');
 const { syncHistoryWithStore } = require('react-router-redux');
 
-const App = require('./ui/containers/App.jsx');
-const StartScreen = require('./ui/containers/Start/ConnectedStartScreen.jsx');
-const SetupScreen = require('./ui/containers/Setup/ConnectedSetupScreen.jsx');
-const ProjectScreen = require('./ui/containers/Project/ConnectedProjectScreen.jsx');
-const store = require('./store/renderer');
+const App = require('./view/containers/App.jsx');
+const StartScreen = require('./view/containers/Start/ConnectedStartScreen.jsx');
+const SetupScreen = require('./view/containers/Setup/ConnectedSetupScreen.jsx');
+const ProjectScreen = require('./view/containers/Project/ConnectedProjectScreen.jsx');
+const store = require('./store/Store');
 
 
 if (process.env.NODE_ENV === 'development') {

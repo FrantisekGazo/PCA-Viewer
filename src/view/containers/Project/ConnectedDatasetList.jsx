@@ -4,8 +4,8 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const DatasetList = require('../../components/Project/DatasetList.jsx');
-const { addDataset, showDatasetDetail } = require('../../../actions/ProjectAction');
-const ProjectSelector = require('../../../selector/ProjectSelector');
+const ProjectAction = require('../../../action/ProjectAction');
+const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
 
 module.exports = connect(
@@ -20,10 +20,10 @@ module.exports = connect(
     (dispatch) => {
         return {
             onAddDatasetClicked: () => {
-                dispatch(addDataset())
+                dispatch(ProjectAction.addDataset())
             },
             onDatasetClicked: (id) => {
-                dispatch(showDatasetDetail(id))
+                dispatch(ProjectAction.showDatasetDetail(id))
             }
         };
     }

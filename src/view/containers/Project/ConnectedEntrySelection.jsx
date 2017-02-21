@@ -4,8 +4,8 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const EntrySelection = require('../../components/Project/EntrySelection/EntrySelection.jsx');
-const { clearSelectedEntries } = require('../../../actions/ProjectAction');
-const ProjectSelector = require('../../../selector/ProjectSelector');
+const ProjectAction = require('../../../action/ProjectAction');
+const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
 
 module.exports = connect(
@@ -19,7 +19,7 @@ module.exports = connect(
     (dispatch) => {
         return {
             onClearClicked: () => {
-                dispatch(clearSelectedEntries());
+                dispatch(ProjectAction.clearSelectedEntries());
             }
         };
     }

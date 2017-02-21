@@ -4,8 +4,8 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const ProjectResults = require('../../components/Project/Results/ProjectResults.jsx');
-const { selectEntries } = require('../../../actions/ProjectAction');
-const ProjectSelector = require('../../../selector/ProjectSelector');
+const ProjectAction = require('../../../action/ProjectAction');
+const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
 
 module.exports = connect(
@@ -21,7 +21,7 @@ module.exports = connect(
     (dispatch) => {
         return {
             onEntrySelected: (entryIds) => {
-                dispatch(selectEntries(entryIds));
+                dispatch(ProjectAction.selectEntries(entryIds));
             }
         };
     }

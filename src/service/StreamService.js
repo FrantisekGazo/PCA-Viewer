@@ -1,6 +1,6 @@
 "use strict";
 
-const { TRANSFORMATIONS } = require('../reducer/ProjectReducer');
+const { TRANSFORMATIONS } = require('../store/Constants');
 
 
 /**

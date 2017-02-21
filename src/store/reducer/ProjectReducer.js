@@ -2,18 +2,12 @@
 
 const update = require('immutability-helper');
 
-const { ACTIONS } = require('../actions/ProjectAction');
-const { sortNumArrayDesc } = require('../util/util');
+const { ACTIONS } = require('../../action/ProjectAction');
+const { sortNumArrayDesc } = require('../../util/util');
+const { DEFAULT_SAMPLING, PROJECT_TYPE, TRANSFORMATIONS } = require('../Constants');
 
 
 // HELPER FUNCTIONS ----------------------------------------------------------------------
-
-const DEFAULT_SAMPLING = 100;
-
-const PROJECT_TYPE = {
-    OFFLINE_PCA: 1,
-    ONLINE_PCA: 2,
-};
 
 /**
  * Creates Dataset structure.
@@ -51,12 +45,6 @@ function newEntry(args) {
         streamPosition: undefined
     }, args);
 }
-
-const TRANSFORMATIONS = {
-    NONE: 1,
-    DIFF: 2,
-    COUNT: 3
-};
 
 const baseStreamId = (datasetId) => `${datasetId}_base`;
 
@@ -236,8 +224,6 @@ const project = (state = initState, action) => {
 };
 
 module.exports = {
-    PROJECT_TYPE,
-    TRANSFORMATIONS,
     project,
     newEntry,
     newDataset,
