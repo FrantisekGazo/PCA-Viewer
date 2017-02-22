@@ -5,6 +5,9 @@ const { ListItem } = require('material-ui/List');
 const Avatar = require('material-ui/Avatar').default;
 
 
+/**
+ * Shows one dataset in a list item component.
+ */
 const DatasetListItem = ({dataset, onClick}) => {
     return (
         <ListItem onTouchTap={onClick}
@@ -22,7 +25,9 @@ const DatasetListItem = ({dataset, onClick}) => {
 };
 
 DatasetListItem.propTypes = {
+    /* dataset */
     dataset: React.PropTypes.object.isRequired,
+    /* callback that will be called if dataset was clicked */
     onClick: React.PropTypes.func.isRequired
 };
 

@@ -10,21 +10,35 @@ const ContentAdd = require('material-ui/svg-icons/content/add').default;
 const DatasetListItem = require('./DatasetListItem.jsx');
 
 
-const datasetsToList = (datasets, onDatasetClicked) => {
-    let list = datasets.map(dataset => {
-        return (<DatasetListItem key={dataset.id}
-                                 dataset={dataset}
-                                 onClick={() => onDatasetClicked(dataset.id)}/>)
-    });
-    if (list.length === 0) {
-        list = (<ListItem key="0">None</ListItem>);
+/**
+ * Converts list for datasets to a list component.
+ * @param datasets {Array} of datasets
+ * @param onDatasetClick {function} callback that will be called if a dataset was clicked.
+ * @returns {Object} Component
+ */
+const datasetsToList = (datasets, onDatasetClick) => {
+    if (datasets.length > 0) {
+        return datasets.map(dataset => {
+            return (
+                <DatasetListItem
+                    key={dataset.id}
+                    dataset={dataset}
+                    onClick={() => onDatasetClick(dataset.id)}/>
+            )
+        });
+    } else {
+        return (
+            <ListItem key="0">None</ListItem>
+        );
     }
-    return list;
 };
 
-const DatasetList = ({datasets, includedDatasetIds, onDatasetClicked, onAddDatasetClicked}) => {
-    const includedList = datasetsToList(datasets.filter(d => includedDatasetIds.indexOf(d.id) >= 0), onDatasetClicked);
-    const excludedList = datasetsToList(datasets.filter(d => includedDatasetIds.indexOf(d.id) === -1), onDatasetClicked);
+/**
+ * Shows list of both included and excluded datasets and the option for adding new component.
+ */
+const DatasetList = ({datasets, includedDatasetIds, onDatasetClick, onAddDatasetClick}) => {
+    const includedList = datasetsToList(datasets.filter(d => includedDatasetIds.indexOf(d.id) >= 0), onDatasetClick);
+    const excludedList = datasetsToList(datasets.filter(d => includedDatasetIds.indexOf(d.id) === -1), onDatasetClick);
 
     return (
         <Card id="dataset-list">
@@ -42,7 +56,7 @@ const DatasetList = ({datasets, includedDatasetIds, onDatasetClicked, onAddDatas
                 <FloatingActionButton
                     label="Add"
                     mini={true}
-                    onTouchTap={onAddDatasetClicked}>
+                    onTouchTap={onAddDatasetClick}>
                     <ContentAdd />
                 </FloatingActionButton>
             </CardActions>
@@ -51,10 +65,13 @@ const DatasetList = ({datasets, includedDatasetIds, onDatasetClicked, onAddDatas
 };
 
 DatasetList.propTypes = {
+    /* list of all datasets */
     datasets: React.PropTypes.array.isRequired,
+    /* list of dataset IDs that are included in calculations */
     includedDatasetIds: React.PropTypes.array.isRequired,
-    onDatasetClicked: React.PropTypes.func.isRequired,
-    onAddDatasetClicked: React.PropTypes.func.isRequired
+    /* callbacks */
+    onDatasetClick: React.PropTypes.func.isRequired,
+    onAddDatasetClick: React.PropTypes.func.isRequired
 };
 
 module.exports = DatasetList;

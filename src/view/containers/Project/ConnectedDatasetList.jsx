@@ -19,10 +19,10 @@ module.exports = connect(
     // dispatch functions to props
     (dispatch) => {
         return {
-            onAddDatasetClicked: () => {
+            onAddDatasetClick: () => {
                 dispatch(ProjectAction.addDataset())
             },
-            onDatasetClicked: (id) => {
+            onDatasetClick: (id) => {
                 dispatch(ProjectAction.showDatasetDetail(id))
             }
         };
