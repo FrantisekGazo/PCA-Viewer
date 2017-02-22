@@ -11,7 +11,7 @@ const IconSave = require('material-ui/svg-icons/content/save').default;
 const MenuItem = require('material-ui/MenuItem').default;
 const TextField = require('material-ui/TextField').default;
 
-const ColorPicker = require('../ColorPicker/components/ColorPicker.jsx');
+const ColorPicker = require('../../Common/ColorPicker');
 
 
 class DatasetInfo extends React.Component {
