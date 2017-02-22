@@ -206,22 +206,6 @@ class DatasetDetail extends React.Component {
             );
         }
 
-        if (entries.length > 0) {
-            content.push(
-                <div
-                    key='dataset-entries'
-                    style={{paddingTop: '10px'}}>
-
-                    <DatasetEntries
-                        entries={entries}
-                        selectedEntryIds={this.props.selectedEntryIds}
-                        color={dataset.color}
-                        onEntrySelected={this.props.onEntrySelected}
-                        onEntryAdd={this.handleEntryAdd.bind(this)}/>
-                </div>
-            );
-        }
-
         return (
             <div>{ content }</div>
         );

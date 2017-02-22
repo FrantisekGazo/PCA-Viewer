@@ -7,9 +7,11 @@ const fs = require('fs');
 /**
  * Reads the given file and returns read values. Each value is an array of decimal numbers.
  * @param filePath Path to the file that will be read.
+ * @param sampling {optional number} Number of values for one row.
+ * If <code>null</code> then all values will be returned as one array.
  * @returns {Promise}
  */
-function readValuesFromFile(filePath, rowToArray) {
+function readValuesFromFile(filePath, sampling) {
     return new Promise(function (resolve, reject) {
         let values = [];
 
@@ -29,19 +31,23 @@ function readValuesFromFile(filePath, rowToArray) {
                 }
             }
 
-            if (rowToArray && numberValues.length > 1) {
-                values.push(numberValues);
-            } else if (!rowToArray) {
-                for (let i = 0; i < numberValues.length; i++) {
-                    values.push(numberValues[i]);
-                }
-            } else {
-                reject(Error('Each line has to contain at least 2 values'));
-                rl.close();
+            for (let i = 0; i < numberValues.length; i++) {
+                values.push(numberValues[i]);
             }
         });
 
         rl.on('close', function () {
+            // sample the values if it is specified
+            if (sampling) {
+                let sampledValues = [];
+                let s;
+                for (let i = 0; i <= values.length - sampling; i += sampling) {
+                    s = values.slice(i, i + sampling);
+                    sampledValues.push(s);
+                }
+                values = sampledValues;
+            }
+
             resolve(values);
         });
     });

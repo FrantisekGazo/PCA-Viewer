@@ -16,7 +16,8 @@ const StartScreen = require('./view/containers/Start/ConnectedStartScreen.jsx');
 const SetupScreen = require('./view/containers/Setup/ConnectedSetupScreen.jsx');
 const ProjectScreen = require('./view/containers/Project/ConnectedProjectScreen.jsx');
 const DatasetList = require('./view/containers/Project/ConnectedDatasetList.jsx');
-const DatasetDetail = require('./view/containers/Project/ConnectedDatasetDetail.jsx');
+const EntryDatasetDetail = require('./view/containers/Project/ConnectedEntryDatasetDetail.jsx');
+const StreamDatasetDetail = require('./view/containers/Project/ConnectedStreamDatasetDetail.jsx');
 const ProjectResults = require('./view/containers/Project/ConnectedProjectResults.jsx');
 const EntrySelection = require('./view/containers/Project/ConnectedEntrySelection.jsx');
 const store = require('./store/Store');
@@ -57,21 +58,21 @@ ReactDOM.render(
                 <Route path="setup/" component={SetupScreen}/>
 
                 <Route path="project/" component={ProjectScreen}>
-                    <Route path="offline1/" components={{
+                    <Route path="offline0/" components={{
                         datasets: DatasetList,
-                        detail: DatasetDetail,
+                        detail: StreamDatasetDetail,
                         results: ProjectResults,
                         entrySelection: EntrySelection,
                     }}/>
-                    <Route path="offline2/" components={{
+                    <Route path="offline1/" components={{
                         datasets: DatasetList,
-                        detail: DatasetDetail,
+                        detail: EntryDatasetDetail,
                         results: ProjectResults,
                         entrySelection: EntrySelection,
                     }}/>
                     <Route path="online/" components={{
                         datasets: null,
-                        detail: DatasetDetail,
+                        detail: StreamDatasetDetail,
                         results: ProjectResults,
                         entrySelection: EntrySelection,
                     }}/>

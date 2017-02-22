@@ -3,7 +3,7 @@
 const React = require('react');
 const {connect} = require('react-redux');
 
-const DatasetDetail = require('../../components/Project/DatasetDetail/DatasetDetail.jsx');
+const EntryDatasetDetail = require('../../components/Project/DatasetDetail/EntryDatasetDetail.jsx');
 const ProjectAction = require('../../../action/ProjectAction');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
@@ -18,8 +18,7 @@ module.exports = connect(
             included: ProjectSelector.isDatasetIncluded(state, datasetId),
             entries: ProjectSelector.getDatasetEntries(state, datasetId),
             selectedEntryIds: ProjectSelector.getDetailEntryIds(state),
-            stream: ProjectSelector.getDatasetStream(state, datasetId),
-            transformedStream: ProjectSelector.getDatasetTransformedStream(state, datasetId),
+            sampling: ProjectSelector.getSampling(state),
             lastEntryId: ProjectSelector.getLastEntryId(state),
         };
     },
@@ -40,4 +39,4 @@ module.exports = connect(
             }
         };
     }
-)(DatasetDetail);
+)(EntryDatasetDetail);

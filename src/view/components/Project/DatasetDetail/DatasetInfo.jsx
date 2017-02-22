@@ -29,8 +29,7 @@ class DatasetInfo extends React.Component {
             onDeleteClick,
             onCloseClick,
             onDatasetChange,
-            onLoadDataClick,
-            onLoadStreamClick,
+            onLoadClick,
             onIncludeChange
         } = this.props;
 
@@ -119,11 +118,8 @@ class DatasetInfo extends React.Component {
                         }>
 
                         <MenuItem
-                            primaryText="Load Data"
-                            onTouchTap={onLoadDataClick}/>
-                        <MenuItem
-                            primaryText="Load Stream"
-                            onTouchTap={onLoadStreamClick}/>
+                            primaryText="Load"
+                            onTouchTap={onLoadClick}/>
                         { extraAction }
                     </IconMenu>
                 </CardActions>
@@ -139,8 +135,7 @@ DatasetInfo.propTypes = {
     onSaveClick: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired,
     onCloseClick: React.PropTypes.func.isRequired,
-    onLoadDataClick: React.PropTypes.func.isRequired,
-    onLoadStreamClick: React.PropTypes.func.isRequired,
+    onLoadClick: React.PropTypes.func.isRequired,
     onIncludeChange: React.PropTypes.func.isRequired,
 };
 

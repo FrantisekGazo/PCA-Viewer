@@ -53,7 +53,7 @@ class SetupScreen extends React.Component {
             name: 'New Project',
             path: '',
             type: PROJECT_TYPE.OFFLINE_PCA,
-            useConstantSampling: false,
+            hasConstantSampling: false,
             sampling: 10,
             error: ''
         };
@@ -73,11 +73,11 @@ class SetupScreen extends React.Component {
         });
     }
 
-    handleTypeChange({type, sampling, useConstantSampling}) {
+    handleTypeChange({type, sampling, hasConstantSampling}) {
         this.setState({
             type: type,
             sampling: sampling,
-            useConstantSampling: useConstantSampling,
+            hasConstantSampling: hasConstantSampling,
             error: ''
         });
     }
@@ -96,7 +96,7 @@ class SetupScreen extends React.Component {
     }
 
     handleCreateClick() {
-        const { name, path, useConstantSampling, sampling } = this.state;
+        const { name, path, hasConstantSampling, sampling } = this.state;
 
         if (!name) {
             this.setState({
@@ -112,7 +112,7 @@ class SetupScreen extends React.Component {
             return;
         }
 
-        if (useConstantSampling && sampling <= 3) {
+        if (hasConstantSampling && sampling <= 3) {
             this.setState({
                 error: 'Dimension must be greater than 3!'
             });
@@ -129,7 +129,7 @@ class SetupScreen extends React.Component {
     }
 
     render() {
-        const { name, path, type, useConstantSampling, sampling, error } = this.state;
+        const { name, path, type, hasConstantSampling, sampling, error } = this.state;
 
         showMenu();
 
@@ -182,7 +182,7 @@ class SetupScreen extends React.Component {
                             <br/>
                             <ProjectTypeSelector
                                 type={type}
-                                useConstantSampling={useConstantSampling}
+                                hasConstantSampling={hasConstantSampling}
                                 sampling={sampling}
                                 onTypeChange={this.handleTypeChange.bind(this)}/>
                         </div>

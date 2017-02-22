@@ -32,7 +32,7 @@ function createGoToSetupScreenAction() {
  * @returns {object} Action
  */
 function createGoToProjectScreenOfflineAction() {
-    return replace({pathname: '/project/offline1/'});
+    return replace({pathname: '/project/offline0/'});
 }
 
 /**
@@ -40,7 +40,7 @@ function createGoToProjectScreenOfflineAction() {
  * @returns {object} Action
  */
 function createGoToProjectScreenOfflineConstantAction() {
-    return replace({pathname: '/project/offline2/'});
+    return replace({pathname: '/project/offline1/'});
 }
 
 /**

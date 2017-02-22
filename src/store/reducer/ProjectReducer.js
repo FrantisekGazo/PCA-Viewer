@@ -187,11 +187,14 @@ function selectEntries(state, action) {
 
 const initState = {
     /* path to the project directory */
-    type: PROJECT_TYPE.OFFLINE_PCA,
-    /* path to the project directory */
-    hasConstantSampling: false,
-    /* path to the project directory */
     path: null,
+    /* project name */
+    name: null,
+    /* project type */
+    type: PROJECT_TYPE.OFFLINE_PCA,
+    /* project sampling */
+    sampling: null,
+    hasConstantSampling: false,
 
     /* error */
     error: '',

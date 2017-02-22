@@ -20,7 +20,7 @@ const styles = {
     }
 };
 
-const ProjectTypeSelector = ({ type, sampling, useConstantSampling, onTypeChange }) => {
+const ProjectTypeSelector = ({ type, sampling, hasConstantSampling, onTypeChange }) => {
     return (
         <div>
             <p>Type:</p>
@@ -30,7 +30,7 @@ const ProjectTypeSelector = ({ type, sampling, useConstantSampling, onTypeChange
                     name='project-type'
                     valueSelected={type}
                     onChange={(event, newValue) => {
-                        onTypeChange({type: newValue, useConstantSampling, sampling});
+                        onTypeChange({type: newValue, hasConstantSampling, sampling});
                     }}>
 
                     <RadioButton
@@ -51,15 +51,15 @@ const ProjectTypeSelector = ({ type, sampling, useConstantSampling, onTypeChange
                         <div style={styles.typeBlock}>
                             <Checkbox
                                 label="Dimension"
-                                checked={useConstantSampling}
+                                checked={hasConstantSampling}
                                 style={styles.checkbox}
                                 onCheck={(event, newValue) => {
-                                    onTypeChange({type, useConstantSampling: newValue, sampling});
+                                    onTypeChange({type, hasConstantSampling: newValue, sampling});
                                 }}/>
 
                             <TextField
                                 id='dimension'
-                                disabled={!useConstantSampling}
+                                disabled={!hasConstantSampling}
                                 value={(sampling > 0) ? `${sampling}` : ''}
                                 onChange={(event, newValue) => {
 
@@ -67,7 +67,7 @@ const ProjectTypeSelector = ({ type, sampling, useConstantSampling, onTypeChange
                                     if (isNaN(number)) {
                                         number = 0;
                                     }
-                                    onTypeChange({type, useConstantSampling, sampling: number});
+                                    onTypeChange({type, hasConstantSampling, sampling: number});
                                 }}/>
                         </div>
                     )
@@ -79,7 +79,7 @@ const ProjectTypeSelector = ({ type, sampling, useConstantSampling, onTypeChange
 
 ProjectTypeSelector.propTypes = {
     type: React.PropTypes.number.isRequired,
-    useConstantSampling: React.PropTypes.bool.isRequired,
+    hasConstantSampling: React.PropTypes.bool.isRequired,
     sampling: React.PropTypes.number.isRequired,
     onTypeChange: React.PropTypes.func.isRequired,
 };

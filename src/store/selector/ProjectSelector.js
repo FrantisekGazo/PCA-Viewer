@@ -19,6 +19,20 @@ const getProjectState = (state) => state.project;
 const getPath = (state) => getProjectState(state).path;
 
 /**
+ * Returns project name.
+ * @param state {Object}
+ * @returns {string}
+ */
+const getName = (state) => getProjectState(state).name;
+
+/**
+ * Returns project sampling.
+ * @param state {Object}
+ * @returns {string}
+ */
+const getSampling = (state) => getProjectState(state).sampling;
+
+/**
  * Returns current version of calculated PCA.
  * @param state {Object}
  * @returns {number}
@@ -164,6 +178,8 @@ const hasConstantSampling = (state) => getProjectState(state).hasConstantSamplin
 
 module.exports = {
     getPath,
+    getName,
+    getSampling,
     getDataset,
     getDatasetEntries,
     getDatasetStream,
