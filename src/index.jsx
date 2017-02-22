@@ -70,7 +70,7 @@ ReactDOM.render(
                         entrySelection: EntrySelection,
                     }}/>
                     <Route path="online/" components={{
-                        datasets: DatasetList,
+                        datasets: null,
                         detail: DatasetDetail,
                         results: ProjectResults,
                         entrySelection: EntrySelection,

@@ -32,12 +32,17 @@ const DatasetList = ({datasets, includedDatasetIds, onDatasetClicked, onAddDatas
                 <Subheader>Datasets:</Subheader>
                 { includedList }
             </List>
+
             <List>
                 <Subheader>Excuded:</Subheader>
                 { excludedList }
             </List>
+
             <CardActions>
-                <FloatingActionButton label="Add" mini={true} onTouchTap={onAddDatasetClicked}>
+                <FloatingActionButton
+                    label="Add"
+                    mini={true}
+                    onTouchTap={onAddDatasetClicked}>
                     <ContentAdd />
                 </FloatingActionButton>
             </CardActions>
