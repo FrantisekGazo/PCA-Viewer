@@ -60,9 +60,9 @@ ReactDOM.render(
                 <Route path="project/" component={ProjectScreen}>
                     <Route path="offline0/" components={{
                         datasets: DatasetList,
-                        detail: StreamDatasetDetail,
-                        results: ProjectResults,
-                        entrySelection: EntrySelection,
+                        detail: StreamDatasetDetail(false),
+                        results: null,
+                        entrySelection: null,
                     }}/>
                     <Route path="offline1/" components={{
                         datasets: DatasetList,
@@ -72,9 +72,9 @@ ReactDOM.render(
                     }}/>
                     <Route path="online/" components={{
                         datasets: null,
-                        detail: StreamDatasetDetail,
-                        results: ProjectResults,
-                        entrySelection: EntrySelection,
+                        detail: StreamDatasetDetail(true), // has only 1 dataset
+                        results: null,
+                        entrySelection: null,
                     }}/>
                 </Route>
 

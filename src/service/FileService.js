@@ -11,7 +11,7 @@ const fs = require('fs');
  * If <code>null</code> then all values will be returned as one array.
  * @returns {Promise}
  */
-function readValuesFromFile(filePath, sampling) {
+function readValuesFromFile(filePath, sampling=null) {
     return new Promise(function (resolve, reject) {
         let values = [];
 
@@ -48,7 +48,11 @@ function readValuesFromFile(filePath, sampling) {
                 values = sampledValues;
             }
 
-            resolve(values);
+            if (values.length > 0) {
+                resolve(values);
+            } else {
+                reject(Error('File contains no values!'));
+            }
         });
     });
 }

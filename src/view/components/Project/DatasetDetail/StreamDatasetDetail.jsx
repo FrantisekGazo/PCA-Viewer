@@ -4,7 +4,6 @@ const React = require('react');
 
 const DatasetInfo = require('./DatasetInfo.jsx');
 const StreamEditor = require('./StreamEditor.jsx');
-const DatasetEntries = require('./DatasetEntries.jsx');
 
 const DatasetService = require('../../../../service/DatasetService');
 const DialogService = require('../../../../service/DialogService');
@@ -12,17 +11,19 @@ const FileService = require('../../../../service/FileService');
 const StreamService = require('../../../../service/StreamService');
 
 
+/**
+ * Shows a detail of dataset with stream of values.
+ */
 class DatasetDetail extends React.Component {
 
     constructor(props) {
         super(props);
 
-        const { dataset, included, entries, stream, transformedStream } = props;
+        const { dataset, included, stream, transformedStream } = props;
 
         this.state = {
             included: included,
             dataset: Object.assign({}, dataset),
-            entries: entries.slice(),
             stream: stream.slice(),
             transformedStream: transformedStream.slice(),
             transformation: {
@@ -48,44 +49,13 @@ class DatasetDetail extends React.Component {
         });
     }
 
-    handleEntryAdd(entry) {
-        this.state.entries.push(entry);
-        this.setState({
-            update: this.state.update + 1
-        });
-    }
-
-    handleLoadDataClick() {
+    handleLoadClick() {
         DialogService.showOpenFileDialog()
             .then((filePath) => {
-                return FileService.readValuesFromFile(filePath, true);
-            })
-            .then((values) => {
-                const addedEntryIds = this.state.entries.map(entry => entry.id);
-                addedEntryIds.push(this.props.lastEntryId);
-                return DatasetService.valuesToEntries(this.state.dataset.id, addedEntryIds, values);
-            })
-            .then((entries) => {
-                this.setState({
-                    entries: this.state.entries.concat(entries),
-                    update: this.state.update + 1
-                });
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }
-
-    handleLoadStreamClick() {
-        DialogService.showOpenFileDialog()
-            .then((filePath) => {
-                return FileService.readValuesFromFile(filePath, false);
+                return FileService.readValuesFromFile(filePath);
             })
             .then((values) => {
                 console.log('loaded stream', values.length);
-                if (values === null || values.lenght === 0) {
-                    return Promise.reject(Error('Loaded stream is empty!'));
-                }
 
                 const { stream, transformation } = this.state;
                 const newStream = stream.concat(values);
@@ -122,29 +92,8 @@ class DatasetDetail extends React.Component {
             });
     }
 
-    handleStreamSamplingChange(sampling) {
-        console.log('changing sampling to', sampling);
-        return StreamService.sampleStream(this.state.transformedStream, sampling)
-            .then((sampledValues) => {
-                console.error('change this to point to the transformedStream instead of duplication the values'); //TODO
-                console.log('sampled stream', sampledValues.length);
-                const addedEntryIds = this.state.entries.map(entry => entry.id);
-                addedEntryIds.push(this.props.lastEntryId);
-                return DatasetService.valuesToEntries(this.state.dataset.id, addedEntryIds, sampledValues);
-            })
-            .then((entries) => {
-                this.setState({
-                    entries: this.state.entries.concat(entries),
-                    update: this.state.update + 1
-                });
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }
-
     handleSaveClick() {
-        const { dataset, included, entries, stream, transformedStream, transformation } = this.state;
+        const { dataset, included, stream, transformedStream, transformation } = this.state;
 
         let changes = {
             included: included,
@@ -152,7 +101,6 @@ class DatasetDetail extends React.Component {
                 transformationType: transformation.type,
                 transformationValue: transformation.value
             }),
-            entries: entries,
             stream: stream,
             transformedStream: transformedStream
         };
@@ -171,7 +119,6 @@ class DatasetDetail extends React.Component {
     render() {
         // prepare data for UI
         const dataset = Object.assign({}, this.props.dataset, this.state.dataset);
-        const entries = this.state.entries;
 
         const content = [];
 
@@ -180,12 +127,12 @@ class DatasetDetail extends React.Component {
                 key='dataset-info'
                 dataset={dataset}
                 included={this.state.included}
+                single={this.props.single}
                 onIncludeChange={this.handleIncludeChange.bind(this)}
                 onDatasetChange={this.handleDatasetChange.bind(this)}
                 onDeleteClick={this.handleDeleteClick.bind(this)}
                 onCloseClick={this.handleCloseClick.bind(this)}
-                onLoadDataClick={this.handleLoadDataClick.bind(this)}
-                onLoadStreamClick={this.handleLoadStreamClick.bind(this)}
+                onLoadClick={this.handleLoadClick.bind(this)}
                 onSaveClick={this.handleSaveClick.bind(this)}/>
         );
 
@@ -199,9 +146,7 @@ class DatasetDetail extends React.Component {
                         stream={this.state.stream}
                         transformedStream={this.state.transformedStream}
                         transformation={this.state.transformation}
-                        onTransformationChange={this.handleStreamTransformationChange.bind(this)}
-                        sampling={dataset.sampling}
-                        onSamplingChange={this.handleStreamSamplingChange.bind(this)}/>
+                        onTransformationChange={this.handleStreamTransformationChange.bind(this)}/>
                 </div>
             );
         }
@@ -213,19 +158,16 @@ class DatasetDetail extends React.Component {
 }
 
 DatasetDetail.propTypes = {
-    // dataset object
+    /* dataset object */
     dataset: React.PropTypes.object.isRequired,
     included: React.PropTypes.bool.isRequired,
-    // array of dataset entries
-    entries: React.PropTypes.array.isRequired,
-    selectedEntryIds: React.PropTypes.array.isRequired,
-    // array of stream values
+    /* array of stream values */
     stream: React.PropTypes.array.isRequired,
-    // array of transformed stream values
+    /* array of transformed stream values */
     transformedStream: React.PropTypes.array.isRequired,
-    // last used entry ID
-    lastEntryId: React.PropTypes.number.isRequired,
-    // callbacks
+    /* indicator whether this project can have only 1 dataset */
+    single: React.PropTypes.bool.isRequired,
+    /* callbacks */
     onSaveClick: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired,
     onCloseClick: React.PropTypes.func.isRequired,

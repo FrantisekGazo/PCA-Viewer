@@ -25,6 +25,7 @@ class DatasetInfo extends React.Component {
         const {
             dataset,
             included,
+            single,
             onSaveClick,
             onDeleteClick,
             onCloseClick,
@@ -34,18 +35,20 @@ class DatasetInfo extends React.Component {
         } = this.props;
 
         let extraAction = null;
-        if (included) {
-            extraAction = (
-                <MenuItem
-                    primaryText="Exclude"
-                    onTouchTap={() => onIncludeChange(false)}/>
-            );
-        } else {
-            extraAction = (
-                <MenuItem
-                    primaryText="Include"
-                    onTouchTap={() => onIncludeChange(true)}/>
-            );
+        if (!single) {
+            if (included) {
+                extraAction = (
+                    <MenuItem
+                        primaryText="Exclude"
+                        onTouchTap={() => onIncludeChange(false)}/>
+                );
+            } else {
+                extraAction = (
+                    <MenuItem
+                        primaryText="Include"
+                        onTouchTap={() => onIncludeChange(true)}/>
+                );
+            }
         }
 
         return (
@@ -87,7 +90,7 @@ class DatasetInfo extends React.Component {
                 <CardActions
                     style={{
                         position: 'relative',
-                        width: '230px',
+                        width: (single) ? '170px' : '230px',
                         right: 0,
                         margin: '0 0 0 auto',
                     }}>
@@ -104,11 +107,15 @@ class DatasetInfo extends React.Component {
                         <IconDelete color={'#ae0000'}/>
                     </IconButton>
 
-                    <IconButton
-                        tooltip="Close"
-                        onTouchTap={onCloseClick}>
-                        <IconClose/>
-                    </IconButton>
+                    {
+                        !single ? (
+                            <IconButton
+                                tooltip="Close"
+                                onTouchTap={onCloseClick}>
+                                <IconClose/>
+                            </IconButton>
+                        ): null
+                    }
 
                     <IconMenu
                         targetOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -129,8 +136,12 @@ class DatasetInfo extends React.Component {
 }
 
 DatasetInfo.propTypes = {
+    /* dataset object */
     dataset: React.PropTypes.object.isRequired,
     included: React.PropTypes.bool.isRequired,
+    /* indicator whether this project can have only 1 dataset */
+    single: React.PropTypes.bool.isRequired,
+    /* callbacks */
     onDatasetChange: React.PropTypes.func.isRequired,
     onSaveClick: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired,

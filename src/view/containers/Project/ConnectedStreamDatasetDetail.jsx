@@ -8,7 +8,7 @@ const ProjectAction = require('../../../action/ProjectAction');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
 
-module.exports = connect(
+module.exports = (single) => connect(
     // state to props
     (state) => {
         const datasetId = ProjectSelector.getDetailDatasetId(state);
@@ -16,11 +16,9 @@ module.exports = connect(
         return {
             dataset: ProjectSelector.getDataset(state, datasetId),
             included: ProjectSelector.isDatasetIncluded(state, datasetId),
-            entries: ProjectSelector.getDatasetEntries(state, datasetId),
-            selectedEntryIds: ProjectSelector.getDetailEntryIds(state),
             stream: ProjectSelector.getDatasetStream(state, datasetId),
             transformedStream: ProjectSelector.getDatasetTransformedStream(state, datasetId),
-            lastEntryId: ProjectSelector.getLastEntryId(state),
+            single: single,
         };
     },
     // dispatch functions to props

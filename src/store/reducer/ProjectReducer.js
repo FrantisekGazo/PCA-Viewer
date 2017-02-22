@@ -55,11 +55,20 @@ const transformedStreamId = (datasetId) => `${datasetId}_used`;
 function setProject(state, action) {
     const projectState = action.payload;
 
+    let newState;
     if (projectState) {
-        return Object.assign({}, initState, projectState);
+        newState = Object.assign({}, initState, projectState);
     } else {
-        return initState;
+        newState = initState;
     }
+
+    if (newState.type === PROJECT_TYPE.ONLINE_PCA) {
+        if (newState.detailDatasetId === null) {
+            newState = addNewDataset(newState);
+        }
+    }
+
+    return newState;
 }
 
 function closeProject(state, action) {
@@ -101,39 +110,51 @@ function updateDataset(state, action) {
             newUsedDatasetIds.splice(index, 1);
         }
     }
-    // prepare stream IDs
-    const bsid = baseStreamId(datasetId);
-    const tsid = transformedStreamId(datasetId);
-    // find max ID used
-    let maxId = 0;
-    if (entries.length > 0) {
-        const entryIds = entries.map(entry => entry.id);
-        maxId = sortNumArrayDesc(entryIds)[0];
-    }
-    if (state.lastEntryId > maxId) {
-        maxId = state.lastEntryId;
-    }
-    // prepare entry map
-    const entryMap = Object.assign({}, state.entries);
-    let entry;
-    for (let i = 0; i < entries.length; i++) {
-        entry = entries[i];
-        entryMap[entry.id] = entry;
-    }
 
-    return update(state, {
-        datasets: {
-            [datasetId]: {$set: dataset}
-        },
-        entries: {$set: entryMap},
-        lastEntryId: {$set: maxId},
-        streams: {
-            [bsid]: {$set: stream},
-            [tsid]: {$set: transformedStream}
-        },
-        usedDatasetIds: {$set: newUsedDatasetIds},
-        resultsVersion: {$set: state.resultsVersion + 1}
-    });
+    if (entries) {
+        // find max ID used
+        let maxId = 0;
+        if (entries.length > 0) {
+            const entryIds = entries.map(entry => entry.id);
+            maxId = sortNumArrayDesc(entryIds)[0];
+        }
+        if (state.lastEntryId > maxId) {
+            maxId = state.lastEntryId;
+        }
+        // prepare entry map
+        const entryMap = Object.assign({}, state.entries);
+        let entry;
+        for (let i = 0; i < entries.length; i++) {
+            entry = entries[i];
+            entryMap[entry.id] = entry;
+        }
+
+        return update(state, {
+            datasets: {
+                [datasetId]: {$set: dataset}
+            },
+            entries: {$set: entryMap},
+            lastEntryId: {$set: maxId},
+            usedDatasetIds: {$set: newUsedDatasetIds},
+            resultsVersion: {$set: state.resultsVersion + 1}
+        });
+    } else {
+        // prepare stream IDs
+        const bsid = baseStreamId(datasetId);
+        const tsid = transformedStreamId(datasetId);
+
+        return update(state, {
+            datasets: {
+                [datasetId]: {$set: dataset}
+            },
+            streams: {
+                [bsid]: {$set: stream},
+                [tsid]: {$set: transformedStream}
+            },
+            usedDatasetIds: {$set: newUsedDatasetIds},
+            resultsVersion: {$set: state.resultsVersion + 1}
+        });
+    }
 }
 
 function deleteDataset(state, action) {

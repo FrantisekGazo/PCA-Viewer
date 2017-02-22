@@ -100,6 +100,7 @@ class DatasetDetail extends React.Component {
                 key='dataset-info'
                 dataset={dataset}
                 included={this.state.included}
+                single={false}
                 onIncludeChange={this.handleIncludeChange.bind(this)}
                 onDatasetChange={this.handleDatasetChange.bind(this)}
                 onDeleteClick={this.handleDeleteClick.bind(this)}
