@@ -5,50 +5,57 @@ const { baseStreamId, transformedStreamId } = require('../reducer/ProjectReducer
 
 
 /**
- * Project diirectory path
+ * Returns project part of the state.
+ * @param state {Object}
+ * @returns {Object}
+ */
+const getProjectState = (state) => state.project;
+
+/**
+ * Returns project directory path.
  * @param state {Object}
  * @returns {string}
  */
-const getPath = (state) => state.project.path;
+const getPath = (state) => getProjectState(state).path;
 
 /**
- * Current version of calculated PCA
+ * Returns current version of calculated PCA.
  * @param state {Object}
  * @returns {number}
  */
-const getResultsVersion = (state) => state.project.resultsVersion;
+const getResultsVersion = (state) => getProjectState(state).resultsVersion;
 
 /**
- * ID of currently shown dataset
+ * Returns ID of currently shown dataset.
  * @param state {Object}
  * @returns {number}
  */
-const getDetailDatasetId = (state) => state.project.detailDatasetId;
+const getDetailDatasetId = (state) => getProjectState(state).detailDatasetId;
 
 /**
- * All entry IDs for currently shown dataset
+ * Returns all entry IDs for currently shown dataset.
  * @param state {Object}
  * @returns {Array}
  */
-const getDetailEntryIds = (state) => (state.project.detailEntryIds !== null) ? state.project.detailEntryIds : [];
+const getDetailEntryIds = (state) => (getProjectState(state).detailEntryIds !== null) ? getProjectState(state).detailEntryIds : [];
 
 /**
- * Dataset for given ID
+ * Returns dataset for given ID.
  * @param state {Object}
  * @param datasetId {number}
  * @returns {Object}
  */
-const getDataset = (state, datasetId) => state.project.datasets[datasetId];
+const getDataset = (state, datasetId) => getProjectState(state).datasets[datasetId];
 
 /**
- * Max ID used for an entry
+ * Returns max ID used for an entry.
  * @param state {Object}
  * @returns {number}
  */
-const getLastEntryId = (state) => state.project.lastEntryId;
+const getLastEntryId = (state) => getProjectState(state).lastEntryId;
 
 /**
- * All entries for dataset with given ID
+ * Returns all entries for dataset with given ID.
  * @param state {Object}
  * @param datasetId {number}
  * @returns {Array}
@@ -56,7 +63,7 @@ const getLastEntryId = (state) => state.project.lastEntryId;
 const getDatasetEntries = (state, datasetId) => {
     let entries = [];
 
-    const entryMap = state.project.entries;
+    const entryMap = getProjectState(state).entries;
     const entryIds = Object.keys(entryMap);
     let entry;
     for (let i = 0; i < entryIds.length; i++) {
@@ -70,33 +77,33 @@ const getDatasetEntries = (state, datasetId) => {
 };
 
 /**
- * Original stream for dataset with given ID
+ * Returns original stream for dataset with given ID.
  * @param state {Object}
  * @param datasetId {number}
  * @returns {Array}
  */
 const getDatasetStream = (state, datasetId) => {
-    const stream = state.project.streams[baseStreamId(datasetId)];
+    const stream = getProjectState(state).streams[baseStreamId(datasetId)];
     return stream ? stream : [];
 };
 
 /**
- * Transformed stream for dataset with given ID
+ * Returns transformed stream for dataset with given ID.
  * @param state {Object}
  * @param datasetId {number}
  * @returns {Array}
  */
 const getDatasetTransformedStream = (state, datasetId) => {
-    const stream = state.project.streams[transformedStreamId(datasetId)];
+    const stream = getProjectState(state).streams[transformedStreamId(datasetId)];
     return stream ? stream : [];
 };
 
 /**
- * All dataset IDs that should be used for PCA calculation
+ * Returns all dataset IDs that should be used for PCA calculation.
  * @param state {Object}
  * @returns {Array}
  */
-const getIncludedDatasetIds = (state) => state.project.usedDatasetIds;
+const getIncludedDatasetIds = (state) => getProjectState(state).usedDatasetIds;
 
 /**
  * <code>true</code> if dataset with given ID should be included in PCA calculation
@@ -107,23 +114,23 @@ const getIncludedDatasetIds = (state) => state.project.usedDatasetIds;
 const isDatasetIncluded = (state, datasetId) => getIncludedDatasetIds(state).indexOf(datasetId) >= 0;
 
 /**
- * All datasets
+ * Returns all datasets.
  * @param state {Object}
  * @returns {Array}
  */
-const getAllDatasets = (state) => Object.keys(state.project.datasets)
-                                        .map(id => state.project.datasets[id])
+const getAllDatasets = (state) => Object.keys(getProjectState(state).datasets)
+                                        .map(id => getProjectState(state).datasets[id])
                                         .filter(d => d !== undefined && d !== null);
 
 /**
- * All entries that should be used for PCA calculation
+ * Returns all entries that should be used for PCA calculation.
  * @param state {Object}
  * @returns {Array}
  */
 const getIncludedDatasetsWithEntries = (state) => {
     const includedDatasetIds = getIncludedDatasetIds(state);
     const includedDatasets = includedDatasetIds.map(id => Object.assign({entries: []}, getDataset(state, id))); // make modifiable copy
-    const { entries } = state.project;
+    const { entries } = getProjectState(state);
 
     let entry, index;
     for (let id in entries) {
@@ -138,6 +145,21 @@ const getIncludedDatasetsWithEntries = (state) => {
 
     return includedDatasets;
 };
+
+/**
+ * Returns project type.
+ * @param state {Object}
+ * @returns {number}
+ */
+const getType = (state) => getProjectState(state).type;
+
+/**
+ * Returns <code>true</code> if project has data with constant dimension,
+ * <code>false</code> if it contains data streams.
+ * @param state {Object}
+ * @returns {bool}
+ */
+const hasConstantSampling = (state) => getProjectState(state).hasConstantSampling;
 
 
 module.exports = {
@@ -154,4 +176,6 @@ module.exports = {
     isDatasetIncluded,
     getAllDatasets,
     getResultsVersion,
+    getType,
+    hasConstantSampling,
 };

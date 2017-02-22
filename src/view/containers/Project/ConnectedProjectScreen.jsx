@@ -12,7 +12,7 @@ module.exports = connect(
     // state to props
     (state, props) => {
         return {
-            path: ProjectSelector.getPath(state),
+            projectName: ProjectSelector.getPath(state),
             detailId: ProjectSelector.getDetailDatasetId(state)
         };
     },

@@ -28,11 +28,27 @@ function createGoToSetupScreenAction() {
 }
 
 /**
- * Navigates user to the Project screen.
+ * Navigates user to the Project screen for Offline PCA.
  * @returns {object} Action
  */
-function createGoToProjectScreenAction() {
-    return replace({pathname: '/project/'});
+function createGoToProjectScreenOfflineAction() {
+    return replace({pathname: '/project/offline1/'});
+}
+
+/**
+ * Navigates user to the Project screen for Offline PCA with constant dimension.
+ * @returns {object} Action
+ */
+function createGoToProjectScreenOfflineConstantAction() {
+    return replace({pathname: '/project/offline2/'});
+}
+
+/**
+ * Navigates user to the Project screen for Online PCA.
+ * @returns {object} Action
+ */
+function createGoToProjectScreenOnlineAction() {
+    return replace({pathname: '/project/online/'});
 }
 
 
@@ -40,5 +56,7 @@ module.exports = {
     createGoBackAction,
     createGoToStartScreenAction,
     createGoToSetupScreenAction,
-    createGoToProjectScreenAction,
+    createGoToProjectScreenOfflineAction,
+    createGoToProjectScreenOfflineConstantAction,
+    createGoToProjectScreenOnlineAction,
 };

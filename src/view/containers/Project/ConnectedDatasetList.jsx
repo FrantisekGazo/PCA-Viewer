@@ -3,7 +3,7 @@
 const React = require('react');
 const {connect} = require('react-redux');
 
-const DatasetList = require('../../components/Project/DatasetList.jsx');
+const DatasetList = require('../../components/Project/DatasetList/DatasetList.jsx');
 const ProjectAction = require('../../../action/ProjectAction');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
