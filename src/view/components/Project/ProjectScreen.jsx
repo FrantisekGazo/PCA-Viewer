@@ -16,45 +16,62 @@ const ConnectedProjectResults = require('../../containers/Project/ConnectedProje
 const ConnectedEntrySelection = require('../../containers/Project/ConnectedEntrySelection.jsx');
 
 
+const styles = {
+    appBar: {
+        position: 'fixed',
+        left: 0,
+        right: 0,
+        top: 0,
+    },
+    content: {
+        position: 'absolute',
+        top: '70px',
+        left: '20px',
+        right: '10px',
+        bottom: '10px',
+    },
+    left: {
+        display: 'inline-block',
+        position: 'absolute',
+        width: '40%',
+        top: '0px',
+        bottom: '0px',
+        left: '0px',
+        transform: 'translate(-10px)',
+    },
+    right: {
+        display: 'inline-block',
+        position: 'absolute',
+        top: '0px',
+        bottom: '0px',
+        right: '0px',
+        width: '60%',
+    },
+    padded: {
+        marginTop: '10px',
+        marginBottom: '10px'
+    }
+};
+
 const ProjectScreen = ({path, detailId, onSaveClick, onCloseClick}) => {
 
     showMenu(true, onSaveClick, onCloseClick);
-
-    let detail = null;
-    if (detailId !== null) {
-        detail = (
-            <div
-                style={{
-                    marginTop: '10px',
-                    marginBottom: '10px'
-                }}>
-                <ConnectedDatasetDetail key={`dataset-${detailId}`}/>
-            </div>
-        );
-    }
 
     return (
         <div>
 
             <AppBar
-                style={{
-                    position: 'fixed',
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                }}
+                style={styles.appBar}
                 title={path}
                 iconElementLeft={
-                    <IconButton onTouchTap={onCloseClick}>
-                        <IconClose />
-                    </IconButton>
+                    <IconButton onTouchTap={onCloseClick}><IconClose/></IconButton>
                 }
                 iconElementRight={
                     <IconMenu
                         targetOrigin={{horizontal: 'right', vertical: 'top'}}
                         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                         iconButtonElement={
-                            <IconButton><IconMore /></IconButton>
+                            <IconButton><IconMore/></IconButton>
                         }>
 
                         <MenuItem primaryText="Settings"/>
@@ -62,47 +79,26 @@ const ProjectScreen = ({path, detailId, onSaveClick, onCloseClick}) => {
                     </IconMenu>
                 }/>
 
+            <div style={styles.content}>
 
-            <div
-                id='content'
-                style={{
-                    position: 'absolute',
-                    top: '70px',
-                    left: '20px',
-                    right: '10px',
-                    bottom: '10px',
-                }}>
+                <div style={styles.left}>
 
-                <div
-                    style={{
-                        display: 'inline-block',
-                        position: 'absolute',
-                        width: '40%',
-                        top: '0px',
-                        bottom: '0px',
-                        left: '0px',
-                        transform: 'translate(-10px)',
-                    }}>
                     <ConnectedDatasetList/>
-                    { detail }
+
+                    {
+                        (detailId) ? (
+                            <div style={styles.padded}>
+                                <ConnectedDatasetDetail key={`dataset-${detailId}`}/>
+                            </div>
+                        ) : null
+                    }
                 </div>
 
-                <div
-                    style={{
-                        display: 'inline-block',
-                        position: 'absolute',
-                        top: '0px',
-                        bottom: '0px',
-                        right: '0px',
-                        width: '60%',
-                    }}>
+                <div style={styles.right}>
+
                     <ConnectedProjectResults/>
 
-                    <div
-                        style={{
-                            marginTop: '10px',
-                            marginBottom: '10px'
-                        }}>
+                    <div style={styles.padded}>
                         <ConnectedEntrySelection/>
                     </div>
                 </div>
