@@ -22,7 +22,7 @@ module.exports = connect(
                 dispatch(RouterAction.createGoToSetupScreenAction());
             },
             onOpenExistingClicked: (path) => {
-                dispatch(ProjectAction.openExistingProject(path));
+                dispatch(ProjectAction.createLoadProjectAction(path));
             }
         };
     }

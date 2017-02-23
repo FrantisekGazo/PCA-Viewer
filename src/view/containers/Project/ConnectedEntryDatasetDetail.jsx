@@ -26,16 +26,16 @@ module.exports = connect(
     (dispatch) => {
         return {
             onSaveClick: (datasetId, changes) => {
-                dispatch(ProjectAction.updateDataset(datasetId, changes))
+                dispatch(ProjectAction.createUpdateDatasetAction(datasetId, changes));
             },
             onCloseClick: (datasetId) => {
-                dispatch(ProjectAction.closeDatasetDetail(datasetId))
+                dispatch(ProjectAction.createCloseDatasetDetailAction(datasetId));
             },
             onDeleteClick: (datasetId) => {
-                dispatch(ProjectAction.closeAndDeleteDataset(datasetId))
+                dispatch(ProjectAction.createDeleteDatasetAction(datasetId));
             },
             onEntrySelected: (entryIds) => {
-                dispatch(ProjectAction.selectEntries(entryIds));
+                dispatch(ProjectAction.createSelectEntryAction(entryIds));
             }
         };
     }

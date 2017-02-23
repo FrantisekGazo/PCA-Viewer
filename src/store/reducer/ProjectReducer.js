@@ -188,6 +188,7 @@ function deleteDataset(state, action) {
             [bsid]: {$set: undefined},
             [tsid]: {$set: undefined}
         },
+        detailDatasetId: {$set: null},
         resultsVersion: {$set: resultsVersion}
     });
 }
@@ -195,6 +196,12 @@ function deleteDataset(state, action) {
 function showDatasetDetail(state, action) {
     return update(state, {
         detailDatasetId: {$set: action.payload}
+    });
+}
+
+function closeDatasetDetail(state, action) {
+    return update(state, {
+        detailDatasetId: {$set: null}
     });
 }
 
@@ -210,7 +217,7 @@ const initState = {
     /* path to the project directory */
     path: null,
     /* project name */
-    name: null,
+    name: '',
     /* project type */
     type: PROJECT_TYPE.OFFLINE_PCA,
     /* project sampling */
@@ -251,6 +258,8 @@ const project = (state = initState, action) => {
             return deleteDataset(state, action);
         case ACTIONS.SHOW_DATASET_DETAIL:
             return showDatasetDetail(state, action);
+        case ACTIONS.CLOSE_DATASET_DETAIL:
+            return closeDatasetDetail(state, action);
         case ACTIONS.SELECT_ENTRIES:
             return selectEntries(state, action);
         default:

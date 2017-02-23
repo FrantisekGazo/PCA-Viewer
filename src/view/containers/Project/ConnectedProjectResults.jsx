@@ -21,7 +21,7 @@ module.exports = connect(
     (dispatch) => {
         return {
             onEntrySelected: (entryIds) => {
-                dispatch(ProjectAction.selectEntries(entryIds));
+                dispatch(ProjectAction.createSelectEntryAction(entryIds));
             }
         };
     }

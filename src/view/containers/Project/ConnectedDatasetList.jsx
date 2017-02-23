@@ -20,10 +20,10 @@ module.exports = connect(
     (dispatch) => {
         return {
             onAddDatasetClick: () => {
-                dispatch(ProjectAction.addDataset())
+                dispatch(ProjectAction.createAddDatasetAction());
             },
             onDatasetClick: (id) => {
-                dispatch(ProjectAction.showDatasetDetail(id))
+                dispatch(ProjectAction.createShowDatasetDetailAction(id));
             }
         };
     }

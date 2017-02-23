@@ -26,6 +26,12 @@ const styles = {
         right: '10px',
         bottom: '10px',
     },
+    center: {
+        position: 'absolute',
+        // center horizontally:
+        left: '50%',
+        transform: 'translate(-50%)',
+    },
     left: {
         display: 'inline-block',
         position: 'absolute',
@@ -67,7 +73,7 @@ class ProjectScreen extends React.Component {
     render() {
         const { projectName, detailId, onSaveClick, onCloseClick } = this.props;
         // optional inner components
-        const { datasets, detail, results, entrySelection } = this.props;
+        const { loading, datasets, detail, results, entrySelection } = this.props;
 
         showMenu(true, onSaveClick, onCloseClick);
 
@@ -94,6 +100,12 @@ class ProjectScreen extends React.Component {
                     }/>
 
                 <div style={styles.content}>
+
+                    <div style={styles.center}>
+
+                        { loading }
+
+                    </div>
 
                     <div style={styles.left}>
 

@@ -19,7 +19,7 @@ module.exports = connect(
     (dispatch) => {
         return {
             onClearClicked: () => {
-                dispatch(ProjectAction.clearSelectedEntries());
+                dispatch(ProjectAction.createSelectEntryAction([]));
             }
         };
     }

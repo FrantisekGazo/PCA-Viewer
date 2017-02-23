@@ -20,6 +20,7 @@ const EntryDatasetDetail = require('./view/containers/Project/ConnectedEntryData
 const StreamDatasetDetail = require('./view/containers/Project/ConnectedStreamDatasetDetail.jsx');
 const ProjectResults = require('./view/containers/Project/ConnectedProjectResults.jsx');
 const EntrySelection = require('./view/containers/Project/ConnectedEntrySelection.jsx');
+const Loading = require('./view/components/Common/Loading.jsx');
 const store = require('./store/Store');
 
 
@@ -58,6 +59,9 @@ ReactDOM.render(
                 <Route path="setup/" component={SetupScreen}/>
 
                 <Route path="project/" component={ProjectScreen}>
+                    <IndexRoute components={{
+                        loading: Loading
+                    }}/>
                     <Route path="offline0/" components={{
                         datasets: DatasetList,
                         detail: StreamDatasetDetail(false),

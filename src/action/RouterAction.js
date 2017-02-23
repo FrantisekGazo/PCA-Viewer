@@ -28,6 +28,14 @@ function createGoToSetupScreenAction() {
 }
 
 /**
+ * Navigates user to the Project screen. (no project will be shown yet)
+ * @returns {object} Action
+ */
+function createGoToProjectScreenLoadingAction() {
+    return replace({pathname: '/project/'});
+}
+
+/**
  * Navigates user to the Project screen for Offline PCA.
  * @returns {object} Action
  */
@@ -56,6 +64,7 @@ module.exports = {
     createGoBackAction,
     createGoToStartScreenAction,
     createGoToSetupScreenAction,
+    createGoToProjectScreenLoadingAction,
     createGoToProjectScreenOfflineAction,
     createGoToProjectScreenOfflineConstantAction,
     createGoToProjectScreenOnlineAction,
