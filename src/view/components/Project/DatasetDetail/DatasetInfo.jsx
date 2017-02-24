@@ -90,7 +90,7 @@ class DatasetInfo extends React.Component {
                 <CardActions
                     style={{
                         position: 'relative',
-                        width: (single) ? '170px' : '230px',
+                        width: (single) ? '120px' : '230px',
                         right: 0,
                         margin: '0 0 0 auto',
                     }}>
@@ -101,11 +101,15 @@ class DatasetInfo extends React.Component {
                         <IconSave/>
                     </IconButton>
 
-                    <IconButton
-                        tooltip="Delete"
-                        onTouchTap={onDeleteClick}>
-                        <IconDelete color={'#ae0000'}/>
-                    </IconButton>
+                    {
+                        !single ? (
+                            <IconButton
+                                tooltip="Delete"
+                                onTouchTap={onDeleteClick}>
+                                <IconDelete color={'#ae0000'}/>
+                            </IconButton>
+                        ): null
+                    }
 
                     {
                         !single ? (
