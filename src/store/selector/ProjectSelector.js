@@ -33,11 +33,11 @@ const getName = (state) => getProjectState(state).name;
 const getSampling = (state) => getProjectState(state).sampling;
 
 /**
- * Returns current version of calculated PCA.
+ * Returns current version of the project data.
  * @param state {Object}
  * @returns {number}
  */
-const getResultsVersion = (state) => getProjectState(state).resultsVersion;
+const getVersion = (state) => getProjectState(state).version;
 
 /**
  * Returns ID of currently shown dataset.
@@ -179,6 +179,8 @@ const hasConstantSampling = (state) => getProjectState(state).hasConstantSamplin
 module.exports = {
     getPath,
     getName,
+    getType,
+    hasConstantSampling,
     getSampling,
     getDataset,
     getDatasetEntries,
@@ -191,7 +193,5 @@ module.exports = {
     getIncludedDatasetsWithEntries,
     isDatasetIncluded,
     getAllDatasets,
-    getResultsVersion,
-    getType,
-    hasConstantSampling,
+    getVersion,
 };

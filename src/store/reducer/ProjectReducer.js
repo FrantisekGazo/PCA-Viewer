@@ -136,7 +136,7 @@ function updateDataset(state, action) {
             entries: {$set: entryMap},
             lastEntryId: {$set: maxId},
             usedDatasetIds: {$set: newUsedDatasetIds},
-            resultsVersion: {$set: state.resultsVersion + 1}
+            version: {$set: state.version + 1}
         });
     } else {
         // prepare stream IDs
@@ -152,7 +152,7 @@ function updateDataset(state, action) {
                 [tsid]: {$set: transformedStream}
             },
             usedDatasetIds: {$set: newUsedDatasetIds},
-            resultsVersion: {$set: state.resultsVersion + 1}
+            version: {$set: state.version + 1}
         });
     }
 }
@@ -238,9 +238,7 @@ const initState = {
 
     /* error */
     error: '',
-    /* show detail for dataset */
-    detailDatasetId: null,
-    detailEntryIds: null,
+
     /* dataset IDs used by project */
     usedDatasetIds: [],
     /* all datasets */
@@ -251,8 +249,13 @@ const initState = {
     entries: {},
     /* all streams */
     streams: {},
-    /* this needs to be incremented if results needs to be refreshed */
-    resultsVersion: 0
+
+    /* show detail for dataset */
+    detailDatasetId: null,
+    detailEntryIds: null,
+
+    /* this needs to be incremented if calculation needs to be run */
+    version: 0,
 };
 const project = (state = initState, action) => {
     switch (action.type) {
