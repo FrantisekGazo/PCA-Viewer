@@ -67,7 +67,7 @@ ReactDOM.render(
                         datasets: DatasetList,
                         detail: StreamDatasetDetail(false),
                         calculationParams: CalculationParams,
-                        results: null,
+                        results: ProjectResults,
                         entrySelection: null,
                     }}/>
                     <Route path="offline1/" components={{

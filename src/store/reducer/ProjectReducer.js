@@ -221,7 +221,8 @@ function changeSampling(state, action) {
 
 function setSampledEntries(state, action) {
     return update(state, {
-        entries: {$set: action.payload}
+        entries: {$set: action.payload},
+        version: {$set: state.version + 1}
     });
 }
 
