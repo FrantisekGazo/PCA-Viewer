@@ -213,6 +213,18 @@ function selectEntries(state, action) {
     });
 }
 
+function changeSampling(state, action) {
+    return update(state, {
+        sampling: {$set: action.payload}
+    });
+}
+
+function setSampledEntries(state, action) {
+    return update(state, {
+        entries: {$set: action.payload}
+    });
+}
+
 const initState = {
     /* path to the project directory */
     path: null,
@@ -262,6 +274,10 @@ const project = (state = initState, action) => {
             return closeDatasetDetail(state, action);
         case ACTIONS.SELECT_ENTRIES:
             return selectEntries(state, action);
+        case ACTIONS.CHANGE_SAMPLING:
+            return changeSampling(state, action);
+        case ACTIONS.SET_SAMPLED_ENTRIES:
+            return setSampledEntries(state, action);
         default:
             return state;
     }

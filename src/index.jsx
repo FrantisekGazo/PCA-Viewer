@@ -18,6 +18,7 @@ const ProjectScreen = require('./view/containers/Project/ConnectedProjectScreen.
 const DatasetList = require('./view/containers/Project/ConnectedDatasetList.jsx');
 const EntryDatasetDetail = require('./view/containers/Project/ConnectedEntryDatasetDetail.jsx');
 const StreamDatasetDetail = require('./view/containers/Project/ConnectedStreamDatasetDetail.jsx');
+const CalculationParams = require('./view/containers/Project/ConnectedCalculationParams.jsx');
 const ProjectResults = require('./view/containers/Project/ConnectedProjectResults.jsx');
 const EntrySelection = require('./view/containers/Project/ConnectedEntrySelection.jsx');
 const Loading = require('./view/components/Common/Loading.jsx');
@@ -65,18 +66,21 @@ ReactDOM.render(
                     <Route path="offline0/" components={{
                         datasets: DatasetList,
                         detail: StreamDatasetDetail(false),
+                        calculationParams: CalculationParams,
                         results: null,
                         entrySelection: null,
                     }}/>
                     <Route path="offline1/" components={{
                         datasets: DatasetList,
                         detail: EntryDatasetDetail,
+                        calculationParams: null,
                         results: ProjectResults,
                         entrySelection: EntrySelection,
                     }}/>
                     <Route path="online/" components={{
                         datasets: null,
                         detail: StreamDatasetDetail(true), // has only 1 dataset
+                        calculationParams: null,
                         results: null,
                         entrySelection: null,
                     }}/>

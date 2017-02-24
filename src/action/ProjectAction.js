@@ -9,12 +9,18 @@ const ACTIONS = {
     SET_PROJECT: 'SET_PROJECT',
     CLOSE_PROJECT: 'CLOSE_PROJECT',
     SAVE_PROJECT: 'SAVE_PROJECT',
+
     NEW_DATASET: 'NEW_DATASET',
     UPDATE_DATASET: 'UPDATE_DATASET',
     DELETE_DATASET: 'DELETE_DATASET',
+
     SHOW_DATASET_DETAIL: 'SHOW_DATASET_DETAIL',
     CLOSE_DATASET_DETAIL: 'CLOSE_DATASET_DETAIL',
+
     SELECT_ENTRIES: 'SELECT_ENTRIES',
+
+    CHANGE_SAMPLING: 'CHANGE_SAMPLING',
+    SET_SAMPLED_ENTRIES: 'SET_SAMPLED_ENTRIES',
 };
 
 
@@ -115,6 +121,18 @@ function createSelectEntryAction(entryIds) {
     return createAction(ACTIONS.SELECT_ENTRIES, entryIds);
 }
 
+/**
+ * Creates an action for stream sampling.
+ * @param sampling Value count per sample
+ * @returns {Object} An action
+ */
+function createChangeSamplingAction(sampling) {
+    return createAction(ACTIONS.CHANGE_SAMPLING, sampling);
+}
+function createSetSampledEntriesAction(sampledEntries) {
+    return createAction(ACTIONS.SET_SAMPLED_ENTRIES, sampledEntries);
+}
+
 
 module.exports = {
     ACTIONS,
@@ -129,4 +147,6 @@ module.exports = {
     createDeleteDatasetAction,
     createSaveProjectAction,
     createSelectEntryAction,
+    createChangeSamplingAction,
+    createSetSampledEntriesAction,
 };

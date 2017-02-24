@@ -73,7 +73,7 @@ class ProjectScreen extends React.Component {
     render() {
         const { projectName, detailId, onSaveClick, onCloseClick } = this.props;
         // optional inner components
-        const { loading, datasets, detail, results, entrySelection } = this.props;
+        const { loading, datasets, detail, calculationParams, results, entrySelection } = this.props;
 
         showMenu(true, onSaveClick, onCloseClick);
 
@@ -118,7 +118,9 @@ class ProjectScreen extends React.Component {
 
                     <div style={styles.right}>
 
-                        { results }
+                        { calculationParams }
+
+                        { this.addPadding(results) }
 
                         { this.addPadding(entrySelection) }
 

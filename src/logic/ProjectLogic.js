@@ -7,6 +7,7 @@ const { createLogic } = require('redux-logic');
 const ProjectAction = require('../action/ProjectAction');
 const RouterAction = require('../action/RouterAction');
 const ProjectSelector = require('../store/selector/ProjectSelector');
+const ProjectReducer = require('../store/reducer/ProjectReducer');
 const { PROJECT_TYPE, PROJECT_FILE_NAME } = require('../store/Constants');
 const FileService = require('../service/FileService');
 const { sortNumArrayAsc } = require('../util/util');
@@ -142,6 +143,61 @@ const validateSelectedEntries = createLogic({
     }
 });
 
+/**
+ * Validates new samppling.
+ */
+const validateNewSampling = createLogic({
+    type: ProjectAction.ACTIONS.CHANGE_SAMPLING,
+    validate({ getState, action }, allow, reject) {
+        const newSampling = action.payload;
+        const state = getState();
+        const sampling = ProjectSelector.getSampling(state);
+        const hasConstantSampling = ProjectSelector.hasConstantSampling(state);
+
+        if (!hasConstantSampling && newSampling !== sampling) {
+            allow(action);
+        } else {
+            reject(); // reject action if sampling is the same
+        }
+    }
+});
+
+/**
+ * Samples streams.
+ */
+const sampleStreams = createLogic({
+    type: [
+        ProjectAction.ACTIONS.CHANGE_SAMPLING,
+        ProjectAction.ACTIONS.UPDATE_DATASET,
+    ],
+    latest: true,
+    process({ getState, action }, dispatch, done) {
+        const state = getState();
+        const sampling = ProjectSelector.getSampling(state);
+
+        const entries = {};
+        let entryId = 1;
+
+        const datasets = ProjectSelector.getAllDatasets(state);
+        let dataset, stream, entry;
+        for (let i = 0; i < datasets.length; i++) {
+            dataset = datasets[i];
+            stream = ProjectSelector.getDatasetTransformedStream(state, dataset.id);
+
+            for (let j = 0; j <= stream.length - sampling; j += sampling) {
+                entry = ProjectReducer.newEntry({
+                    id: entryId++,
+                    datasetId: dataset.id,
+                    value: stream.slice(j, j + sampling)
+                });
+                entries[entry.id] = entry;
+            }
+        }
+        dispatch(ProjectAction.createSetSampledEntriesAction(entries));
+        done();
+    }
+});
+
 
 module.exports = [
     loadProject,
@@ -150,4 +206,6 @@ module.exports = [
     saveProject,
     validateShowDataset,
     validateSelectedEntries,
+    validateNewSampling,
+    sampleStreams,
 ];

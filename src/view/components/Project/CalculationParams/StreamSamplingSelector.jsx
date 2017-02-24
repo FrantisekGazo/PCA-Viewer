@@ -43,23 +43,24 @@ class StreamSamplingSelector extends React.Component {
 
         return (
             <div>
-                <Subheader>Sampling</Subheader>
                 <div
                     style={{
-                        paddingLeft: '30px',
+                        paddingLeft: '20px',
                         marginBottom: '-20px',
                     }}>
                     <TextField
+                        floatingLabelText='Sampling'
                         id="sampling-value"
                         defaultValue={`${sampling}`}
                         onChange={this.handleValueChange.bind(this)}/>
                 </div>
+
                 <br/>
                 <FlatButton
                     label='Update'
                     onTouchTap={this.handleUpdateClick.bind(this)}/>
 
-                <span style={{ color: '#cc0000' }}>{ errorMessage }</span>
+                <span style={{color: '#cc0000'}}>{ errorMessage }</span>
             </div>
         );
     }
