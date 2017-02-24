@@ -144,7 +144,7 @@ const validateSelectedEntries = createLogic({
 });
 
 /**
- * Validates new samppling.
+ * Validates new sampling.
  */
 const validateNewSampling = createLogic({
     type: ProjectAction.ACTIONS.CHANGE_SAMPLING,
@@ -173,6 +173,13 @@ const sampleStreams = createLogic({
     latest: true,
     process({ getState, action }, dispatch, done) {
         const state = getState();
+
+        // if project has constant sampling, data are sampled during loading
+        if (ProjectSelector.hasConstantSampling(state)) {
+            done();
+            return;
+        }
+
         const sampling = ProjectSelector.getSampling(state);
 
         const entries = {};

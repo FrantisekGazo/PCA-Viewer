@@ -4,8 +4,6 @@ const React = require('react');
 const {Card, CardHeader, CardMedia, CardText} = require('material-ui/Card');
 const LinearProgress = require('material-ui/LinearProgress').default;
 
-const WorkerService = require('../../../../service/WorkerService');
-const PcaService = require('../../../../service/PcaService');
 const EigenvaluesSelector = require('./EigenvaluesSelector.jsx');
 const EigenvaluesPlot = require('./EigenvaluesPlot.jsx');
 const ScatterPlot = require('./ScatterPlot.jsx');
@@ -17,16 +15,8 @@ class ProjectResults extends React.Component {
         super(props);
 
         this.state = {
-            loading: true,
-            loaded: false,
-            pca: null,
             usedEigenpairs: [0, 1],
-            error: null
         };
-    }
-
-    componentDidMount() {
-        this.recalculatePCA(this.props);
     }
 
     handleEigenPairsChange(newIndexes) {
@@ -36,8 +26,8 @@ class ProjectResults extends React.Component {
     }
 
     render() {
-        const { loading, loaded, error, pca, usedEigenpairs } = this.state;
-        const { resultsVersion, selectedEntryIds, onEntrySelected } = this.props;
+        const { usedEigenpairs } = this.state;
+        const { loading, loaded, error, pca, resultsVersion, selectedEntryIds, onEntrySelected } = this.props;
 
         if (loading) {
             return (
@@ -98,44 +88,15 @@ class ProjectResults extends React.Component {
             return null;
         }
     }
-
-    componentWillUpdate(nextProps, nextState) {
-        if (nextProps.resultsVersion !== this.props.resultsVersion) {
-            nextState.loading = true;
-            nextState.loaded = false;
-
-            this.recalculatePCA(nextProps);
-        }
-    }
-
-    recalculatePCA(props) {
-        PcaService.calculatePcaAsync(props.datasetsWithEntries)
-            .then((pca) => {
-                this.setState({
-                    loading: false,
-                    loaded: true,
-                    pca: pca,
-                    error: null
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-
-                this.setState({
-                    loading: false,
-                    loaded: false,
-                    pca: null,
-                    error: 'PCA calculation failed',
-                });
-            });
-    }
 }
 
 ProjectResults.propTypes = {
-    // number that should be incremented each time result needs an update
+    /* results */
+    loading: React.PropTypes.bool.isRequired,
+    loaded: React.PropTypes.bool.isRequired,
+    error: React.PropTypes.string.isRequired,
+    pca: React.PropTypes.object, // can be null
     resultsVersion: React.PropTypes.number.isRequired,
-    // array of all datasets with entries
-    datasetsWithEntries: React.PropTypes.array.isRequired,
     // selected entry IDs
     selectedEntryIds: React.PropTypes.array.isRequired,
     // callback

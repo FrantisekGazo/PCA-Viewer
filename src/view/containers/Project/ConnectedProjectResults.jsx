@@ -9,14 +9,16 @@ const ProjectSelector = require('../../../store/selector/ProjectSelector');
 const CalculationSelector = require('../../../store/selector/CalculationSelector');
 
 
-// FIXME: refactor this component to use the results from the store
 module.exports = connect(
     // state to props
     (state) => {
         return {
+            loading: CalculationSelector.isLoading(state),
+            loaded: CalculationSelector.isLoaded(state),
+            error: CalculationSelector.getError(state),
             resultsVersion: CalculationSelector.getVersion(state),
+            pca: CalculationSelector.getPCA(state),
             selectedEntryIds: ProjectSelector.getDetailEntryIds(state),
-            datasetsWithEntries: ProjectSelector.getIncludedDatasetsWithEntries(state),
         };
     },
     // dispatch functions to props

@@ -21,11 +21,7 @@ function done(state, action) {
         loading: {$set: false},
         loaded: {$set: true},
         // results
-        eigenvalues: {$set: results.eigenvalues},
-        eigenvectors: {$set: results.eigenvectors},
-        cumulativeVariance: {$set: results.cumulativeVariance},
-        data: {$set: results.data},
-
+        pca: {$set: results.pca},
         version: {$set: results.version},
     });
 }
@@ -40,13 +36,11 @@ function failed(state, action) {
 
 const initState = {
     loading: false,
-    laoded: false,
+    loaded: false,
     error: '',
 
-    eigenvalues: [],
-    eigenvectors: [],
-    cumulativeVariance: [],
-    data: [],
+    /* calculated PCA */
+    pca: null,
 
     /* this needs to be incremented if results needs to be refreshed */
     version: 0

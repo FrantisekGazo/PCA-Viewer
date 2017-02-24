@@ -23,12 +23,13 @@ const calculatePCA = createLogic({
         const calcVersion = CalculationSelector.getVersion(state);
 
         if (calcVersion < dataVersion) {
+            dispatch(CalculationAction.createStartAction());
             const datasets = ProjectSelector.getIncludedDatasetsWithEntries(state);
 
             PcaService.calculatePcaAsync(datasets)
-                .then((results) => {
-                    results.version = dataVersion;
-                    dispatch(CalculationAction.createDoneAction(results));
+                .then((pca) => {
+                    console.log('PCA result', pca);
+                    dispatch(CalculationAction.createDoneAction(pca, dataVersion));
                 })
                 .catch((error) => {
                     console.error('PCA error', error);

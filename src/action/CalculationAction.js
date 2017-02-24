@@ -20,11 +20,12 @@ function createStartAction() {
 
 /**
  * Creates an action for showing the calculation results.
- * @param results Calculation results
+ * @param pca Calculation results
+ * @param version Version of the results
  * @returns {Object} An action
  */
-function createDoneAction(results) {
-    return createAction(ACTIONS.DONE, results);
+function createDoneAction(pca, version) {
+    return createAction(ACTIONS.DONE, {pca, version});
 }
 
 /**
