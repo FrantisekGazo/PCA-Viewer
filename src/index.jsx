@@ -80,8 +80,8 @@ ReactDOM.render(
                     <Route path="online/" components={{
                         datasets: null,
                         detail: StreamDatasetDetail(true), // has only 1 dataset
-                        calculationParams: null,
-                        results: null,
+                        calculationParams: CalculationParams,
+                        results: ProjectResults,
                         entrySelection: null,
                     }}/>
                 </Route>
