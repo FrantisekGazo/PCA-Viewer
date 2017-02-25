@@ -4,7 +4,7 @@ const React = require('react');
 const { connect } = require('react-redux');
 const { Card } = require('material-ui/Card');
 
-const ConnectedStreamWindowSizeEditor = require('./ConnectedSamplingWindowSizeEditor');
+const ConnectedSamplingWindowSizeEditor = require('./ConnectedSamplingWindowSizeEditor.jsx');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
 
@@ -14,7 +14,7 @@ const ProjectSelector = require('../../../store/selector/ProjectSelector');
 const Params = ({ hasConstantSampling }) => (
     <Card>
         {
-            hasConstantSampling ? null : (<ConnectedStreamWindowSizeEditor/>)
+            hasConstantSampling ? null : (<ConnectedSamplingWindowSizeEditor/>)
         }
     </Card>
 );
