@@ -45,7 +45,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // set window IDs
-require('./service/WorkerService').listenForWindowIds();
+require('./util/WorkerUtil').listenForWindowIds();
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(hashHistory, store);

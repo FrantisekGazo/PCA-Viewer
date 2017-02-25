@@ -3,7 +3,7 @@
 const React = require('react');
 const Plotly = require("plotly.js/dist/plotly.js");
 
-const { equalArrays } = require('../../../../util/util');
+const { equalArrays } = require('../../../../util');
 
 
 const layout = {

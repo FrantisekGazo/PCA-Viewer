@@ -5,10 +5,10 @@ const React = require('react');
 const DatasetInfo = require('./DatasetInfo.jsx');
 const StreamEditor = require('./StreamEditor.jsx');
 
-const DatasetService = require('../../../../service/DatasetService');
-const DialogService = require('../../../../service/DialogService');
-const FileService = require('../../../../service/FileService');
-const StreamService = require('../../../../service/StreamService');
+const DatasetUtil = require('../../../../util/DatasetUtil');
+const DialogUtil = require('../../../../util/DialogUtil');
+const FileUtil = require('../../../../util/FileUtil');
+const StreamUtil = require('../../../../util/StreamUtil');
 
 
 /**
@@ -50,9 +50,9 @@ class DatasetDetail extends React.Component {
     }
 
     handleLoadClick() {
-        DialogService.showOpenFileDialog()
+        DialogUtil.showOpenFileDialog()
             .then((filePath) => {
-                return FileService.readValuesFromFile(filePath);
+                return FileUtil.readValuesFromFile(filePath);
             })
             .then((values) => {
                 console.log('loaded stream', values.length);
@@ -61,7 +61,7 @@ class DatasetDetail extends React.Component {
                 const newStream = stream.concat(values);
                 console.log('new stream', newStream.length);
 
-                return StreamService.transformStream(newStream, transformation)
+                return StreamUtil.transformStream(newStream, transformation)
                     .then((newTansfStream) => {
                         console.log('new transformed stream', newTansfStream.length);
 
@@ -78,7 +78,7 @@ class DatasetDetail extends React.Component {
 
     handleStreamTransformationChange(transformation) {
         console.log('changing transformation to', transformation);
-        return StreamService.transformStream(this.state.stream, transformation)
+        return StreamUtil.transformStream(this.state.stream, transformation)
             .then((newTansfStream) => {
                 console.log('new transformed stream', newTansfStream.length);
 

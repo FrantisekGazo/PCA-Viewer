@@ -14,8 +14,8 @@ const FlatButton = require('material-ui/FlatButton').default;
 const Snackbar = require('material-ui/Snackbar').default;
 
 const ProjectTypeSelector = require('./ProjectTypeSelector.jsx');
-const HelpService = require('../../../service/HelpService');
-const DialogService = require('../../../service/DialogService');
+const HelpUtil = require('../../../util/HelpUtil');
+const DialogUtil = require('../../../util/DialogUtil');
 const { PROJECT_TYPE } = require('../../../store/Constants');
 const showMenu = require('../../menu/Menu');
 
@@ -83,7 +83,7 @@ class SetupScreen extends React.Component {
     }
 
     handleOpenFolderClick() {
-        DialogService.showOpenCreateDirDialog()
+        DialogUtil.showOpenCreateDirDialog()
             .then((path) => {
                 this.setState({
                     path: path,
@@ -152,7 +152,7 @@ class SetupScreen extends React.Component {
                                 <IconButton><IconMore /></IconButton>
                             }>
 
-                            <MenuItem primaryText='Help' onTouchTap={() => HelpService.showHelp()}/>
+                            <MenuItem primaryText='Help' onTouchTap={() => HelpUtil.showHelp()}/>
                         </IconMenu>
                     }/>
 

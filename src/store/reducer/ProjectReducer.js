@@ -3,7 +3,7 @@
 const update = require('immutability-helper');
 
 const { ACTIONS } = require('../../action/ProjectAction');
-const { sortNumArrayDesc } = require('../../util/util');
+const { sortNumArrayDesc } = require('../../util');
 const { PROJECT_TYPE, TRANSFORMATIONS } = require('../Constants');
 
 

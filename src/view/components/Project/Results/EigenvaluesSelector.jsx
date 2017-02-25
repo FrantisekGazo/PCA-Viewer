@@ -5,7 +5,7 @@ const Checkbox = require('material-ui/Checkbox').default;
 const RaisedButton = require('material-ui/RaisedButton').default;
 const Snackbar = require('material-ui/Snackbar').default;
 
-const { sortNumArrayAsc } = require('../../../../util/util');
+const { sortNumArrayAsc } = require('../../../../util');
 
 
 class EigenvaluesSelector extends React.Component {

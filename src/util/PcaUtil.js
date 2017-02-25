@@ -3,7 +3,7 @@
 const PCA = require('ml-pca');
 const Matrix = require('ml-matrix');
 
-const WorkerService = require('./WorkerService');
+const WorkerUtil = require('./WorkerUtil');
 
 /**
  * Asynchronously calculates PCA.
@@ -11,7 +11,7 @@ const WorkerService = require('./WorkerService');
  * @returns {Promise} that will resolve with a calculated PCA or null.
  */
 function calculatePcaAsync(datasets) {
-    return WorkerService.execByWorker(WorkerService.WorkerTasks.CALCULATE_PCA, datasets);
+    return WorkerUtil.execByWorker(WorkerUtil.WorkerTasks.CALCULATE_PCA, datasets);
 }
 
 /**

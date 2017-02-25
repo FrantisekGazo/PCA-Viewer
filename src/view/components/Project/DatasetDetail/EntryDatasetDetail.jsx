@@ -5,9 +5,9 @@ const React = require('react');
 const DatasetInfo = require('./DatasetInfo.jsx');
 const DatasetEntries = require('./DatasetEntries.jsx');
 
-const DatasetService = require('../../../../service/DatasetService');
-const DialogService = require('../../../../service/DialogService');
-const FileService = require('../../../../service/FileService');
+const DatasetUtil = require('../../../../util/DatasetUtil');
+const DialogUtil = require('../../../../util/DialogUtil');
+const FileUtil = require('../../../../util/FileUtil');
 
 
 class DatasetDetail extends React.Component {
@@ -48,14 +48,14 @@ class DatasetDetail extends React.Component {
     }
 
     handleLoadClick() {
-        DialogService.showOpenFileDialog()
+        DialogUtil.showOpenFileDialog()
             .then((filePath) => {
-                return FileService.readValuesFromFile(filePath, this.props.sampling);
+                return FileUtil.readValuesFromFile(filePath, this.props.sampling);
             })
             .then((values) => {
                 const addedEntryIds = this.state.entries.map(entry => entry.id);
                 addedEntryIds.push(this.props.lastEntryId);
-                return DatasetService.valuesToEntries(this.state.dataset.id, addedEntryIds, values);
+                return DatasetUtil.valuesToEntries(this.state.dataset.id, addedEntryIds, values);
             })
             .then((entries) => {
                 this.setState({

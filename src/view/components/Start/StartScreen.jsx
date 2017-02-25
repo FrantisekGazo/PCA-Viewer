@@ -6,7 +6,7 @@ const IconCreate = require('material-ui/svg-icons/file/create-new-folder').defau
 const IconOpen = require('material-ui/svg-icons/file/folder-open').default;
 
 const showMenu = require('../../menu/Menu');
-const DialogService = require('../../../service/DialogService');
+const DialogUtil = require('../../../util/DialogUtil');
 
 
 const optionContainerStyle = {
@@ -46,7 +46,7 @@ const errorStyle = {
 class StartScreen extends React.Component {
 
     handleOpenExisting() {
-        DialogService.showOpenDirDialog()
+        DialogUtil.showOpenDirDialog()
             .then((path) => {
                 this.props.onOpenExistingClicked(path);
             });

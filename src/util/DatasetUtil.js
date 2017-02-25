@@ -2,7 +2,7 @@
 
 
 const { newEntry } = require('../store/reducer/ProjectReducer');
-const { sortNumArrayDesc } = require('../util/util');
+const { sortNumArrayDesc } = require('util');
 
 
 /**

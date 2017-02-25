@@ -4,7 +4,7 @@ const { createLogic } = require('redux-logic');
 
 const CalculationAction = require('../action/CalculationAction');
 const CalculationSelector = require('../store/selector/CalculationSelector');
-const PcaService = require('../service/PcaService');
+const PcaUtil = require('../util/PcaUtil');
 const ProjectAction = require('../action/ProjectAction');
 const ProjectSelector = require('../store/selector/ProjectSelector');
 
@@ -29,7 +29,7 @@ const calculatePCA = createLogic({
             dispatch(CalculationAction.createStartAction());
             const datasets = ProjectSelector.getIncludedDatasetsWithEntries(state);
 
-            PcaService.calculatePcaAsync(datasets)
+            PcaUtil.calculatePcaAsync(datasets)
                 .then((pca) => {
                     console.log('PCA result', pca);
                     dispatch(CalculationAction.createDoneAction(pca, dataVersion));

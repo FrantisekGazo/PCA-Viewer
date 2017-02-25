@@ -8,7 +8,7 @@ const MenuItem = require('material-ui/MenuItem').default;
 const IconClose = require('material-ui/svg-icons/navigation/close').default;
 const IconMore = require('material-ui/svg-icons/navigation/more-vert').default;
 
-const HelpService = require('../../../service/HelpService');
+const HelpUtil = require('../../../util/HelpUtil');
 const showMenu = require('../../menu/Menu');
 
 
@@ -95,7 +95,7 @@ class ProjectScreen extends React.Component {
                             }>
 
                             <MenuItem primaryText="Settings"/>
-                            <MenuItem primaryText='Help' onTouchTap={() => HelpService.showHelp()}/>
+                            <MenuItem primaryText='Help' onTouchTap={() => HelpUtil.showHelp()}/>
                         </IconMenu>
                     }/>
 

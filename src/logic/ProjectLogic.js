@@ -9,8 +9,8 @@ const RouterAction = require('../action/RouterAction');
 const ProjectSelector = require('../store/selector/ProjectSelector');
 const ProjectReducer = require('../store/reducer/ProjectReducer');
 const { PROJECT_TYPE, PROJECT_FILE_NAME } = require('../store/Constants');
-const FileService = require('../service/FileService');
-const { sortNumArrayAsc } = require('../util/util');
+const FileUtil = require('../util/FileUtil');
+const { sortNumArrayAsc } = require('../util');
 
 
 /**
@@ -30,7 +30,7 @@ const loadProject = createLogic({
             done();
         }
 
-        FileService.readFromFile(filePath)
+        FileUtil.readFromFile(filePath)
             .then((data) => {
                 const projectState = JSON.parse(data);
                 projectState.path = projectPath;
@@ -88,7 +88,7 @@ const saveProject = createLogic({
 
         const filePath = path.join(projectPath, PROJECT_FILE_NAME);
         const json = JSON.stringify(state.project);
-        FileService.writeToFile(filePath, json);
+        FileUtil.writeToFile(filePath, json);
 
         done();
     }
