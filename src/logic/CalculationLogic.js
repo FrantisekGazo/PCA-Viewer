@@ -14,6 +14,7 @@ const ProjectSelector = require('../store/selector/ProjectSelector');
  */
 const calculatePCA = createLogic({
     type: [
+        ProjectAction.ACTIONS.SET_PROJECT,
         ProjectAction.ACTIONS.UPDATE_DATASET,
         ProjectAction.ACTIONS.DELETE_DATASET,
         ProjectAction.ACTIONS.SET_SAMPLED_ENTRIES,
