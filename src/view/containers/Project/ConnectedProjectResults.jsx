@@ -18,7 +18,7 @@ module.exports = connect(
             error: CalculationSelector.getError(state),
             resultsVersion: CalculationSelector.getVersion(state),
             pca: CalculationSelector.getPCA(state),
-            selectedEntryIds: ProjectSelector.getDetailEntryIds(state),
+            selectedEntryIds: ProjectSelector.getSelectedEntryIds(state),
         };
     },
     // dispatch functions to props

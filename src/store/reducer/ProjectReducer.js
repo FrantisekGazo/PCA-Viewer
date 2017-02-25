@@ -223,7 +223,7 @@ function selectEntries(state, action) {
     const entryIds = action.payload;
 
     return update(state, {
-        detailEntryIds: {$set: entryIds}
+        selectedEntryIds: {$set: entryIds}
     });
 }
 
@@ -231,7 +231,8 @@ function setSampling(state, action) {
     const samplingWindow = action.payload;
 
     return update(state, {
-        samplingWindow: {$set: samplingWindow}
+        samplingWindow: {$set: samplingWindow},
+        selectedEntryIds: {$set: []}
     });
 }
 
@@ -275,7 +276,7 @@ const initState = {
 
     /* show detail for dataset */
     detailDatasetId: null,
-    detailEntryIds: null,
+    selectedEntryIds: null,
 
     /* this needs to be incremented if calculation needs to be run */
     version: 0,

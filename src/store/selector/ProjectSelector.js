@@ -47,13 +47,6 @@ const getVersion = (state) => getProjectState(state).version;
 const getDetailDatasetId = (state) => getProjectState(state).detailDatasetId;
 
 /**
- * Returns all entry IDs for currently shown dataset.
- * @param state {Object}
- * @returns {Array}
- */
-const getDetailEntryIds = (state) => (getProjectState(state).detailEntryIds !== null) ? getProjectState(state).detailEntryIds : [];
-
-/**
  * Returns dataset for given ID.
  * @param state {Object}
  * @param datasetId {number}
@@ -167,6 +160,27 @@ const getIncludedDatasetsWithEntries = (state) => {
  */
 const getType = (state) => getProjectState(state).type;
 
+/**
+ * Returns all IDs for currently selected entries.
+ * @param state {Object}
+ * @returns {Array}
+ */
+const getSelectedEntryIds = (state) => {
+    const ids = getProjectState(state).selectedEntryIds;
+    return ids ? ids : [];
+};
+
+/**
+ * Returns all selected entries.
+ * @param state {Object}
+ * @returns {Array}
+ */
+const getSelectedEntries = (state) => {
+    const entryIds = getSelectedEntryIds(state);
+    const projectState = getProjectState(state);
+    return entryIds.map(id => projectState.entries[id]);
+};
+
 
 module.exports = {
     getPath,
@@ -178,11 +192,12 @@ module.exports = {
     getDatasetStream,
     getDatasetTransformedStream,
     getDetailDatasetId,
-    getDetailEntryIds,
+    getSelectedEntryIds,
     getLastEntryId,
     getIncludedDatasetIds,
     getIncludedDatasetsWithEntries,
     isDatasetIncluded,
     getAllDatasets,
     getVersion,
+    getSelectedEntries,
 };

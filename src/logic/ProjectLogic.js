@@ -120,10 +120,12 @@ const validateSelectedEntries = createLogic({
     type: ProjectAction.ACTIONS.SELECT_ENTRIES,
     validate({ getState, action }, allow, reject) {
         const entryIds = action.payload;
-        const currentIds = ProjectSelector.getDetailEntryIds(getState());
+        const currentIds = ProjectSelector.getSelectedEntryIds(getState());
 
         if (currentIds && currentIds.length > 0) {
-            if (entryIds.length > 0) {
+            if (entryIds === null) {
+                allow(Object.assign({}, action, {payload: []}));
+            } else {
                 let ids = sortNumArrayAsc(entryIds.concat(currentIds));
                 for (let i = 0; i < ids.length; ++i) {
                     for (let j = i + 1; j < ids.length; ++j) {
@@ -138,8 +140,6 @@ const validateSelectedEntries = createLogic({
                 } else {
                     reject();
                 }
-            } else {
-                allow(action);
             }
         } else {
             allow(ProjectAction.createSelectEntryAction(sortNumArrayAsc(entryIds)));

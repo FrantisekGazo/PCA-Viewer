@@ -12,14 +12,14 @@ module.exports = connect(
     // state to props
     (state) => {
         return {
-            selectedEntryIds: ProjectSelector.getDetailEntryIds(state),
+            selectedEntries: ProjectSelector.getSelectedEntries(state),
         };
     },
     // dispatch functions to props
     (dispatch) => {
         return {
             onClearClicked: () => {
-                dispatch(ProjectAction.createSelectEntryAction([]));
+                dispatch(ProjectAction.createSelectEntryAction(null));
             }
         };
     }

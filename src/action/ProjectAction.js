@@ -114,7 +114,7 @@ function createSaveProjectAction() {
 
 /**
  * Creates an action for selecting entries with given IDs.
- * @param entryIds {Array} Entries IDs
+ * @param entryIds {Array} Entries IDs or null
  * @returns {Object} An action
  */
 function createSelectEntryAction(entryIds) {
@@ -132,7 +132,7 @@ function createSetSamplingAction(samplingWindow) {
 
 /**
  * Creates an action for setting new selected entries.
- * @param sampledEntries {Array} Array of selected entries IDs
+ * @param sampledEntries {Object} Array of selected entries IDs
  * @returns {Object} An action
  */
 function createSetSampledEntriesAction(sampledEntries) {

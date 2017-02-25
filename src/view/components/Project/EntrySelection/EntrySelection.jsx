@@ -14,19 +14,19 @@ class EntrySelection extends React.Component {
     }
 
     render() {
-        const { selectedEntryIds, onClearClicked } = this.props;
+        const { selectedEntries, onClearClicked } = this.props;
 
-        const selectedEntries = selectedEntryIds.map(id => {
-            return (<SelectedEntry key={`${id}`} entry={id}/>);
+        const list = selectedEntries.map(entry => {
+            return (<SelectedEntry key={`${entry.id}`} entry={entry}/>);
         });
 
         return (
             <Card>
                 <CardHeader
-                    title={`${selectedEntryIds.length} Selected:`}/>
+                    title={`${selectedEntries.length} Selected:`}/>
 
                 <CardMedia>
-                    { selectedEntries }
+                    { list }
                 </CardMedia>
 
                 <CardActions>
@@ -40,7 +40,9 @@ class EntrySelection extends React.Component {
 }
 
 EntrySelection.propTypes = {
-    selectedEntryIds: React.PropTypes.array.isRequired,
+    /* array of selected entries */
+    selectedEntries: React.PropTypes.array.isRequired,
+    /* callbacks */
     onClearClicked: React.PropTypes.func.isRequired,
 };
 
