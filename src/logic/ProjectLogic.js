@@ -182,6 +182,7 @@ const sampleStreams = createLogic({
             return;
         }
 
+        const isOnline = ProjectSelector.getType(state) === PROJECT_TYPE.ONLINE_PCA;
         const sampling = samplingWindow.size;
 
         const entries = {};
@@ -193,7 +194,14 @@ const sampleStreams = createLogic({
             dataset = datasets[i];
             stream = ProjectSelector.getDatasetTransformedStream(state, dataset.id);
 
-            for (let j = 0; j <= stream.length - sampling; j += sampling) {
+            let c = 0;
+            for (let j = samplingWindow.start; j <= stream.length - sampling; j += sampling) {
+                if (isOnline && c > samplingWindow.fixedCount) {
+                    break;
+                } else {
+                    c++;
+                }
+
                 entry = ProjectReducer.newEntry({
                     id: entryId++,
                     datasetId: dataset.id,
