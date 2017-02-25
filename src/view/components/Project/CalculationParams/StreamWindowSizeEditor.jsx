@@ -6,7 +6,10 @@ const TextField = require('material-ui/TextField').default;
 const FlatButton = require('material-ui/FlatButton').default;
 
 
-class StreamSamplingSelector extends React.Component {
+/**
+ * Shows a TextField for changing the size of the sampling window.
+ */
+class StreamWindowSizeEditor extends React.Component {
 
     constructor(props) {
         super(props);
@@ -66,9 +69,11 @@ class StreamSamplingSelector extends React.Component {
     }
 }
 
-StreamSamplingSelector.propTypes = {
+StreamWindowSizeEditor.propTypes = {
+    /* size of the sampling window */
     sampling: React.PropTypes.number.isRequired,
+    /* callbacks */
     onChange: React.PropTypes.func.isRequired,
 };
 
-module.exports = StreamSamplingSelector;
+module.exports = StreamWindowSizeEditor;

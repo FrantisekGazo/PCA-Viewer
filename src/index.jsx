@@ -18,7 +18,8 @@ const ProjectScreen = require('./view/containers/Project/ConnectedProjectScreen.
 const DatasetList = require('./view/containers/Project/ConnectedDatasetList.jsx');
 const EntryDatasetDetail = require('./view/containers/Project/ConnectedEntryDatasetDetail.jsx');
 const StreamDatasetDetail = require('./view/containers/Project/ConnectedStreamDatasetDetail.jsx');
-const CalculationParams = require('./view/containers/Project/ConnectedCalculationParams.jsx');
+const OfflinePcaCalculationParams = require('./view/containers/Project/OfflinePcaCalculationParams.jsx');
+const OnlinePcaCalculationParams = require('./view/containers/Project/OnlinePcaCalculationParams.jsx');
 const ProjectResults = require('./view/containers/Project/ConnectedProjectResults.jsx');
 const EntrySelection = require('./view/containers/Project/ConnectedEntrySelection.jsx');
 const Loading = require('./view/components/Common/Loading.jsx');
@@ -65,8 +66,8 @@ ReactDOM.render(
                     }}/>
                     <Route path="offline0/" components={{
                         datasets: DatasetList,
-                        detail: StreamDatasetDetail(false),
-                        calculationParams: CalculationParams,
+                        detail: StreamDatasetDetail,
+                        calculationParams: OfflinePcaCalculationParams,
                         results: ProjectResults,
                         entrySelection: null,
                     }}/>
@@ -79,8 +80,8 @@ ReactDOM.render(
                     }}/>
                     <Route path="online/" components={{
                         datasets: null,
-                        detail: StreamDatasetDetail(true), // has only 1 dataset
-                        calculationParams: CalculationParams,
+                        detail: StreamDatasetDetail,
+                        calculationParams: OnlinePcaCalculationParams,
                         results: ProjectResults,
                         entrySelection: null,
                     }}/>

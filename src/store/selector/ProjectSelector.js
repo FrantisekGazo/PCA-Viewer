@@ -33,6 +33,27 @@ const getName = (state) => getProjectState(state).name;
 const getSampling = (state) => getProjectState(state).sampling;
 
 /**
+ * Returns the start index of the project sampling.
+ * @param state {Object}
+ * @returns {number}
+ */
+const getSamplingStart = (state) => getProjectState(state).samplingStart;
+
+/**
+ * Returns the count of the fixed project samples.
+ * @param state {Object}
+ * @returns {number}
+ */
+const getFixedSamplingCount = (state) => getProjectState(state).fixedSamplingCount;
+
+/**
+ * Returns the count of the additional project samples.
+ * @param state {Object}
+ * @returns {number}
+ */
+const getAdditionalSamplingCount = (state) => getProjectState(state).additionalSamplingCount;
+
+/**
  * Returns current version of the project data.
  * @param state {Object}
  * @returns {number}
@@ -182,6 +203,9 @@ module.exports = {
     getType,
     hasConstantSampling,
     getSampling,
+    getSamplingStart,
+    getFixedSamplingCount,
+    getAdditionalSamplingCount,
     getDataset,
     getDatasetEntries,
     getDatasetStream,

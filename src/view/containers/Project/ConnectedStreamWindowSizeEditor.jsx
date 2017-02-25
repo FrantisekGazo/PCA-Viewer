@@ -3,7 +3,7 @@
 const React = require('react');
 const {connect} = require('react-redux');
 
-const CalculationParams = require('../../components/Project/CalculationParams/CalculationParams.jsx');
+const StreamWindowSizeEditor = require('../../components/Project/CalculationParams/StreamWindowSizeEditor.jsx');
 const ProjectAction = require('../../../action/ProjectAction');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
@@ -18,9 +18,9 @@ module.exports = connect(
     // dispatch functions to props
     (dispatch) => {
         return {
-            onSamplingChange: (sampling) => {
+            onChange: (sampling) => {
                 dispatch(ProjectAction.createChangeSamplingAction(sampling));
             }
         };
     }
-)(CalculationParams);
+)(StreamWindowSizeEditor);

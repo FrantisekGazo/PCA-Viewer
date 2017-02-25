@@ -6,9 +6,10 @@ const {connect} = require('react-redux');
 const StreamDatasetDetail = require('../../components/Project/DatasetDetail/StreamDatasetDetail.jsx');
 const ProjectAction = require('../../../action/ProjectAction');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
+const { PROJECT_TYPE } = require('../../../store/Constants');
 
 
-module.exports = (single) => connect(
+module.exports = connect(
     // state to props
     (state) => {
         const datasetId = ProjectSelector.getDetailDatasetId(state);
@@ -18,7 +19,7 @@ module.exports = (single) => connect(
             included: ProjectSelector.isDatasetIncluded(state, datasetId),
             stream: ProjectSelector.getDatasetStream(state, datasetId),
             transformedStream: ProjectSelector.getDatasetTransformedStream(state, datasetId),
-            single: single,
+            single: ProjectSelector.getType(state) === PROJECT_TYPE.ONLINE_PCA,
         };
     },
     // dispatch functions to props

@@ -226,6 +226,26 @@ function setSampledEntries(state, action) {
     });
 }
 
+function setSamplingStart(state, action) {
+    return update(state, {
+        samplingStart: {$set: action.payload},
+        version: {$set: state.version + 1}
+    });
+}
+
+function setFixedSamplingCount(state, action) {
+    return update(state, {
+        fixedSamplingCount: {$set: action.payload},
+        version: {$set: state.version + 1}
+    });
+}
+
+function setAdditionalSamplingCount(state, action) {
+    return update(state, {
+        additionalSamplingCount: {$set: action.payload}
+    });
+}
+
 const initState = {
     /* path to the project directory */
     path: null,
@@ -234,8 +254,12 @@ const initState = {
     /* project type */
     type: PROJECT_TYPE.OFFLINE_PCA,
     /* project sampling */
-    sampling: null,
     hasConstantSampling: false,
+    sampling: null,
+
+    samplingStart: 0,
+    fixedSamplingCount: 10,
+    additionalSamplingCount: 0,
 
     /* error */
     error: '',
@@ -282,6 +306,12 @@ const project = (state = initState, action) => {
             return changeSampling(state, action);
         case ACTIONS.SET_SAMPLED_ENTRIES:
             return setSampledEntries(state, action);
+        case ACTIONS.SET_SAMPLING_START:
+            return setSamplingStart(state, action);
+        case ACTIONS.SET_FIXED_SAMPLING_COUNT:
+            return setFixedSamplingCount(state, action);
+        case ACTIONS.SET_ADDITIONAL_SAMPLING_COUNT:
+            return setAdditionalSamplingCount(state, action);
         default:
             return state;
     }
