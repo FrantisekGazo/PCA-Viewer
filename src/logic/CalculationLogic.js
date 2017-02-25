@@ -43,7 +43,22 @@ const calculatePCA = createLogic({
     }
 });
 
+/**
+ * Clears the calculation result when the project is closed.
+ */
+const clearCalulation = createLogic({
+    type: [
+        ProjectAction.ACTIONS.CLOSE_PROJECT,
+    ],
+    process({ getState, action }, dispatch, done) {
+        const state = getState();
+        dispatch(CalculationAction.createClearAction());
+        done();
+    }
+});
+
 
 module.exports = [
-    calculatePCA
+    calculatePCA,
+    clearCalulation
 ];

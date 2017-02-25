@@ -34,6 +34,10 @@ function failed(state, action) {
     });
 }
 
+function clear(state, action) {
+    return initState;
+}
+
 const initState = {
     loading: false,
     loaded: true,
@@ -53,6 +57,8 @@ const calculation = (state = initState, action) => {
             return done(state, action);
         case ACTIONS.FAILED:
             return failed(state, action);
+        case ACTIONS.CLEAR:
+            return clear(state, action);
         default:
             return state;
     }

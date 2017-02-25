@@ -7,6 +7,7 @@ const ACTIONS = {
     START: 'START',
     DONE: 'DONE',
     FAILED: 'FAILED',
+    CLEAR: 'CLEAR',
 };
 
 
@@ -37,10 +38,19 @@ function createFailedAction(error) {
     return createAction(ACTIONS.FAILED, error);
 }
 
+/**
+ * Creates an action for clearing all calculation results.
+ * @returns {Object} An action
+ */
+function createClearAction() {
+    return createAction(ACTIONS.CLEAR);
+}
+
 
 module.exports = {
     ACTIONS,
     createStartAction,
     createDoneAction,
     createFailedAction,
+    createClearAction,
 };
