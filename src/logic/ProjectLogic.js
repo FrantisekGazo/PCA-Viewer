@@ -205,6 +205,51 @@ const sampleStreams = createLogic({
     }
 });
 
+/**
+ * Validates new sampling start index.
+ */
+const validateSamplingStart = createLogic({
+    type: ProjectAction.ACTIONS.SET_SAMPLING_START,
+    validate({ getState, action }, allow, reject) {
+        const start = action.payload;
+        if (start >= 0) {
+            allow(action);
+        } else {
+            reject();
+        }
+    }
+});
+
+/**
+ * Validates new count of fixed samples.
+ */
+const validateFixedSamplingCount = createLogic({
+    type: ProjectAction.ACTIONS.SET_FIXED_SAMPLING_COUNT,
+    validate({ getState, action }, allow, reject) {
+        const count = action.payload;
+        if (count > 0) {
+            allow(action);
+        } else {
+            reject();
+        }
+    }
+});
+
+/**
+ * Validates new count of additional samples.
+ */
+const validateAdditionalSamplingCount = createLogic({
+    type: ProjectAction.ACTIONS.SET_ADDITIONAL_SAMPLING_COUNT,
+    validate({ getState, action }, allow, reject) {
+        const count = action.payload;
+        if (count >= 0) {
+            allow(action);
+        } else {
+            reject();
+        }
+    }
+});
+
 
 module.exports = [
     loadProject,
@@ -215,4 +260,7 @@ module.exports = [
     validateSelectedEntries,
     validateNewSampling,
     sampleStreams,
+    validateSamplingStart,
+    validateFixedSamplingCount,
+    validateAdditionalSamplingCount,
 ];
