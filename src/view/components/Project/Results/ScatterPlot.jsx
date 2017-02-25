@@ -172,15 +172,16 @@ class ScatterPlot extends React.Component {
             layout,
             opts
         );
+
+        // set click/selection callback
+        const callback = this.handlePlotClick.bind(this);
+        document.getElementById(ELEMENT_ID).on('plotly_selected', callback);
+        document.getElementById(ELEMENT_ID).on('plotly_click', callback);
     }
 
     componentDidMount() {
         setTimeout(() => {
             this.drawPlot();
-            // set click/selection callback
-            const callback = this.handlePlotClick.bind(this);
-            document.getElementById(ELEMENT_ID).on('plotly_selected', callback);
-            document.getElementById(ELEMENT_ID).on('plotly_click', callback);
         }, 1000);
     }
 
