@@ -36,7 +36,7 @@ function failed(state, action) {
 
 const initState = {
     loading: false,
-    loaded: false,
+    loaded: true,
     error: '',
 
     /* calculated PCA */

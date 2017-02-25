@@ -21,7 +21,7 @@ const styles = {
     },
     content: {
         position: 'absolute',
-        top: '70px',
+        top: '65px',
         left: '20px',
         right: '10px',
         bottom: '10px',
@@ -109,7 +109,7 @@ class ProjectScreen extends React.Component {
 
                     <div style={styles.left}>
 
-                        { datasets }
+                        { this.addPadding(datasets) }
 
                         {/* detail needs a key in oder to change the whole component if stored detail ID changes */}
                         { (detailId !== null) ? this.addPadding(detail, `dataset-${detailId}`) : null }
@@ -118,7 +118,7 @@ class ProjectScreen extends React.Component {
 
                     <div style={styles.right}>
 
-                        { calculationParams }
+                        { this.addPadding(calculationParams) }
 
                         { this.addPadding(results) }
 
