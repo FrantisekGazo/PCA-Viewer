@@ -21,8 +21,8 @@ function createStartAction() {
 
 /**
  * Creates an action for showing the calculation results.
- * @param pca Calculation results
- * @param version Version of the results
+ * @param pca {Object} Calculation results
+ * @param version {number} Version of the results
  * @returns {Object} An action
  */
 function createDoneAction(pca, version) {
@@ -31,7 +31,7 @@ function createDoneAction(pca, version) {
 
 /**
  * Creates an action for showing the calculation error.
- * @param error Error message
+ * @param error {string} Error message
  * @returns {Object} An action
  */
 function createFailedAction(error) {

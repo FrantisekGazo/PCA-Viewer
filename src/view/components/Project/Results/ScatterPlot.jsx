@@ -66,6 +66,9 @@ class ScatterPlot extends React.Component {
 
         // do not notify about the same selection
         this.lastSelection = null;
+
+        this.size = 0;
+        this.lineWidth = 0;
     }
 
     handlePlotClick(event) {
@@ -105,8 +108,11 @@ class ScatterPlot extends React.Component {
         let plotData = [];
 
         if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ === undefined) {
+            this.size = SIZE_2D;
+            this.lineWidth = this.size / 10;
             // show 2D plot
             plotData = data.map(d => {
+                const selected = d.entryIds.map(id => isSelected(selectedEntryIds, id));
                 return {
                     name: d.name,
                     x: d.values.map(val => val[usedIndexX]),
@@ -115,16 +121,22 @@ class ScatterPlot extends React.Component {
                     type: 'scatter',
                     marker: {
                         symbol: 'circle',
-                        color: d.entryIds.map(id => isSelected(selectedEntryIds, id) ? selectedColor : d.color),
+                        color: d.color,
                         opacity: OPACITY,
-                        size: SIZE_2D,
-                        line: { color: '#cccccc', width: 1 }
+                        size: this.size,
+                        line: {
+                            color: selected.map(s => s ? selectedColor : '#cccccc'),
+                            width: selected.map(s => s ? this.lineWidth * 2 : this.lineWidth)
+                        }
                     }
                 }
             });
         } else if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ !== undefined) {
+            this.size = SIZE_3D;
+            this.lineWidth = this.size / 10;
             // show 3D plot
             plotData = data.map(d => {
+                const selected = d.entryIds.map(id => isSelected(selectedEntryIds, id));
                 return {
                     name: d.name,
                     x: d.values.map(val => val[usedIndexX]),
@@ -134,10 +146,9 @@ class ScatterPlot extends React.Component {
                     type: 'scatter3d',
                     marker: {
                         symbol: 'circle',
-                        color: d.entryIds.map(id => isSelected(selectedEntryIds, id) ? selectedColor : d.color),
+                        color: selected.map(s => s ? selectedColor : d.color),
                         opacity: OPACITY,
-                        size: SIZE_3D,
-                        line: { color: '#cccccc', width: 1 }
+                        size: this.size
                     }
                 }
             });
@@ -216,14 +227,28 @@ class ScatterPlot extends React.Component {
                 continue;
             }
 
-            update = {
-                marker: {
-                    color: d.entryIds.map(id => isSelected(newSelectedEntryIds, id) ? selectedColor : d.color),
-                    opacity: OPACITY,
-                    size: usedColumns[2] ? SIZE_3D : SIZE_2D,
-                    line: { color: '#cccccc', width: 1 }
-                }
-            };
+            const selected = d.entryIds.map(id => isSelected(newSelectedEntryIds, id));
+            if (usedColumns[2]) { //3D
+                update = {
+                    marker: {
+                        color: selected.map(s => s ? selectedColor : d.color),
+                        opacity: OPACITY,
+                        size: this.size
+                    }
+                };
+            } else { //2D
+                update = {
+                    marker: {
+                        color: d.color,
+                        opacity: OPACITY,
+                        size: this.size,
+                        line: {
+                            color: selected.map(s => s ? selectedColor : '#cccccc'),
+                            width: selected.map(s => s ? this.lineWidth * 2 : this.lineWidth)
+                        }
+                    }
+                };
+            }
 
             Plotly.restyle(plot, update, i);
         }

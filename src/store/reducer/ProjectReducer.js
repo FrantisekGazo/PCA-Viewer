@@ -56,16 +56,22 @@ function setProject(state, action) {
 
     let newState;
     if (projectState) {
-        const { name, path, type, sampling, hasConstantSampling } = projectState;
-        newState = update(initState, {
-            name: {$set: name},
-            path: {$set: path},
-            type: {$set: type},
-            samplingWindow: {
-                size: {$set: sampling},
-                isConstant: {$set: hasConstantSampling},
-            }
-        });
+        if (projectState.samplingWindow) {
+            newState = Object.assign({}, initState, projectState);
+        } else {
+            const { name, path, type, sampling, hasConstantSampling } = projectState;
+            newState = update(initState, {
+                name: {$set: name},
+                path: {$set: path},
+                type: {$set: type},
+                samplingWindow: {
+                    $merge: {
+                        size: sampling,
+                        isConstant: hasConstantSampling,
+                    }
+                }
+            });
+        }
     } else {
         newState = initState;
     }
@@ -247,7 +253,7 @@ const initState = {
     /* project sampling */
     samplingWindow: {
         isConstant: false,
-        size: null,
+        size: 10,
         start: 0,
         fixedCount: 10,
         additionalCount: 0,

@@ -69,7 +69,7 @@ ReactDOM.render(
                         detail: StreamDatasetDetail,
                         calculationParams: OfflinePcaCalculationParams,
                         results: ProjectResults,
-                        entrySelection: null,
+                        entrySelection: EntrySelection,
                     }}/>
                     <Route path="offline1/" components={{
                         datasets: DatasetList,
@@ -83,7 +83,7 @@ ReactDOM.render(
                         detail: StreamDatasetDetail,
                         calculationParams: OnlinePcaCalculationParams,
                         results: ProjectResults,
-                        entrySelection: null,
+                        entrySelection: EntrySelection,
                     }}/>
                 </Route>
 
