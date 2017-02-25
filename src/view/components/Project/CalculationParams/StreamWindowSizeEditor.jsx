@@ -6,6 +6,12 @@ const TextField = require('material-ui/TextField').default;
 const FlatButton = require('material-ui/FlatButton').default;
 
 
+const styles = {
+    edt: {
+        width: '100px'
+    }
+};
+
 /**
  * Shows a TextField for changing the size of the sampling window.
  */
@@ -45,24 +51,22 @@ class StreamWindowSizeEditor extends React.Component {
         const { sampling, errorMessage } = this.state;
 
         return (
-            <div>
-                <div
-                    style={{
-                        paddingLeft: '20px',
-                        marginBottom: '-20px',
-                    }}>
-                    <TextField
-                        floatingLabelText='Sampling'
-                        id="sampling-value"
-                        defaultValue={`${sampling}`}
-                        onChange={this.handleValueChange.bind(this)}/>
-                </div>
-
-                <br/>
+            <div
+                style={{
+                    paddingLeft: '20px',
+                    paddingBottom: '10px',
+                }}>
+                <TextField
+                    style={styles.edt}
+                    floatingLabelText='Sampling'
+                    id="sampling-value"
+                    defaultValue={`${sampling}`}
+                    onChange={this.handleValueChange.bind(this)}/>
                 <FlatButton
                     label='Update'
                     onTouchTap={this.handleUpdateClick.bind(this)}/>
 
+                <br/>
                 <span style={{color: '#cc0000'}}>{ errorMessage }</span>
             </div>
         );
