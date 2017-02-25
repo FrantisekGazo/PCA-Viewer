@@ -26,7 +26,7 @@ const ACTIONS = {
 
 /**
  * Creates an action for showing an error message in current project.
- * @param errorMessage An error message.
+ * @param errorMessage {string} An error message.
  * @returns {Object} An action
  */
 function createProjectErrorAction(errorMessage) {
@@ -35,7 +35,7 @@ function createProjectErrorAction(errorMessage) {
 
 /**
  * Creates an action for loading project from given directory.
- * @param projectPath Project directory.
+ * @param projectPath {string} Project directory.
  * @returns {Object} An action
  */
 function createLoadProjectAction(projectPath) {
@@ -44,7 +44,7 @@ function createLoadProjectAction(projectPath) {
 
 /**
  * Creates an action for setting current project up with given state.
- * @param projectState New project state.
+ * @param projectState {Object} New project state.
  * @returns {Object} An action
  */
 function createSetProjectAction(projectState) {
@@ -69,8 +69,8 @@ function createAddDatasetAction() {
 
 /**
  * Creates an action for updating the dataset with given ID.
- * @param datasetId Dataset ID.
- * @param changes Changes made on the dataset and it's entries.
+ * @param datasetId {number} A dataset ID.
+ * @param changes {Object} Changes made on the dataset and it's entries.
  * @returns {Object} An action
  */
 function createUpdateDatasetAction(datasetId, changes) {
@@ -79,7 +79,7 @@ function createUpdateDatasetAction(datasetId, changes) {
 
 /**
  * Creates an action for showing a detail of dataset with given ID.
- * @param datasetId A dataset ID.
+ * @param datasetId {number} A dataset ID.
  * @returns {Object} An action
  */
 function createShowDatasetDetailAction(datasetId) {
@@ -88,7 +88,7 @@ function createShowDatasetDetailAction(datasetId) {
 
 /**
  * Creates an action for closing a detail of dataset with given ID.
- * @param datasetId A dataset ID.
+ * @param datasetId {number} A dataset ID.
  * @returns {Object} An action
  */
 function createCloseDatasetDetailAction(datasetId) {
@@ -97,7 +97,7 @@ function createCloseDatasetDetailAction(datasetId) {
 
 /**
  * Creates an action for deteleing a dataset with given ID.
- * @param datasetId A dataset ID.
+ * @param datasetId {number} A dataset ID.
  * @returns {Object} An action
  */
 function createDeleteDatasetAction(datasetId) {
@@ -114,7 +114,7 @@ function createSaveProjectAction() {
 
 /**
  * Creates an action for selecting entries with given IDs.
- * @param entryIds Entries IDs
+ * @param entryIds {Array} Entries IDs
  * @returns {Object} An action
  */
 function createSelectEntryAction(entryIds) {
@@ -123,12 +123,18 @@ function createSelectEntryAction(entryIds) {
 
 /**
  * Creates an action for setting new sampling.
- * @param samplingWindow Sampling window setup
+ * @param samplingWindow {Object} Sampling window setup
  * @returns {Object} An action
  */
 function createSetSamplingAction(samplingWindow) {
     return createAction(ACTIONS.SET_SAMPLING, samplingWindow);
 }
+
+/**
+ * Creates an action for setting new selected entries.
+ * @param sampledEntries {Array} Array of selected entries IDs
+ * @returns {Object} An action
+ */
 function createSetSampledEntriesAction(sampledEntries) {
     return createAction(ACTIONS.SET_SAMPLED_ENTRIES, sampledEntries);
 }

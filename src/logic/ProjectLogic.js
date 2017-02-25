@@ -123,19 +123,23 @@ const validateSelectedEntries = createLogic({
         const currentIds = ProjectSelector.getDetailEntryIds(getState());
 
         if (currentIds && currentIds.length > 0) {
-            let ids = sortNumArrayAsc(entryIds.concat(currentIds));
-            for (let i = 0; i < ids.length; ++i) {
-                for (let j = i + 1; j < ids.length; ++j) {
-                    if (ids[i] === ids[j]) {
-                        ids.splice(j--, 1);
+            if (entryIds.length > 0) {
+                let ids = sortNumArrayAsc(entryIds.concat(currentIds));
+                for (let i = 0; i < ids.length; ++i) {
+                    for (let j = i + 1; j < ids.length; ++j) {
+                        if (ids[i] === ids[j]) {
+                            ids.splice(j--, 1);
+                        }
                     }
                 }
-            }
 
-            if (currentIds.length !== ids.length) {
-                allow(ProjectAction.createSelectEntryAction(ids));
+                if (currentIds.length !== ids.length) {
+                    allow(ProjectAction.createSelectEntryAction(ids));
+                } else {
+                    reject();
+                }
             } else {
-                reject();
+                allow(action);
             }
         } else {
             allow(ProjectAction.createSelectEntryAction(sortNumArrayAsc(entryIds)));
