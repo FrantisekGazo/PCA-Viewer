@@ -4,7 +4,7 @@ const React = require('react');
 const { connect } = require('react-redux');
 const { Card } = require('material-ui/Card');
 
-const ConnectedStreamWindowSizeEditor = require('./ConnectedStreamWindowSizeEditor');
+const ConnectedStreamWindowSizeEditor = require('./ConnectedSamplingWindowSizeEditor');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
 
@@ -24,7 +24,7 @@ module.exports = connect(
     // state to props
     (state) => {
         return {
-            hasConstantSampling: ProjectSelector.hasConstantSampling(state),
+            hasConstantSampling: ProjectSelector.getSamplingWindow(state).isConstant,
         };
     },
     // dispatch functions to props

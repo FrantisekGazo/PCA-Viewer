@@ -15,7 +15,7 @@ const styles = {
 /**
  * Shows a TextField for changing the size of the sampling window.
  */
-class StreamWindowSizeEditor extends React.Component {
+class SamplingWindowSizeEditor extends React.Component {
 
     constructor(props) {
         super(props);
@@ -42,7 +42,7 @@ class StreamWindowSizeEditor extends React.Component {
             this.props.onChange(sampling);
         } else {
             this.setState({
-                errorMessage: 'Sampling has to be greater that 3'
+                errorMessage: 'Sampling has to be > 3'
             });
         }
     }
@@ -73,11 +73,11 @@ class StreamWindowSizeEditor extends React.Component {
     }
 }
 
-StreamWindowSizeEditor.propTypes = {
+SamplingWindowSizeEditor.propTypes = {
     /* size of the sampling window */
     sampling: React.PropTypes.number.isRequired,
     /* callbacks */
     onChange: React.PropTypes.func.isRequired,
 };
 
-module.exports = StreamWindowSizeEditor;
+module.exports = SamplingWindowSizeEditor;

@@ -19,12 +19,8 @@ const ACTIONS = {
 
     SELECT_ENTRIES: 'SELECT_ENTRIES',
 
-    CHANGE_SAMPLING: 'CHANGE_SAMPLING',
+    SET_SAMPLING: 'SET_SAMPLING',
     SET_SAMPLED_ENTRIES: 'SET_SAMPLED_ENTRIES',
-
-    SET_SAMPLING_START: 'SET_SAMPLING_START',
-    SET_FIXED_SAMPLING_COUNT: 'SET_FIXED_SAMPLING_COUNT',
-    SET_ADDITIONAL_SAMPLING_COUNT: 'SET_ADDITIONAL_SAMPLING_COUNT',
 };
 
 
@@ -126,42 +122,15 @@ function createSelectEntryAction(entryIds) {
 }
 
 /**
- * Creates an action for stream sampling.
- * @param sampling Value count per sample
+ * Creates an action for setting new sampling.
+ * @param samplingWindow Sampling window setup
  * @returns {Object} An action
  */
-function createChangeSamplingAction(sampling) {
-    return createAction(ACTIONS.CHANGE_SAMPLING, sampling);
+function createSetSamplingAction(samplingWindow) {
+    return createAction(ACTIONS.SET_SAMPLING, samplingWindow);
 }
 function createSetSampledEntriesAction(sampledEntries) {
     return createAction(ACTIONS.SET_SAMPLED_ENTRIES, sampledEntries);
-}
-
-/**
- * Creates an action for changing the start index of the stream sampling.
- * @param startIndex Start index
- * @returns {Object} An action
- */
-function createSetSamplingStartAction(startIndex) {
-    return createAction(ACTIONS.SET_SAMPLING_START, startIndex);
-}
-
-/**
- * Creates an action for changing the count of fixed samples.
- * @param count Count of fixed samples
- * @returns {Object} An action
- */
-function createSetFixedSamplingCountAction(count) {
-    return createAction(ACTIONS.SET_FIXED_SAMPLING_COUNT, count);
-}
-
-/**
- * Creates an action for changing the count of additional samples.
- * @param count Count of additional samples
- * @returns {Object} An action
- */
-function createSetAdditionalSamplingCountAction(count) {
-    return createAction(ACTIONS.SET_ADDITIONAL_SAMPLING_COUNT, count);
 }
 
 
@@ -178,9 +147,6 @@ module.exports = {
     createDeleteDatasetAction,
     createSaveProjectAction,
     createSelectEntryAction,
-    createChangeSamplingAction,
+    createSetSamplingAction,
     createSetSampledEntriesAction,
-    createSetSamplingStartAction,
-    createSetFixedSamplingCountAction,
-    createSetAdditionalSamplingCountAction,
 };

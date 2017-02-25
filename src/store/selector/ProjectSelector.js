@@ -26,32 +26,11 @@ const getPath = (state) => getProjectState(state).path;
 const getName = (state) => getProjectState(state).name;
 
 /**
- * Returns project sampling.
+ * Returns the sampling window information.
  * @param state {Object}
- * @returns {string}
+ * @returns {Object}
  */
-const getSampling = (state) => getProjectState(state).sampling;
-
-/**
- * Returns the start index of the project sampling.
- * @param state {Object}
- * @returns {number}
- */
-const getSamplingStart = (state) => getProjectState(state).samplingStart;
-
-/**
- * Returns the count of the fixed project samples.
- * @param state {Object}
- * @returns {number}
- */
-const getFixedSamplingCount = (state) => getProjectState(state).fixedSamplingCount;
-
-/**
- * Returns the count of the additional project samples.
- * @param state {Object}
- * @returns {number}
- */
-const getAdditionalSamplingCount = (state) => getProjectState(state).additionalSamplingCount;
+const getSamplingWindow = (state) => getProjectState(state).samplingWindow;
 
 /**
  * Returns current version of the project data.
@@ -188,24 +167,12 @@ const getIncludedDatasetsWithEntries = (state) => {
  */
 const getType = (state) => getProjectState(state).type;
 
-/**
- * Returns <code>true</code> if project has data with constant dimension,
- * <code>false</code> if it contains data streams.
- * @param state {Object}
- * @returns {bool}
- */
-const hasConstantSampling = (state) => getProjectState(state).hasConstantSampling;
-
 
 module.exports = {
     getPath,
     getName,
     getType,
-    hasConstantSampling,
-    getSampling,
-    getSamplingStart,
-    getFixedSamplingCount,
-    getAdditionalSamplingCount,
+    getSamplingWindow,
     getDataset,
     getDatasetEntries,
     getDatasetStream,

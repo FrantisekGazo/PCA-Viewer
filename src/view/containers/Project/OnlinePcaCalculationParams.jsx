@@ -3,8 +3,7 @@
 const React = require('react');
 const { Card } = require('material-ui/Card');
 
-const ConnectedStreamWindowSizeEditor = require('./ConnectedStreamWindowSizeEditor');
-const ConnectedStreamWindowSelector = require('./ConnectedStreamWindowSelector');
+const ConnectedStreamWindowSelector = require('./ConnectedSamplingWindowEditor');
 
 
 /**
@@ -12,7 +11,6 @@ const ConnectedStreamWindowSelector = require('./ConnectedStreamWindowSelector')
  */
 module.exports = ({}) => (
     <Card>
-        <ConnectedStreamWindowSizeEditor/>
         <ConnectedStreamWindowSelector/>
     </Card>
 );

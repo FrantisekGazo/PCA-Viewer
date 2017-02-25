@@ -53,11 +53,11 @@ const openProjectScreen = createLogic({
     process({ getState, action }, dispatch, done) {
         const state = getState();
         const type = ProjectSelector.getType(state);
-        const hasConstantSampling = ProjectSelector.hasConstantSampling(state);
+        const samplingWindow = ProjectSelector.getSamplingWindow(state);
 
         if (type === PROJECT_TYPE.ONLINE_PCA) {
             dispatch(RouterAction.createGoToProjectScreenOnlineAction());
-        } else if (hasConstantSampling) {
+        } else if (samplingWindow.isConstant) {
             dispatch(RouterAction.createGoToProjectScreenOfflineConstantAction());
         } else {
             dispatch(RouterAction.createGoToProjectScreenOfflineAction());
@@ -147,17 +147,18 @@ const validateSelectedEntries = createLogic({
  * Validates new sampling.
  */
 const validateNewSampling = createLogic({
-    type: ProjectAction.ACTIONS.CHANGE_SAMPLING,
+    type: ProjectAction.ACTIONS.SET_SAMPLING,
     validate({ getState, action }, allow, reject) {
-        const newSampling = action.payload;
-        const state = getState();
-        const sampling = ProjectSelector.getSampling(state);
-        const hasConstantSampling = ProjectSelector.hasConstantSampling(state);
+        const samplingWindow = ProjectSelector.getSamplingWindow(getState());
+        const newSamplingWindow = Object.assign({}, samplingWindow, action.payload);
 
-        if (!hasConstantSampling && newSampling !== sampling) {
-            allow(action);
+        if (newSamplingWindow.size < 4
+            || newSamplingWindow.start < 0
+            || newSamplingWindow.fixedCount <= 0
+            || newSamplingWindow.additionalCount < 0) {
+            reject();
         } else {
-            reject(); // reject action if sampling is the same
+            allow(Object.assign({}, action, {payload: newSamplingWindow}));
         }
     }
 });
@@ -167,20 +168,21 @@ const validateNewSampling = createLogic({
  */
 const sampleStreams = createLogic({
     type: [
-        ProjectAction.ACTIONS.CHANGE_SAMPLING,
+        ProjectAction.ACTIONS.SET_SAMPLING,
         ProjectAction.ACTIONS.UPDATE_DATASET,
     ],
     latest: true,
     process({ getState, action }, dispatch, done) {
         const state = getState();
+        const samplingWindow = ProjectSelector.getSamplingWindow(state);
 
         // if project has constant sampling, data are sampled during loading
-        if (ProjectSelector.hasConstantSampling(state)) {
+        if (samplingWindow.isConstant) {
             done();
             return;
         }
 
-        const sampling = ProjectSelector.getSampling(state);
+        const sampling = samplingWindow.size;
 
         const entries = {};
         let entryId = 1;
@@ -205,51 +207,6 @@ const sampleStreams = createLogic({
     }
 });
 
-/**
- * Validates new sampling start index.
- */
-const validateSamplingStart = createLogic({
-    type: ProjectAction.ACTIONS.SET_SAMPLING_START,
-    validate({ getState, action }, allow, reject) {
-        const start = action.payload;
-        if (start >= 0) {
-            allow(action);
-        } else {
-            reject();
-        }
-    }
-});
-
-/**
- * Validates new count of fixed samples.
- */
-const validateFixedSamplingCount = createLogic({
-    type: ProjectAction.ACTIONS.SET_FIXED_SAMPLING_COUNT,
-    validate({ getState, action }, allow, reject) {
-        const count = action.payload;
-        if (count > 0) {
-            allow(action);
-        } else {
-            reject();
-        }
-    }
-});
-
-/**
- * Validates new count of additional samples.
- */
-const validateAdditionalSamplingCount = createLogic({
-    type: ProjectAction.ACTIONS.SET_ADDITIONAL_SAMPLING_COUNT,
-    validate({ getState, action }, allow, reject) {
-        const count = action.payload;
-        if (count >= 0) {
-            allow(action);
-        } else {
-            reject();
-        }
-    }
-});
-
 
 module.exports = [
     loadProject,
@@ -260,7 +217,4 @@ module.exports = [
     validateSelectedEntries,
     validateNewSampling,
     sampleStreams,
-    validateSamplingStart,
-    validateFixedSamplingCount,
-    validateAdditionalSamplingCount,
 ];

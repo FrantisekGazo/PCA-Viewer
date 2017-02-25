@@ -17,7 +17,9 @@ const calculatePCA = createLogic({
         ProjectAction.ACTIONS.UPDATE_DATASET,
         ProjectAction.ACTIONS.DELETE_DATASET,
         ProjectAction.ACTIONS.SET_SAMPLED_ENTRIES,
+        ProjectAction.ACTIONS.SET_SAMPLING,
     ],
+    latest: true,
     process({ getState, action }, dispatch, done) {
         const state = getState();
         const dataVersion = ProjectSelector.getVersion(state);

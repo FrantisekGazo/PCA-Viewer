@@ -4,7 +4,7 @@ const update = require('immutability-helper');
 
 const { ACTIONS } = require('../../action/ProjectAction');
 const { sortNumArrayDesc } = require('../../util/util');
-const { DEFAULT_SAMPLING, PROJECT_TYPE, TRANSFORMATIONS } = require('../Constants');
+const { PROJECT_TYPE, TRANSFORMATIONS } = require('../Constants');
 
 
 // HELPER FUNCTIONS ----------------------------------------------------------------------
@@ -21,7 +21,6 @@ function newDataset(id) {
         // stream info
         transformationType: TRANSFORMATIONS.NONE, // stream transformation type
         transformationValue: 0, // stream transformation value
-        sampling: DEFAULT_SAMPLING, // number of stream values in 1 entry
     }
 }
 
@@ -57,7 +56,16 @@ function setProject(state, action) {
 
     let newState;
     if (projectState) {
-        newState = Object.assign({}, initState, projectState);
+        const { name, path, type, sampling, hasConstantSampling } = projectState;
+        newState = update(initState, {
+            name: {$set: name},
+            path: {$set: path},
+            type: {$set: type},
+            samplingWindow: {
+                size: {$set: sampling},
+                isConstant: {$set: hasConstantSampling},
+            }
+        });
     } else {
         newState = initState;
     }
@@ -213,9 +221,11 @@ function selectEntries(state, action) {
     });
 }
 
-function changeSampling(state, action) {
+function setSampling(state, action) {
+    const samplingWindow = action.payload;
+
     return update(state, {
-        sampling: {$set: action.payload}
+        samplingWindow: {$set: samplingWindow}
     });
 }
 
@@ -226,26 +236,6 @@ function setSampledEntries(state, action) {
     });
 }
 
-function setSamplingStart(state, action) {
-    return update(state, {
-        samplingStart: {$set: action.payload},
-        version: {$set: state.version + 1}
-    });
-}
-
-function setFixedSamplingCount(state, action) {
-    return update(state, {
-        fixedSamplingCount: {$set: action.payload},
-        version: {$set: state.version + 1}
-    });
-}
-
-function setAdditionalSamplingCount(state, action) {
-    return update(state, {
-        additionalSamplingCount: {$set: action.payload}
-    });
-}
-
 const initState = {
     /* path to the project directory */
     path: null,
@@ -253,13 +243,15 @@ const initState = {
     name: '',
     /* project type */
     type: PROJECT_TYPE.OFFLINE_PCA,
-    /* project sampling */
-    hasConstantSampling: false,
-    sampling: null,
 
-    samplingStart: 0,
-    fixedSamplingCount: 10,
-    additionalSamplingCount: 0,
+    /* project sampling */
+    samplingWindow: {
+        isConstant: false,
+        size: null,
+        start: 0,
+        fixedCount: 10,
+        additionalCount: 0,
+    },
 
     /* error */
     error: '',
@@ -302,16 +294,10 @@ const project = (state = initState, action) => {
             return closeDatasetDetail(state, action);
         case ACTIONS.SELECT_ENTRIES:
             return selectEntries(state, action);
-        case ACTIONS.CHANGE_SAMPLING:
-            return changeSampling(state, action);
+        case ACTIONS.SET_SAMPLING:
+            return setSampling(state, action);
         case ACTIONS.SET_SAMPLED_ENTRIES:
             return setSampledEntries(state, action);
-        case ACTIONS.SET_SAMPLING_START:
-            return setSamplingStart(state, action);
-        case ACTIONS.SET_FIXED_SAMPLING_COUNT:
-            return setFixedSamplingCount(state, action);
-        case ACTIONS.SET_ADDITIONAL_SAMPLING_COUNT:
-            return setAdditionalSamplingCount(state, action);
         default:
             return state;
     }

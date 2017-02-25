@@ -18,7 +18,7 @@ module.exports = connect(
             included: ProjectSelector.isDatasetIncluded(state, datasetId),
             entries: ProjectSelector.getDatasetEntries(state, datasetId),
             selectedEntryIds: ProjectSelector.getDetailEntryIds(state),
-            sampling: ProjectSelector.getSampling(state),
+            sampling: ProjectSelector.getSamplingWindow(state).size,
             lastEntryId: ProjectSelector.getLastEntryId(state),
         };
     },
