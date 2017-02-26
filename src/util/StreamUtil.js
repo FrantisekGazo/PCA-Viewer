@@ -1,18 +1,19 @@
 "use strict";
 
 const { TRANSFORMATIONS } = require('../store/Constants');
+const ProjectReducer = require('../store/reducer/ProjectReducer');
 
 
 /**
  * Samples given stream based on given sampling count.
  * @returns {Promise}
  */
-function sampleStream(stream, sampling) {
+function sampleStreamValues(stream, sampling, start=0) {
     return new Promise(function (resolve, reject) {
         let result = [];
 
         let sample;
-        for (let i = 0; i <= stream.length - sampling; i += sampling) {
+        for (let i = start; i <= stream.length - sampling; i += sampling) {
             sample = stream.slice(i, i + sampling);
             result.push(sample);
         }
@@ -23,6 +24,21 @@ function sampleStream(stream, sampling) {
             reject(Error(`Sampling ${sampling} failed`));
         }
     });
+}
+
+function sampleStreamEntries(datasetId, entries, entryId, stream, sampling, start=0) {
+    return sampleStreamValues(stream, sampling, start)
+        .then((values) => {
+            let entry;
+            for (let i = 0; i < values.length; i++) {
+                entry = ProjectReducer.newEntry({
+                    id: entryId++,
+                    datasetId: datasetId,
+                    value: values[i]
+                });
+                entries[entry.id] = entry;
+            }
+        });
 }
 
 /**
@@ -104,6 +120,6 @@ function count(stream, interval) {
 
 
 module.exports = {
-    sampleStream,
+    sampleStreamEntries,
     transformStream,
 };

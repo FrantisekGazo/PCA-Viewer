@@ -10,6 +10,7 @@ const ProjectSelector = require('../store/selector/ProjectSelector');
 const ProjectReducer = require('../store/reducer/ProjectReducer');
 const { PROJECT_TYPE, PROJECT_FILE_NAME } = require('../store/Constants');
 const FileUtil = require('../util/FileUtil');
+const StreamUtil = require('../util/StreamUtil');
 const { sortNumArrayAsc } = require('../util');
 
 
@@ -186,36 +187,27 @@ const sampleStreams = createLogic({
             return;
         }
 
-        const isOnline = ProjectSelector.getType(state) === PROJECT_TYPE.ONLINE_PCA;
+        const datasets = ProjectSelector.getAllDatasets(state);
         const sampling = samplingWindow.size;
 
         const entries = {};
         let entryId = 1;
 
-        const datasets = ProjectSelector.getAllDatasets(state);
-        let dataset, stream, entry;
+        let promise = Promise.resolve();
+        let dataset, stream;
         for (let i = 0; i < datasets.length; i++) {
             dataset = datasets[i];
             stream = ProjectSelector.getDatasetTransformedStream(state, dataset.id);
 
-            let c = 0;
-            for (let j = samplingWindow.start; j <= stream.length - sampling; j += sampling) {
-                if (isOnline && c > samplingWindow.fixedCount) {
-                    break;
-                } else {
-                    c++;
-                }
-
-                entry = ProjectReducer.newEntry({
-                    id: entryId++,
-                    datasetId: dataset.id,
-                    value: stream.slice(j, j + sampling)
-                });
-                entries[entry.id] = entry;
-            }
+            promise = promise.then(() => {
+                StreamUtil.sampleStreamEntries(dataset.id, entries, entryId, stream, sampling, samplingWindow.start)
+            });
         }
-        dispatch(ProjectAction.createSetSampledEntriesAction(entries));
-        done();
+
+        promise.then(() => {
+            dispatch(ProjectAction.createSetSampledEntriesAction(entries));
+            done();
+        });
     }
 });
 
