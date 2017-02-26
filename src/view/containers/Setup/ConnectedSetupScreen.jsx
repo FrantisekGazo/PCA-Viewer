@@ -17,7 +17,7 @@ module.exports = connect(
     (dispatch) => {
         return {
             onBackClick: () => {
-                dispatch(RouterAction.createGoBackAction());
+                dispatch(RouterAction.createGoToStartScreenAction());
             },
             onCreateClick: (params) => {
                 dispatch(ProjectAction.createSetProjectAction(params));
