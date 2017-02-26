@@ -41,7 +41,8 @@ function calculatePcaSync(datasets) {
     if (usedEntryValues.length > 0) {
         const originalMatrix = new Matrix(usedEntryValues);
         const pca = new PCA(originalMatrix, {
-            scale: true
+            scale: false,
+            center: false
         });
         const transformedMatrix = pca.predict(originalMatrix);
 
@@ -62,6 +63,7 @@ function calculatePcaSync(datasets) {
         }
 
         return {
+            b: pca.toJSON(),
             eigenvalues: pca.getEigenvalues(),
             eigenvectors: pca.getEigenvectors(),
             cumulativeVariance: pca.getCumulativeVariance(),

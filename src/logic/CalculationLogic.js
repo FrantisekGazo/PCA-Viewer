@@ -1,12 +1,14 @@
 "use strict";
 
 const { createLogic } = require('redux-logic');
+const PCA = require('ml-pca');
 
 const CalculationAction = require('../action/CalculationAction');
 const CalculationSelector = require('../store/selector/CalculationSelector');
 const PcaUtil = require('../util/PcaUtil');
 const ProjectAction = require('../action/ProjectAction');
 const ProjectSelector = require('../store/selector/ProjectSelector');
+const { PROJECT_TYPE } = require('../store/Constants');
 
 
 /**
@@ -37,10 +39,31 @@ const calculatePCA = createLogic({
             dispatch(CalculationAction.createStartAction());
             const datasets = ProjectSelector.getIncludedDatasetsWithEntries(state);
 
+            const isOnlinePca = ProjectSelector.getType(state) === PROJECT_TYPE.ONLINE_PCA;
+            let additionalEntries;
+            if (isOnlinePca) {
+                const samplingWindow  = ProjectSelector.getSamplingWindow(state);
+                additionalEntries = datasets[0].entries.slice(samplingWindow.fixedCount, samplingWindow.fixedCount + samplingWindow.additionalCount);
+                datasets[0].entries = datasets[0].entries.slice(0, samplingWindow.fixedCount);
+            }
+
             PcaUtil.calculatePcaAsync(datasets)
-                .then((pca) => {
-                    console.log('PCA result', pca);
-                    dispatch(CalculationAction.createDoneAction(pca, dataVersion));
+                .then((results) => {
+                    console.log('PCA result', results);
+
+                    if (results && isOnlinePca && additionalEntries.length > 0) {
+                        const pca = PCA.load(results.b);
+                        const data = results.data[0];
+
+                        data.entryIds = data.entryIds.concat(additionalEntries.map(entry => entry.id));
+                        // project additional entries to the new base
+                        const additionalValues = additionalEntries.map(entry => entry.value);
+                        const projected = pca.predict(additionalValues);
+                        data.values = data.values.concat(projected);
+                        console.log('additional PCA result', results);
+                    }
+
+                    dispatch(CalculationAction.createDoneAction(results, dataVersion));
                 })
                 .catch((error) => {
                     console.error('PCA error', error);

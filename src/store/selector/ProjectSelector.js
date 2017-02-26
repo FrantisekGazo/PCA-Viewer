@@ -150,6 +150,13 @@ const getIncludedDatasetsWithEntries = (state) => {
         }
     }
 
+    const sortEntries = (a, b) => a.id - b.id;
+    let dataset;
+    for (let i = 0; i < includedDatasets.length; i++) {
+        dataset = includedDatasets[i];
+        dataset.entries = dataset.entries.sort(sortEntries);
+    }
+
     return includedDatasets;
 };
 
