@@ -22,6 +22,7 @@ class StreamEditor extends React.Component {
 
     render() {
         const {
+            dataset,
             stream, transformedStream,
             transformation, onTransformationChange,
         } = this.props;
@@ -31,7 +32,9 @@ class StreamEditor extends React.Component {
                 <CardHeader title='Stream'/>
 
                 <CardMedia>
-                    <StreamPlot stream={transformedStream}/>
+                    <StreamPlot
+                        color={dataset.color}
+                        stream={transformedStream}/>
                 </CardMedia>
 
                 <CardText>
@@ -57,6 +60,8 @@ class StreamEditor extends React.Component {
 }
 
 StreamEditor.propTypes = {
+    /* dataset to which this stream belongs */
+    dataset: React.PropTypes.object.isRequired,
     /* original stream of values */
     stream: React.PropTypes.array.isRequired,
     /* transformed stream of values */

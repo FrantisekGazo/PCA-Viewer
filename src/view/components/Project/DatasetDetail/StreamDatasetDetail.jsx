@@ -143,6 +143,7 @@ class DatasetDetail extends React.Component {
                     style={{paddingTop: '10px'}}>
 
                     <StreamEditor
+                        dataset={dataset}
                         stream={this.state.stream}
                         transformedStream={this.state.transformedStream}
                         transformation={this.state.transformation}

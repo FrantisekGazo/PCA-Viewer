@@ -8,11 +8,12 @@ const ReactHighstock = require('react-highcharts/ReactHighstock');
 class StreamPlot extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {
-        return this.props.stream !== nextProps.stream;
+        return this.props.stream !== nextProps.stream
+            || this.props.color !== nextProps.color;
     }
 
     render() {
-        const { stream } = this.props;
+        const { stream, color } = this.props;
 
         if (stream.length == 0) {
             return null;
@@ -49,7 +50,8 @@ class StreamPlot extends React.Component {
             // data
             series: [{
                 name: 'Data stream',
-                data: stream
+                data: stream,
+                color: color
             }]
         };
 
@@ -60,7 +62,10 @@ class StreamPlot extends React.Component {
 }
 
 StreamPlot.propTypes = {
-    stream: React.PropTypes.array.isRequired
+    /* array of values */
+    stream: React.PropTypes.array.isRequired,
+    /* plot color */
+    color: React.PropTypes.string.isRequired,
 };
 
 module.exports = StreamPlot;
