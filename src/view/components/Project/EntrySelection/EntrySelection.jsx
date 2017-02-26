@@ -9,8 +9,9 @@ const SelectedEntry = require('./SelectedEntry.jsx');
 
 class EntrySelection extends React.Component {
 
-    constructor(props) {
-        super(props);
+    handleDeleteAll() {
+        const { selectedEntries, onDeleteClick } = this.props;
+        onDeleteClick(selectedEntries.map(e => e.id));
     }
 
     render() {
@@ -36,8 +37,11 @@ class EntrySelection extends React.Component {
 
                 <CardActions>
                     <FlatButton
-                        label='CLear'
+                        label='Clear'
                         onTouchTap={onClearClick}/>
+                    <FlatButton
+                        label='Delete All'
+                        onTouchTap={this.handleDeleteAll.bind(this)}/>
                 </CardActions>
             </Card>
         );

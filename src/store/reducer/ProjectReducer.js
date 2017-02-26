@@ -227,19 +227,26 @@ function selectEntries(state, action) {
     });
 }
 
-function deleteEntry(state, action) {
-    const entryId = action.payload;
+function deleteEntries(state, action) {
+    const entryIds = action.payload;
 
     let newEntries = Object.assign({}, state.entries);
-    delete newEntries[entryId];
+    const newSelectedIds = state.selectedEntryIds.slice();
 
-    const selectedIds = state.selectedEntryIds.slice();
-    const index = state.selectedEntryIds.indexOf(entryId);
-    selectedIds.splice(index, 1);
+    let entryId;
+    for (let i = 0; i < entryIds.length; i++) {
+        entryId = entryIds[i];
+        // delete the entry
+        delete newEntries[entryId];
+
+        // delete entry ID from selected IDs
+        const index = newSelectedIds.indexOf(entryId);
+        newSelectedIds.splice(index, 1);
+    }
 
     return update(state, {
         entries: {$set: newEntries},
-        selectedEntryIds: {$set: selectedIds},
+        selectedEntryIds: {$set: newSelectedIds},
         version: {$set: state.version + 1}
     });
 }
@@ -318,8 +325,8 @@ const project = (state = initState, action) => {
             return closeDatasetDetail(state, action);
         case ACTIONS.SELECT_ENTRIES:
             return selectEntries(state, action);
-        case ACTIONS.DELETE_ENTRY:
-            return deleteEntry(state, action);
+        case ACTIONS.DELETE_ENTRIES:
+            return deleteEntries(state, action);
         case ACTIONS.SET_SAMPLING:
             return setSampling(state, action);
         case ACTIONS.SET_SAMPLED_ENTRIES:

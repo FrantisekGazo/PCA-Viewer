@@ -21,8 +21,8 @@ module.exports = connect(
             onClearClick: () => {
                 dispatch(ProjectAction.createSelectEntryAction(null));
             },
-            onDeleteClick: (entryId) => {
-                dispatch(ProjectAction.createDeleteEntryAction(entryId));
+            onDeleteClick: (entryIds) => {
+                dispatch(ProjectAction.createDeleteEntriesAction(entryIds));
             }
         };
     }

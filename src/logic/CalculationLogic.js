@@ -18,7 +18,7 @@ const calculatePCA = createLogic({
         ProjectAction.ACTIONS.UPDATE_DATASET,
         ProjectAction.ACTIONS.DELETE_DATASET,
         ProjectAction.ACTIONS.SET_SAMPLED_ENTRIES,
-        ProjectAction.ACTIONS.DELETE_ENTRY,
+        ProjectAction.ACTIONS.DELETE_ENTRIES,
     ],
     latest: true,
     process({ getState, action }, dispatch, done) {

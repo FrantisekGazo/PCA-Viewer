@@ -16,7 +16,7 @@ class SelectedEntry extends React.Component {
                 primaryText={entry.name}
                 secondaryText={entry.value.join(', ')}
                 rightIconButton={
-                    <IconButton onTouchTap={() => onDeleteClick(entry.id)}><IconDelete color={'#ae0000'}/></IconButton>
+                    <IconButton onTouchTap={() => onDeleteClick([entry.id])}><IconDelete color={'#ae0000'}/></IconButton>
                 }/>
         );
     }

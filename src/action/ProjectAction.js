@@ -18,7 +18,7 @@ const ACTIONS = {
     CLOSE_DATASET_DETAIL: 'CLOSE_DATASET_DETAIL',
 
     SELECT_ENTRIES: 'SELECT_ENTRIES',
-    DELETE_ENTRY: 'DELETE_ENTRY',
+    DELETE_ENTRIES: 'DELETE_ENTRIES',
 
     SET_SAMPLING: 'SET_SAMPLING',
     SET_SAMPLED_ENTRIES: 'SET_SAMPLED_ENTRIES',
@@ -123,12 +123,12 @@ function createSelectEntryAction(entryIds) {
 }
 
 /**
- * Creates an action for deleting an entry with given ID.
- * @param entryId {number} Entry ID
+ * Creates an action for deleting entries with given IDs.
+ * @param entryIds {Array} Entries IDs or null
  * @returns {Object} An action
  */
-function createDeleteEntryAction(entryId) {
-    return createAction(ACTIONS.DELETE_ENTRY, entryId);
+function createDeleteEntriesAction(entryIds) {
+    return createAction(ACTIONS.DELETE_ENTRIES, entryIds);
 }
 
 /**
@@ -163,7 +163,7 @@ module.exports = {
     createDeleteDatasetAction,
     createSaveProjectAction,
     createSelectEntryAction,
-    createDeleteEntryAction,
+    createDeleteEntriesAction,
     createSetSamplingAction,
     createSetSampledEntriesAction,
 };
