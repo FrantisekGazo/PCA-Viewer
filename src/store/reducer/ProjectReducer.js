@@ -77,7 +77,9 @@ function setProject(state, action) {
     }
 
     if (newState.type === PROJECT_TYPE.ONLINE_PCA) {
-        if (newState.detailDatasetId === null) {
+        if (newState.datasets[1]) {
+            newState.detailDatasetId = 1;
+        } else {
             newState = addNewDataset(newState);
         }
     }
