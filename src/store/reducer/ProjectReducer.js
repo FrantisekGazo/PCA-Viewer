@@ -186,7 +186,7 @@ function deleteDataset(state, action) {
         delete entryMap[id];
         hasEntries = true;
     }
-    const resultsVersion = (hasEntries) ? state.resultsVersion + 1 : state.resultsVersion;
+    const version = (hasEntries) ? state.version + 1 : state.version;
 
     const bsid = baseStreamId(datasetId);
     const tsid = transformedStreamId(datasetId);
@@ -203,7 +203,7 @@ function deleteDataset(state, action) {
             [tsid]: {$set: undefined}
         },
         detailDatasetId: {$set: null},
-        resultsVersion: {$set: resultsVersion}
+        version: {$set: version}
     });
 }
 
@@ -224,6 +224,23 @@ function selectEntries(state, action) {
 
     return update(state, {
         selectedEntryIds: {$set: entryIds}
+    });
+}
+
+function deleteEntry(state, action) {
+    const entryId = action.payload;
+
+    let newEntries = Object.assign({}, state.entries);
+    delete newEntries[entryId];
+
+    const selectedIds = state.selectedEntryIds.slice();
+    const index = state.selectedEntryIds.indexOf(entryId);
+    selectedIds.splice(index, 1);
+
+    return update(state, {
+        entries: {$set: newEntries},
+        selectedEntryIds: {$set: selectedIds},
+        version: {$set: state.version + 1}
     });
 }
 
@@ -301,6 +318,8 @@ const project = (state = initState, action) => {
             return closeDatasetDetail(state, action);
         case ACTIONS.SELECT_ENTRIES:
             return selectEntries(state, action);
+        case ACTIONS.DELETE_ENTRY:
+            return deleteEntry(state, action);
         case ACTIONS.SET_SAMPLING:
             return setSampling(state, action);
         case ACTIONS.SET_SAMPLED_ENTRIES:

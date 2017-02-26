@@ -18,6 +18,7 @@ const ACTIONS = {
     CLOSE_DATASET_DETAIL: 'CLOSE_DATASET_DETAIL',
 
     SELECT_ENTRIES: 'SELECT_ENTRIES',
+    DELETE_ENTRY: 'DELETE_ENTRY',
 
     SET_SAMPLING: 'SET_SAMPLING',
     SET_SAMPLED_ENTRIES: 'SET_SAMPLED_ENTRIES',
@@ -122,6 +123,15 @@ function createSelectEntryAction(entryIds) {
 }
 
 /**
+ * Creates an action for deleting an entry with given ID.
+ * @param entryId {number} Entry ID
+ * @returns {Object} An action
+ */
+function createDeleteEntryAction(entryId) {
+    return createAction(ACTIONS.DELETE_ENTRY, entryId);
+}
+
+/**
  * Creates an action for setting new sampling.
  * @param samplingWindow {Object} Sampling window setup
  * @returns {Object} An action
@@ -153,6 +163,7 @@ module.exports = {
     createDeleteDatasetAction,
     createSaveProjectAction,
     createSelectEntryAction,
+    createDeleteEntryAction,
     createSetSamplingAction,
     createSetSampledEntriesAction,
 };

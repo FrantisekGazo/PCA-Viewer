@@ -18,8 +18,11 @@ module.exports = connect(
     // dispatch functions to props
     (dispatch) => {
         return {
-            onClearClicked: () => {
+            onClearClick: () => {
                 dispatch(ProjectAction.createSelectEntryAction(null));
+            },
+            onDeleteClick: (entryId) => {
+                dispatch(ProjectAction.createDeleteEntryAction(entryId));
             }
         };
     }

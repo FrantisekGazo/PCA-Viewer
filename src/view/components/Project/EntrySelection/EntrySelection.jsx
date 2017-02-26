@@ -14,10 +14,15 @@ class EntrySelection extends React.Component {
     }
 
     render() {
-        const { selectedEntries, onClearClicked } = this.props;
+        const { selectedEntries, onClearClick, onDeleteClick } = this.props;
 
         const list = selectedEntries.map(entry => {
-            return (<SelectedEntry key={`${entry.id}`} entry={entry}/>);
+            return (
+                <SelectedEntry
+                    key={`${entry.id}`}
+                    entry={entry}
+                    onDeleteClick={onDeleteClick}/>
+            );
         });
 
         return (
@@ -32,7 +37,7 @@ class EntrySelection extends React.Component {
                 <CardActions>
                     <FlatButton
                         label='CLear'
-                        onTouchTap={onClearClicked}/>
+                        onTouchTap={onClearClick}/>
                 </CardActions>
             </Card>
         );
@@ -43,7 +48,8 @@ EntrySelection.propTypes = {
     /* array of selected entries */
     selectedEntries: React.PropTypes.array.isRequired,
     /* callbacks */
-    onClearClicked: React.PropTypes.func.isRequired,
+    onClearClick: React.PropTypes.func.isRequired,
+    onDeleteClick: React.PropTypes.func.isRequired,
 };
 
 module.exports = EntrySelection;
