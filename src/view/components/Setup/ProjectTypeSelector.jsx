@@ -20,6 +20,10 @@ const styles = {
     }
 };
 
+
+/**
+ * React component that shows project type selector.
+ */
 const ProjectTypeSelector = ({ type, sampling, hasConstantSampling, onTypeChange }) => {
     return (
         <div>

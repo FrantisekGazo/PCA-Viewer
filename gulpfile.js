@@ -128,3 +128,12 @@ gulp.task('pack-lin', function () {
         arch: 'x64',
     });
 });
+
+
+// DOCUMENTATION
+
+const jsdoc = require('gulp-jsdoc3');
+gulp.task('doc', function (cb) {
+    gulp.src(['README.md', './src/**/*.js', './src/**/*.jsx'], {read: false})
+        .pipe(jsdoc(cb));
+});

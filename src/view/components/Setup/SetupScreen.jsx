@@ -44,6 +44,10 @@ const styles = {
     }
 };
 
+
+/**
+ * React component that shows whole setup screen.
+ */
 class SetupScreen extends React.Component {
 
     constructor(props) {

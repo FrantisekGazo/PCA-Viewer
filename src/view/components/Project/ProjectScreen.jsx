@@ -55,6 +55,10 @@ const styles = {
     }
 };
 
+
+/**
+ * React component that shows whole project screen.
+ */
 class ProjectScreen extends React.Component {
 
     addPadding(component, wrapperKey) {

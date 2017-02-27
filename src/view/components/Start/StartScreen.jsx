@@ -43,6 +43,10 @@ const errorStyle = {
     color: '#ffffff',
 };
 
+
+/**
+ * React component that shows whole start screen.
+ */
 class StartScreen extends React.Component {
 
     handleOpenExisting() {

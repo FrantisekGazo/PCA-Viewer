@@ -7,7 +7,7 @@ const fs = require('fs');
 /**
  * Reads the given file and returns read values. Each value is an array of decimal numbers.
  * @param filePath Path to the file that will be read.
- * @param sampling {optional number} Number of values for one row.
+ * @param sampling {number} Number of values for one row.
  * If <code>null</code> then all values will be returned as one array.
  * @returns {Promise}
  */
