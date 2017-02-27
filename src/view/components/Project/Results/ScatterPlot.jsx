@@ -54,8 +54,8 @@ const areDisjunct = (arr1, arr2) => {
 
 const isSelected = (selectedIds, id) => selectedIds.indexOf(id) >= 0;
 
-const SIZE_2D = 20;
-const SIZE_3D = 10;
+const SIZE_2D = 10;
+const SIZE_3D = 5;
 const OPACITY = .5;
 
 
