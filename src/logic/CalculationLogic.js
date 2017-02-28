@@ -12,7 +12,7 @@ const { PROJECT_TYPE } = require('../store/Constants');
 
 
 /**
- * Calculates PCA.
+ * Checks if data version was updated and then calculates PCA.
  */
 const calculatePCA = createLogic({
     type: [

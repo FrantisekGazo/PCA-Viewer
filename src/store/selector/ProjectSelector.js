@@ -6,65 +6,65 @@ const { baseStreamId, transformedStreamId } = require('../reducer/ProjectReducer
 
 /**
  * Returns project part of the state.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {Object}
  */
 const getProjectState = (state) => state.project;
 
 /**
  * Returns project directory path.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {string}
  */
 const getPath = (state) => getProjectState(state).path;
 
 /**
  * Returns project name.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {string}
  */
 const getName = (state) => getProjectState(state).name;
 
 /**
  * Returns the sampling window information.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {Object}
  */
 const getSamplingWindow = (state) => getProjectState(state).samplingWindow;
 
 /**
  * Returns current version of the project data.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {number}
  */
 const getVersion = (state) => getProjectState(state).version;
 
 /**
  * Returns ID of currently shown dataset.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {number}
  */
 const getDetailDatasetId = (state) => getProjectState(state).detailDatasetId;
 
 /**
  * Returns dataset for given ID.
- * @param state {Object}
- * @param datasetId {number}
+ * @param state {Object} Current store state
+ * @param datasetId {number} Dataset ID
  * @returns {Object}
  */
 const getDataset = (state, datasetId) => getProjectState(state).datasets[datasetId];
 
 /**
  * Returns max ID used for an entry.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {number}
  */
 const getLastEntryId = (state) => getProjectState(state).lastEntryId;
 
 /**
  * Returns all entries for dataset with given ID.
- * @param state {Object}
- * @param datasetId {number}
+ * @param state {Object} Current store state
+ * @param datasetId {number} Dataset ID
  * @returns {Array}
  */
 const getDatasetEntries = (state, datasetId) => {
@@ -85,8 +85,8 @@ const getDatasetEntries = (state, datasetId) => {
 
 /**
  * Returns original stream for dataset with given ID.
- * @param state {Object}
- * @param datasetId {number}
+ * @param state {Object} Current store state
+ * @param datasetId {number} Dataset ID
  * @returns {Array}
  */
 const getDatasetStream = (state, datasetId) => {
@@ -96,8 +96,8 @@ const getDatasetStream = (state, datasetId) => {
 
 /**
  * Returns transformed stream for dataset with given ID.
- * @param state {Object}
- * @param datasetId {number}
+ * @param state {Object} Current store state
+ * @param datasetId {number} Dataset ID
  * @returns {Array}
  */
 const getDatasetTransformedStream = (state, datasetId) => {
@@ -107,14 +107,14 @@ const getDatasetTransformedStream = (state, datasetId) => {
 
 /**
  * Returns all dataset IDs that should be used for PCA calculation.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {Array}
  */
 const getIncludedDatasetIds = (state) => getProjectState(state).usedDatasetIds;
 
 /**
  * <code>true</code> if dataset with given ID should be included in PCA calculation
- * @param state {Object}
+ * @param state {Object} Current store state
  * @param datasetId {number}
  * @returns {bool}
  */
@@ -122,7 +122,7 @@ const isDatasetIncluded = (state, datasetId) => getIncludedDatasetIds(state).ind
 
 /**
  * Returns all datasets.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {Array}
  */
 const getAllDatasets = (state) => Object.keys(getProjectState(state).datasets)
@@ -131,7 +131,7 @@ const getAllDatasets = (state) => Object.keys(getProjectState(state).datasets)
 
 /**
  * Returns all entries that should be used for PCA calculation.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {Array}
  */
 const getIncludedDatasetsWithEntries = (state) => {
@@ -162,14 +162,14 @@ const getIncludedDatasetsWithEntries = (state) => {
 
 /**
  * Returns project type.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {number}
  */
 const getType = (state) => getProjectState(state).type;
 
 /**
  * Returns all IDs for currently selected entries.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {Array}
  */
 const getSelectedEntryIds = (state) => {
@@ -179,7 +179,7 @@ const getSelectedEntryIds = (state) => {
 
 /**
  * Returns all selected entries.
- * @param state {Object}
+ * @param state {Object} Current store state
  * @returns {Array}
  */
 const getSelectedEntries = (state) => {

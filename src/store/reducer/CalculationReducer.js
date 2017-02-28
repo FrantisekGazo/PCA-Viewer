@@ -8,12 +8,26 @@ const { ACTIONS } = require('../../action/CalculationAction');
 // HELPER FUNCTIONS ----------------------------------------------------------------------
 
 
+/**
+ * Starts the calculation.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: undefined}} Received action without a payload
+ * @returns {Object} New state
+ */
 function start(state, action) {
     return update(initState, {
         loading: {$set: true}
     });
 }
 
+/**
+ * Finishes the calculation.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: Object}} Received action with the calculation result
+ * @returns {Object} New state
+ */
 function done(state, action) {
     const results = action.payload;
 
@@ -26,6 +40,13 @@ function done(state, action) {
     });
 }
 
+/**
+ * Fails the calculation.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: string}} Received action with the calculation error message
+ * @returns {Object} New state
+ */
 function failed(state, action) {
     return update(state, {
         loading: {$set: false},
@@ -34,10 +55,20 @@ function failed(state, action) {
     });
 }
 
+/**
+ * Clears the calculation state.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: undefined}} Received action without a payload
+ * @returns {Object} New state
+ */
 function clear(state, action) {
     return initState;
 }
 
+/**
+ * Initial state of this calculation reducer
+ */
 const initState = {
     loading: false,
     loaded: true,
@@ -49,7 +80,16 @@ const initState = {
     /* this needs to be incremented if results needs to be refreshed */
     version: 0
 };
-const calculation = (state = initState, action) => {
+
+
+/**
+ * Updates calculation state based on received action.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: *}} Received action
+ * @returns {Object} New state
+ */
+function calculation(state = initState, action) {
     switch (action.type) {
         case ACTIONS.START:
             return start(state, action);
@@ -62,7 +102,7 @@ const calculation = (state = initState, action) => {
         default:
             return state;
     }
-};
+}
 
 module.exports = {
     calculation,

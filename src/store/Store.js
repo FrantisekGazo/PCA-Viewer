@@ -32,4 +32,5 @@ if (process.env.NODE_ENV === 'development') {
     );
 }
 
+// create a single store that will be used in the app
 module.exports = createStore(reducer, enhancer);

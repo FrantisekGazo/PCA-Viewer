@@ -4,13 +4,13 @@ const update = require('immutability-helper');
 
 const { ACTIONS } = require('../../action/ProjectAction');
 const { sortNumArrayDesc } = require('../../util');
-const { PROJECT_TYPE, TRANSFORMATIONS } = require('../Constants');
+const { DEFAULT_SAMPLING_WINDOW_SIZE, PROJECT_TYPE, TRANSFORMATIONS } = require('../Constants');
 
 
 // HELPER FUNCTIONS ----------------------------------------------------------------------
 
 /**
- * Creates Dataset structure.
+ * Creates Dataset object.
  */
 function newDataset(id) {
     return {
@@ -25,7 +25,7 @@ function newDataset(id) {
 }
 
 /**
- * Creates Entry structure.
+ * Creates Entry object.
  */
 function newEntry(args) {
     if (args.id === undefined) {
@@ -45,12 +45,33 @@ function newEntry(args) {
     }, args);
 }
 
-const baseStreamId = (datasetId) => `${datasetId}_base`;
+/**
+ * Builds ID for original dataset stream
+ * @param datasetId Dataset ID
+ * @returns {string} Stream ID
+ */
+function baseStreamId(datasetId) {
+    return `${datasetId}_base`;
+}
 
-const transformedStreamId = (datasetId) => `${datasetId}_used`;
+/**
+ * Builds ID for transformed dataset stream
+ * @param datasetId Dataset ID
+ * @returns {string} Stream ID
+ */
+function transformedStreamId(datasetId) {
+    return `${datasetId}_used`;
+}
 
 // REDUCER FUNCTIONS ----------------------------------------------------------------------
 
+/**
+ * Sets the project state.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: Object}} Received action with new state
+ * @returns {Object} New state
+ */
 function setProject(state, action) {
     const projectState = action.payload;
 
@@ -87,16 +108,37 @@ function setProject(state, action) {
     return newState;
 }
 
+/**
+ * Closes the project.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: undefined}} Received action without a payload
+ * @returns {Object} New state
+ */
 function closeProject(state, action) {
     return initState;
 }
 
+/**
+ * Shows an error in the project.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: string}} Received action with error message
+ * @returns {Object} New state
+ */
 function showProjectError(state, action) {
     return update(state, {
         error: {$set: action.payload}
     });
 }
 
+/**
+ * Adds a new dataset.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: undefined}} Received action without a payload
+ * @returns {Object} New state
+ */
 function addNewDataset(state, action) {
     const datasetId = state.lastDatasetId + 1;
 
@@ -110,6 +152,13 @@ function addNewDataset(state, action) {
     });
 }
 
+/**
+ * Updates a dataset.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: Object}} Received action with the changes
+ * @returns {Object} New state
+ */
 function updateDataset(state, action) {
     const { datasetId, changes } = action.payload;
     const { dataset, included, entries, stream, transformedStream } = changes;
@@ -173,6 +222,13 @@ function updateDataset(state, action) {
     }
 }
 
+/**
+ * Deletes a dataset.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: number}} Received action with the dataset ID
+ * @returns {Object} New state
+ */
 function deleteDataset(state, action) {
     const datasetId = action.payload;
 
@@ -209,18 +265,39 @@ function deleteDataset(state, action) {
     });
 }
 
+/**
+ * Shows a dataset detail.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: number}} Received action with the dataset ID
+ * @returns {Object} New state
+ */
 function showDatasetDetail(state, action) {
     return update(state, {
         detailDatasetId: {$set: action.payload}
     });
 }
 
+/**
+ * Closes a dataset.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: undefined}} Received action without a payload
+ * @returns {Object} New state
+ */
 function closeDatasetDetail(state, action) {
     return update(state, {
         detailDatasetId: {$set: null}
     });
 }
 
+/**
+ * Sets new selected entries.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: Array}} Received action with selected entry IDs
+ * @returns {Object} New state
+ */
 function selectEntries(state, action) {
     const entryIds = action.payload;
 
@@ -229,6 +306,13 @@ function selectEntries(state, action) {
     });
 }
 
+/**
+ * Deletes entries.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: Array}} Received action with entry IDs
+ * @returns {Object} New state
+ */
 function deleteEntries(state, action) {
     const entryIds = action.payload;
 
@@ -253,6 +337,13 @@ function deleteEntries(state, action) {
     });
 }
 
+/**
+ * Sets new sampling window.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: Object}} Received action with sampling window
+ * @returns {Object} New state
+ */
 function setSampling(state, action) {
     const samplingWindow = action.payload;
 
@@ -262,6 +353,14 @@ function setSampling(state, action) {
     });
 }
 
+
+/**
+ * Sets sampled entries.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: Object}} Received action with sampled entries
+ * @returns {Object} New state
+ */
 function setSampledEntries(state, action) {
     return update(state, {
         entries: {$set: action.payload},
@@ -269,6 +368,9 @@ function setSampledEntries(state, action) {
     });
 }
 
+/**
+ * Initial state of this project reducer
+ */
 const initState = {
     /* path to the project directory */
     path: null,
@@ -280,7 +382,7 @@ const initState = {
     /* project sampling */
     samplingWindow: {
         isConstant: false,
-        size: 10,
+        size: DEFAULT_SAMPLING_WINDOW_SIZE,
         start: 0,
         fixedCount: 10,
         additionalCount: 0,
@@ -307,7 +409,16 @@ const initState = {
     /* this needs to be incremented if calculation needs to be run */
     version: 0,
 };
-const project = (state = initState, action) => {
+
+
+/**
+ * Updates project state based on received action.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: *}} Received action
+ * @returns {Object} New state
+ */
+function project(state = initState, action) {
     switch (action.type) {
         case ACTIONS.SET_PROJECT:
             return setProject(state, action);
@@ -336,7 +447,7 @@ const project = (state = initState, action) => {
         default:
             return state;
     }
-};
+}
 
 module.exports = {
     project,

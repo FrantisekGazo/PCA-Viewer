@@ -7,6 +7,7 @@ const { calculation } = require("./CalculationReducer");
 const { project } = require("./ProjectReducer");
 
 
+// Combine all reducers
 module.exports = combineReducers({
     calculation: calculation,
     project: project,

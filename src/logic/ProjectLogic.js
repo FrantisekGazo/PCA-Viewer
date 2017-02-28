@@ -47,7 +47,7 @@ const loadProject = createLogic({
 });
 
 /**
- * Navigates to the correct project screen depending on project type.
+ * Navigates to the correct project screen depending on stored project type.
  */
 const openProjectScreen = createLogic({
     type: ProjectAction.ACTIONS.SET_PROJECT,
@@ -68,7 +68,7 @@ const openProjectScreen = createLogic({
 });
 
 /**
- * Navigates back to the start screen.
+ * Navigates back to the start screen when project is closed.
  */
 const closeProjectScreen = createLogic({
     type: ProjectAction.ACTIONS.CLOSE_PROJECT,
@@ -79,7 +79,7 @@ const closeProjectScreen = createLogic({
 });
 
 /**
- * Saves the open project to a file.
+ * Saves the project to a file.
  */
 const saveProject = createLogic({
     type: ProjectAction.ACTIONS.SAVE_PROJECT,
@@ -96,7 +96,7 @@ const saveProject = createLogic({
 });
 
 /**
- * Validates if dataset detail can be shown.
+ * Validates if dataset detail can be shown. (It won't be set if it already is shown)
  */
 const validateShowDataset = createLogic({
     type: ProjectAction.ACTIONS.SHOW_DATASET_DETAIL,
@@ -111,8 +111,6 @@ const validateShowDataset = createLogic({
         }
     }
 });
-
-
 
 /**
  * Validates selected entries. This also makes sure no ID is selected twice.
@@ -150,6 +148,7 @@ const validateSelectedEntries = createLogic({
 
 /**
  * Validates new sampling.
+ * Prevents saving invalid sampling.
  */
 const validateNewSampling = createLogic({
     type: ProjectAction.ACTIONS.SET_SAMPLING,
@@ -169,7 +168,7 @@ const validateNewSampling = createLogic({
 });
 
 /**
- * Samples streams.
+ * Samples streams (if needed) after sampling has changed or a dataset was updated.
  */
 const sampleStreams = createLogic({
     type: [
