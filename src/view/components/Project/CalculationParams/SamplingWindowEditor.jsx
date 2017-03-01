@@ -28,6 +28,7 @@ class SamplingWindowEditor extends React.Component {
         this.state = {
             size: samplingWindow.size,
             start: samplingWindow.start,
+            overlay: samplingWindow.overlay,
             fixedCount: samplingWindow.fixedCount,
             additionalCount: samplingWindow.additionalCount,
             errorMessage: ''
@@ -39,6 +40,16 @@ class SamplingWindowEditor extends React.Component {
         if (!isNaN(num) && this.state.size !== num) {
             this.setState({
                 size: num,
+                errorMessage: ''
+            });
+        }
+    }
+
+    handleOverlayChange(event, newValue) {
+        const num = parseInt(newValue);
+        if (!isNaN(num) && this.state.overlay !== num) {
+            this.setState({
+                overlay: num,
                 errorMessage: ''
             });
         }
@@ -79,11 +90,19 @@ class SamplingWindowEditor extends React.Component {
     }
 
     handleUpdateClick() {
-        const { size, start, fixedCount } = this.state;
+        const { size, overlay, start, fixedCount } = this.state;
 
         if (size <= 3) {
             this.setState({
                 errorMessage: 'Sampling has to be > 3'
+            });
+        } else if (overlay < 0) {
+            this.setState({
+                errorMessage: 'Overlay has to be >= 0'
+            });
+        } else if (overlay >= size) {
+            this.setState({
+                errorMessage: 'Overlay has to be < Sampling'
             });
         } else if (start < 0) {
             this.setState({
@@ -99,10 +118,17 @@ class SamplingWindowEditor extends React.Component {
     }
 
     render() {
-        const { size, start, fixedCount, additionalCount, errorMessage } = this.state;
+        const { size, overlay, start, fixedCount, additionalCount, errorMessage } = this.state;
 
         return (
             <div>
+                <TextField
+                    style={styles.edt}
+                    id='start-index'
+                    floatingLabelText={'Start'}
+                    defaultValue={`${start}`}
+                    onChange={this.handleStartChange.bind(this)}/>
+
                 <TextField
                     style={styles.edt}
                     id='start-index'
@@ -112,10 +138,10 @@ class SamplingWindowEditor extends React.Component {
 
                 <TextField
                     style={styles.edt}
-                    id='start-index'
-                    floatingLabelText={'Start'}
-                    defaultValue={`${start}`}
-                    onChange={this.handleStartChange.bind(this)}/>
+                    id='overlay'
+                    floatingLabelText={'Overlay'}
+                    defaultValue={`${overlay}`}
+                    onChange={this.handleOverlayChange.bind(this)}/>
 
                 <TextField
                     style={styles.edt}

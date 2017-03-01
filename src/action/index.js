@@ -10,7 +10,9 @@
  * @returns {{type: string, payload: *}}
  */
 function createAction(type, payload=null) {
-    return {type, payload}
+    return {type, payload};
 }
 
-module.exports = createAction;
+module.exports = {
+    createAction
+};

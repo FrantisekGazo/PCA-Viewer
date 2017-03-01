@@ -187,7 +187,6 @@ const sampleStreams = createLogic({
         }
 
         const datasets = ProjectSelector.getAllDatasets(state);
-        const sampling = samplingWindow.size;
 
         const entries = {};
         let entryId = 1;
@@ -199,7 +198,7 @@ const sampleStreams = createLogic({
             stream = ProjectSelector.getDatasetTransformedStream(state, dataset.id);
 
             promise = promise.then(() => {
-                StreamUtil.sampleStreamEntries(dataset.id, entries, entryId, stream, sampling, samplingWindow.start)
+                StreamUtil.sampleStreamEntries(dataset.id, entries, entryId, stream, samplingWindow)
             });
         }
 

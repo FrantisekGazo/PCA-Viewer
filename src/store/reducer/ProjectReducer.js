@@ -383,6 +383,7 @@ const initState = {
     samplingWindow: {
         isConstant: false,
         size: DEFAULT_SAMPLING_WINDOW_SIZE,
+        overlay: 0,
         start: 0,
         fixedCount: 10,
         additionalCount: 0,

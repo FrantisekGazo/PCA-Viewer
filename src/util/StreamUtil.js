@@ -8,12 +8,16 @@ const ProjectReducer = require('../store/reducer/ProjectReducer');
  * Samples given stream based on given sampling count.
  * @returns {Promise}
  */
-function sampleStreamValues(stream, sampling, start=0) {
+function sampleStreamValues(stream, samplingWindow) {
     return new Promise(function (resolve, reject) {
+        const start = samplingWindow.start;
+        const sampling = samplingWindow.size;
+        const overlay = samplingWindow.overlay;
+
         let result = [];
 
         let sample;
-        for (let i = start; i <= stream.length - sampling; i += sampling) {
+        for (let i = start; i <= stream.length - sampling; i += sampling - overlay) {
             sample = stream.slice(i, i + sampling);
             result.push(sample);
         }
@@ -26,8 +30,8 @@ function sampleStreamValues(stream, sampling, start=0) {
     });
 }
 
-function sampleStreamEntries(datasetId, entries, entryId, stream, sampling, start=0) {
-    return sampleStreamValues(stream, sampling, start)
+function sampleStreamEntries(datasetId, entries, entryId, stream, samplingWindow) {
+    return sampleStreamValues(stream, samplingWindow)
         .then((values) => {
             let entry;
             for (let i = 0; i < values.length; i++) {
