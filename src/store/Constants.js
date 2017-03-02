@@ -31,6 +31,8 @@ const TRANSFORMATIONS = {
     COUNT: 3
 };
 
+const ADDITIONAL_SAMPLES_COUNT = 1;
+
 
 module.exports = {
     DEFAULT_SAMPLING_WINDOW_SIZE,

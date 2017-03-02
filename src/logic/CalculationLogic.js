@@ -8,7 +8,7 @@ const CalculationSelector = require('../store/selector/CalculationSelector');
 const PcaUtil = require('../util/PcaUtil');
 const ProjectAction = require('../action/ProjectAction');
 const ProjectSelector = require('../store/selector/ProjectSelector');
-const { PROJECT_TYPE } = require('../store/Constants');
+const { PROJECT_TYPE, ADDITIONAL_SAMPLES_COUNT } = require('../store/Constants');
 
 
 /**
@@ -43,7 +43,8 @@ const calculatePCA = createLogic({
             let additionalEntries;
             if (isOnlinePca) {
                 const samplingWindow  = ProjectSelector.getSamplingWindow(state);
-                additionalEntries = datasets[0].entries.slice(samplingWindow.fixedCount, samplingWindow.fixedCount + samplingWindow.additionalCount);
+                additionalEntries = datasets[0].entries.slice(
+                    samplingWindow.fixedCount, samplingWindow.fixedCount + ADDITIONAL_SAMPLES_COUNT);
                 datasets[0].entries = datasets[0].entries.slice(0, samplingWindow.fixedCount);
             }
 

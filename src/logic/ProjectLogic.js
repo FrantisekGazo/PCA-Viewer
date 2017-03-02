@@ -158,8 +158,7 @@ const validateNewSampling = createLogic({
 
         if (newSamplingWindow.size < 4
             || newSamplingWindow.start < 0
-            || newSamplingWindow.fixedCount <= 0
-            || newSamplingWindow.additionalCount < 0) {
+            || newSamplingWindow.fixedCount <= 0) {
             reject();
         } else {
             allow(Object.assign({}, action, {payload: newSamplingWindow}));

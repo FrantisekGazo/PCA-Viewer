@@ -30,7 +30,6 @@ class SamplingWindowEditor extends React.Component {
             start: samplingWindow.start,
             overlay: samplingWindow.overlay,
             fixedCount: samplingWindow.fixedCount,
-            additionalCount: samplingWindow.additionalCount,
             errorMessage: ''
         };
     }
@@ -56,6 +55,7 @@ class SamplingWindowEditor extends React.Component {
     }
 
     handleStartChange(event, newValue) {
+        newValue = newValue ? newValue : '0';
         const num = parseInt(newValue);
         if (!isNaN(num) && this.state.start !== num) {
             this.setState({
@@ -75,16 +75,16 @@ class SamplingWindowEditor extends React.Component {
         }
     }
 
-    handleAddAdditionalCountChange() {
+    handleMoveSamplesLeft() {
         this.setState({
-            additionalCount: this.state.additionalCount + 1,
+            start: Math.max(this.state.start - this.state.size, 0),
             errorMessage: ''
         });
     }
 
-    handleSubAdditionalCountChange() {
+    handleMoveSamplesRight() {
         this.setState({
-            additionalCount: Math.max(this.state.additionalCount - 1, 0),
+            start: this.state.start + this.state.size,
             errorMessage: ''
         });
     }
@@ -118,16 +118,28 @@ class SamplingWindowEditor extends React.Component {
     }
 
     render() {
-        const { size, overlay, start, fixedCount, additionalCount, errorMessage } = this.state;
+        const { start, size, overlay, fixedCount, errorMessage } = this.state;
 
         return (
             <div>
+                <IconButton
+                    id='additional-count-add'
+                    onTouchTap={this.handleMoveSamplesLeft.bind(this)}>
+                    <IconArrowLeft/>
+                </IconButton>
+
                 <TextField
                     style={styles.edt}
                     id='start-index'
                     floatingLabelText={'Start'}
-                    defaultValue={`${start}`}
+                    value={`${start}`}
                     onChange={this.handleStartChange.bind(this)}/>
+
+                <IconButton
+                    id='additional-count-add'
+                    onTouchTap={this.handleMoveSamplesRight.bind(this)}>
+                    <IconArrowRight/>
+                </IconButton>
 
                 <TextField
                     style={styles.edt}
@@ -146,25 +158,9 @@ class SamplingWindowEditor extends React.Component {
                 <TextField
                     style={styles.edt}
                     id='fixed-count'
-                    floatingLabelText={'Fixed count'}
+                    floatingLabelText={'Count'}
                     defaultValue={`${fixedCount}`}
                     onChange={this.handleFixedCountChange.bind(this)}/>
-
-                <Subheader>Additional samples:</Subheader>
-
-                <IconButton
-                    id='additional-count-add'
-                    onTouchTap={this.handleSubAdditionalCountChange.bind(this)}>
-                    <IconArrowLeft/>
-                </IconButton>
-
-                <div style={styles.text}>{additionalCount}</div>
-
-                <IconButton
-                    id='additional-count-add'
-                    onTouchTap={this.handleAddAdditionalCountChange.bind(this)}>
-                    <IconArrowRight/>
-                </IconButton>
 
                 <br/>
 

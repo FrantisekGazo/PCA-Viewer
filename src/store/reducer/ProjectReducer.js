@@ -386,7 +386,6 @@ const initState = {
         overlay: 0,
         start: 0,
         fixedCount: 10,
-        additionalCount: 0,
     },
 
     /* error */
