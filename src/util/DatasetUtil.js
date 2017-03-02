@@ -1,7 +1,7 @@
 "use strict";
 
 
-const { newEntry } = require('../store/reducer/ProjectReducer');
+const Entry = require('../store/model/Entry');
 const { sortNumArrayDesc } = require('../util');
 
 
@@ -22,7 +22,7 @@ function valuesToEntries(datasetId, addedEntryIds, values) {
         for (let i = 0; i < values.length; i++) {
             value = values[i];
             newId += 1;
-            entry = newEntry({datasetId: datasetId, id: newId, value: value});
+            entry = new Entry({datasetId: datasetId, id: newId, value: value});
             newEntries.push(entry);
         }
 

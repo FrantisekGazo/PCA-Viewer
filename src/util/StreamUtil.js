@@ -2,6 +2,7 @@
 
 const { TRANSFORMATIONS } = require('../store/Constants');
 const ProjectReducer = require('../store/reducer/ProjectReducer');
+const Entry = require('../store/model/Entry');
 
 
 /**
@@ -35,12 +36,12 @@ function sampleStreamEntries(datasetId, entries, entryId, stream, samplingWindow
         .then((values) => {
             let entry;
             for (let i = 0; i < values.length; i++) {
-                entry = ProjectReducer.newEntry({
+                entry = new Entry({
                     id: entryId++,
                     datasetId: datasetId,
                     value: values[i]
                 });
-                entries[entry.id] = entry;
+                entries[entry.getId()] = entry;
             }
         });
 }

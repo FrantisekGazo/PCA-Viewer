@@ -3,47 +3,12 @@
 const update = require('immutability-helper');
 
 const { ACTIONS } = require('../../action/ProjectAction');
+const Dataset = require('../model/Dataset');
 const { sortNumArrayDesc } = require('../../util');
 const { DEFAULT_SAMPLING_WINDOW_SIZE, PROJECT_TYPE, TRANSFORMATIONS } = require('../Constants');
 
 
 // HELPER FUNCTIONS ----------------------------------------------------------------------
-
-/**
- * Creates Dataset object.
- */
-function newDataset(id) {
-    return {
-        id: id,
-        name: `Dataset ${id}`,
-        desc: '',
-        color: '#000000',
-        // stream info
-        transformationType: TRANSFORMATIONS.NONE, // stream transformation type
-        transformationValue: 0, // stream transformation value
-    }
-}
-
-/**
- * Creates Entry object.
- */
-function newEntry(args) {
-    if (args.id === undefined) {
-        throw new Error("entry is missing an 'id'");
-    }
-    if (args.datasetId === undefined) {
-        throw new Error("entry is missing a 'datasetId'");
-    }
-
-    return Object.assign({
-        id: undefined,
-        datasetId: undefined,
-        name: `E${args.id}`,
-        color: undefined,
-        value: undefined,
-        streamPosition: undefined
-    }, args);
-}
 
 /**
  * Builds ID for original dataset stream
@@ -144,7 +109,7 @@ function addNewDataset(state, action) {
 
     return update(state, {
         datasets: {
-            [datasetId]: {$set: newDataset(datasetId)}
+            [datasetId]: {$set: new Dataset({id: datasetId})}
         },
         usedDatasetIds: {$push: [datasetId]},
         lastDatasetId: {$set: datasetId},
@@ -451,8 +416,6 @@ function project(state = initState, action) {
 
 module.exports = {
     project,
-    newEntry,
-    newDataset,
     baseStreamId,
     transformedStreamId,
 };
