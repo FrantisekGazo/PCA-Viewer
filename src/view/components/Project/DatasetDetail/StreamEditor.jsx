@@ -34,7 +34,8 @@ class StreamEditor extends React.Component {
                 <CardMedia>
                     <StreamPlot
                         color={dataset.color}
-                        stream={transformedStream}/>
+                        stream={transformedStream}
+                        highlighted={[]}/> {/* FIXME : set selected areas with [{from: 1, to: 2}, {from: 3, to: 4}, ...] */}
                 </CardMedia>
 
                 <CardText>

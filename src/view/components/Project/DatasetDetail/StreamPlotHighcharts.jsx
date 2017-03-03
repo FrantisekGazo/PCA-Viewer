@@ -9,11 +9,12 @@ class StreamPlot extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         return this.props.stream !== nextProps.stream
-            || this.props.color !== nextProps.color;
+            || this.props.color !== nextProps.color
+            || this.props.highlighted !== nextProps.highlighted;
     }
 
     render() {
-        const { stream, color } = this.props;
+        const { stream, color, highlighted } = this.props;
 
         if (stream.length == 0) {
             return null;
@@ -35,7 +36,14 @@ class StreamPlot extends React.Component {
                     formatter: function() {
                         return this.value;
                     }
-                }
+                },
+                plotBands: highlighted.map(s => {
+                    return {
+                        color: '#ff9955',
+                        from: s.from, // Start of the plot band
+                        to: s.to // End of the plot band
+                    };
+                })
             },
             // change tooltip
             tooltip: {
@@ -66,6 +74,8 @@ StreamPlot.propTypes = {
     stream: React.PropTypes.array.isRequired,
     /* plot color */
     color: React.PropTypes.string.isRequired,
+    /* array of highlighted areas */
+    highlighted: React.PropTypes.array.isRequired,
 };
 
 module.exports = StreamPlot;
