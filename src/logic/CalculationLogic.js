@@ -54,13 +54,19 @@ const calculatePCA = createLogic({
 
                     if (results && isOnlinePca && additionalEntries.length > 0) {
                         const pca = PCA.load(results.b);
-                        const data = results.data[0];
+                        const data = results.data;
 
-                        data.entryIds = data.entryIds.concat(additionalEntries.map(entry => entry.id));
+                        const entryIds = additionalEntries.map(entry => entry.id);
                         // project additional entries to the new base
                         const additionalValues = additionalEntries.map(entry => entry.value);
-                        const projected = pca.predict(additionalValues);
-                        data.values = data.values.concat(projected);
+                        const projectedValues = pca.predict(additionalValues);
+
+                        data.push(Object.assign({}, data[0], {
+                            color: '#ff2200',
+                            values: projectedValues,
+                            entryIds: entryIds
+                        }));
+
                         console.log('additional PCA result', results);
                     }
 
