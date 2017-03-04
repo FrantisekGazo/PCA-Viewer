@@ -10,7 +10,7 @@ class StreamPlot extends React.Component {
     shouldComponentUpdate(nextProps, nextState) {
         return this.props.stream !== nextProps.stream
             || this.props.color !== nextProps.color
-            || this.props.highlighted !== nextProps.highlighted;
+            || this.props.highlighted.length !== nextProps.highlighted.length;
     }
 
     render() {

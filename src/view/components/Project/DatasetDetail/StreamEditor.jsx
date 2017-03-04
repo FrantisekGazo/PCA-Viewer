@@ -24,8 +24,16 @@ class StreamEditor extends React.Component {
         const {
             dataset,
             stream, transformedStream,
+            selectedEntries,
             transformation, onTransformationChange,
         } = this.props;
+
+        const highlightedAreas = selectedEntries.map(e => {
+            return {
+                from: e.streamIndex,
+                to: e.streamIndex + e.value.length
+            };
+        });
 
         return (
             <Card>
@@ -35,7 +43,7 @@ class StreamEditor extends React.Component {
                     <StreamPlot
                         color={dataset.color}
                         stream={transformedStream}
-                        highlighted={[]}/> {/* FIXME : set selected areas with [{from: 1, to: 2}, {from: 3, to: 4}, ...] */}
+                        highlighted={highlightedAreas}/>
                 </CardMedia>
 
                 <CardText>
@@ -69,6 +77,8 @@ StreamEditor.propTypes = {
     transformedStream: React.PropTypes.array.isRequired,
     /* transformation applied to the original stream */
     transformation: React.PropTypes.object.isRequired,
+    /* selected entries */
+    selectedEntries: React.PropTypes.array.isRequired,
     /* callback */
     onTransformationChange: React.PropTypes.func.isRequired,
 };

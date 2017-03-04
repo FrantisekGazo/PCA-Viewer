@@ -35,13 +35,16 @@ function sampleStreamEntries(datasetId, entries, entryId, stream, samplingWindow
     return sampleStreamValues(stream, samplingWindow)
         .then((values) => {
             let entry;
+            let index = samplingWindow.start;
             for (let i = 0; i < values.length; i++) {
                 entry = new Entry({
                     id: entryId++,
                     datasetId: datasetId,
-                    value: values[i]
+                    value: values[i],
+                    streamIndex: index,
                 });
                 entries[entry.getId()] = entry;
+                index += samplingWindow.size;
             }
         });
 }

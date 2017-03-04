@@ -21,9 +21,9 @@ class Entry {
      * @param datasetId {number} Dataset ID
      * @param name {string} Entry name
      * @param value {Array} Entry value
-     * @param streamPosition {number} Index in dataset stream (if there is one)
+     * @param streamIndex {number} Index in dataset stream (if there is one)
      */
-    constructor({id, datasetId, name = undefined, value = [], streamPosition = undefined}) {
+    constructor({id, datasetId, name = undefined, value = [], streamIndex = undefined}) {
         if (id === undefined) {
             throw new Error("entry is missing an 'id'");
         }
@@ -35,7 +35,7 @@ class Entry {
         this.datasetId = datasetId;
         this.name = (name) ? name : `E${id}`;
         this.value = value;
-        this.streamPosition = streamPosition;
+        this.streamIndex = streamIndex;
     }
 
     /**
@@ -74,8 +74,8 @@ class Entry {
      * Returns the entry index in dataset stream (if there is one)
      * @returns {number}
      */
-    getStreamPosition() {
-        return this.streamPosition;
+    getStreamIndex() {
+        return this.streamIndex;
     }
 
     /**
@@ -83,7 +83,7 @@ class Entry {
      * @returns {boolean}
      */
     isPartOfStream() {
-        return this.streamPosition !== undefined;
+        return this.streamIndex !== undefined;
     }
 }
 

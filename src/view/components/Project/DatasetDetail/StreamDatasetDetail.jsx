@@ -147,6 +147,7 @@ class DatasetDetail extends React.Component {
                         stream={this.state.stream}
                         transformedStream={this.state.transformedStream}
                         transformation={this.state.transformation}
+                        selectedEntries={this.props.selectedEntries}
                         onTransformationChange={this.handleStreamTransformationChange.bind(this)}/>
                 </div>
             );
@@ -168,6 +169,8 @@ DatasetDetail.propTypes = {
     transformedStream: React.PropTypes.array.isRequired,
     /* indicator whether this project can have only 1 dataset */
     single: React.PropTypes.bool.isRequired,
+    /* selected entries */
+    selectedEntries: React.PropTypes.array.isRequired,
     /* callbacks */
     onSaveClick: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired,
