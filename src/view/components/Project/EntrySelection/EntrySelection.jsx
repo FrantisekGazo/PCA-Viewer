@@ -15,16 +15,23 @@ class EntrySelection extends React.Component {
     }
 
     render() {
-        const { selectedEntries, onClearClick, onDeleteClick } = this.props;
+        const { selectedEntries, deletable, onClearClick, onDeleteClick } = this.props;
 
         const list = selectedEntries.map(entry => {
             return (
                 <SelectedEntry
                     key={`${entry.id}`}
                     entry={entry}
+                    deletable={deletable}
                     onDeleteClick={onDeleteClick}/>
             );
         });
+
+        const deleteButton = (
+            <FlatButton
+                label='Delete All'
+                onTouchTap={this.handleDeleteAll.bind(this)}/>
+        );
 
         return (
             <Card>
@@ -39,9 +46,7 @@ class EntrySelection extends React.Component {
                     <FlatButton
                         label='Clear'
                         onTouchTap={onClearClick}/>
-                    <FlatButton
-                        label='Delete All'
-                        onTouchTap={this.handleDeleteAll.bind(this)}/>
+                    { deletable ? deleteButton : null }
                 </CardActions>
             </Card>
         );
@@ -51,6 +56,8 @@ class EntrySelection extends React.Component {
 EntrySelection.propTypes = {
     /* array of selected entries */
     selectedEntries: React.PropTypes.array.isRequired,
+    /* true if entries are deletable */
+    deletable: React.PropTypes.bool.isRequired,
     /* callbacks */
     onClearClick: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired,
