@@ -20,7 +20,7 @@ module.exports = connect(
             stream: ProjectSelector.getDatasetStream(state, datasetId),
             transformedStream: ProjectSelector.getDatasetTransformedStream(state, datasetId),
             single: ProjectSelector.getType(state) === PROJECT_TYPE.ONLINE_PCA,
-            selectedEntries: ProjectSelector.getSelectedEntries(state),
+            selectedEntries: ProjectSelector.getSelectedDatasetEntries(state, datasetId),
         };
     },
     // dispatch functions to props

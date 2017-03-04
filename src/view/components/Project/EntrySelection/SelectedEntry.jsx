@@ -20,6 +20,7 @@ class SelectedEntry extends React.Component {
 
         return (
             <ListItem
+                style={{ color: entry.color }}
                 primaryText={entry.name}
                 secondaryText={desc}
                 rightIconButton={
