@@ -189,6 +189,7 @@ const sampleStreams = createLogic({
 
         const entries = {};
         let entryId = 1;
+        const limitCount = ProjectSelector.getType(state) === PROJECT_TYPE.ONLINE_PCA;
 
         let promise = Promise.resolve();
         let dataset, stream;
@@ -197,7 +198,7 @@ const sampleStreams = createLogic({
             stream = ProjectSelector.getDatasetTransformedStream(state, dataset.id);
 
             promise = promise.then(() => {
-                StreamUtil.sampleStreamEntries(dataset.id, entries, entryId, stream, samplingWindow)
+                StreamUtil.sampleStreamEntries(dataset.id, entries, entryId, stream, samplingWindow, limitCount)
             });
         }
 

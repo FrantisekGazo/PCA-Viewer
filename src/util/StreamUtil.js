@@ -1,7 +1,7 @@
 "use strict";
 
 const { copyArray } = require('./index');
-const { TRANSFORMATIONS } = require('../store/Constants');
+const { TRANSFORMATIONS, ADDITIONAL_SAMPLES_COUNT } = require('../store/Constants');
 const ProjectReducer = require('../store/reducer/ProjectReducer');
 const Entry = require('../store/model/Entry');
 
@@ -12,19 +12,27 @@ const Entry = require('../store/model/Entry');
 class StreamUtil {
 
     /**
-     * Samples given stream based on given sampling count.
+     * Samples given stream based on given sampling window.
+     * @param stream {Array} A stream
+     * @param samplingWindow {Object} A sampling window
+     * @param limitCount {boolean} <code>true<code> if the count of sampled values should be limited by sampling window count.
      * @returns {Promise}
      */
-    static sampleStreamValues(stream, samplingWindow) {
+    static sampleStreamValues(stream, samplingWindow, limitCount) {
         return new Promise(function (resolve, reject) {
             const start = samplingWindow.start;
             const sampling = samplingWindow.size;
             const overlay = samplingWindow.overlay;
+            const maxCount = samplingWindow.fixedCount + ADDITIONAL_SAMPLES_COUNT;
 
             let result = [];
 
             let sample;
             for (let i = start; i <= stream.length - sampling; i += sampling - overlay) {
+                if (limitCount && result.length >= maxCount) {
+                    break; // do not sample more than necessary
+                }
+
                 sample = stream.slice(i, i + sampling);
                 result.push(sample);
             }
@@ -37,8 +45,18 @@ class StreamUtil {
         });
     }
 
-    static sampleStreamEntries(datasetId, entries, entryId, stream, samplingWindow) {
-        return StreamUtil.sampleStreamValues(stream, samplingWindow)
+    /**
+     * Samples given stream based on given sampling count.
+     * @param datasetId {number} A dataset ID
+     * @param entries {Object} An entries map to which the newly sampled entries will be added
+     * @param entryId {number} A first usable entry ID value
+     * @param stream {Array} A stream
+     * @param samplingWindow {Object} A sampling window
+     * @param limitCount {boolean} <code>true<code> if the count of sampled values should be limited by sampling window count.
+     * @returns {Promise}
+     */
+    static sampleStreamEntries(datasetId, entries, entryId, stream, samplingWindow, limitCount) {
+        return StreamUtil.sampleStreamValues(stream, samplingWindow, limitCount)
             .then((values) => {
                 let entry;
                 let index = samplingWindow.start;
