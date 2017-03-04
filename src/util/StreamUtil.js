@@ -70,6 +70,7 @@ class StreamUtil {
                     entries[entry.getId()] = entry;
                     index += samplingWindow.size;
                 }
+                return entryId;
             });
     }
 
