@@ -6,21 +6,19 @@ const ReactHighcharts = require('react-highcharts');
 require('highcharts-3d')(ReactHighcharts.Highcharts);
 require('highcharts-exporting')(ReactHighcharts.Highcharts);
 
-const {hexToRgbString} = require('../../../../util/ColorUtil');
-
 
 const createSerie = (data, values) => {
     return {
         name: data.name,
         data: values,
-        color: hexToRgbString(data.color),
+        color: data.color,
         mode: 'markers',
         type: 'scatter',
         marker: {
             symbol: 'circle',
             size: 8,
             line: {
-                color: hexToRgbString('#cccccc'),
+                color: '#cccccc',
                 width: 1
             }
         }

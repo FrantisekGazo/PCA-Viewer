@@ -5,92 +5,94 @@ const fs = require('fs');
 
 
 /**
- * Reads the given file and returns read values. Each value is an array of decimal numbers.
- * @param filePath Path to the file that will be read.
- * @param sampling {number} Number of values for one row.
- * If <code>null</code> then all values will be returned as one array.
- * @returns {Promise}
+ * Provides methods for loading and manipulating data files.
  */
-function readValuesFromFile(filePath, sampling=null) {
-    return new Promise(function (resolve, reject) {
-        let values = [];
+class FileUtil {
 
-        const rl = readline.createInterface({
-            input: fs.createReadStream(filePath)
-        });
+    /**
+     * Reads the given file and returns read values. Each value is an array of decimal numbers.
+     * @param filePath Path to the file that will be read.
+     * @param sampling {number} Number of values for one row.
+     * If <code>null</code> then all values will be returned as one array.
+     * @returns {Promise}
+     */
+    static readValuesFromFile(filePath, sampling=null) {
+        return new Promise(function (resolve, reject) {
+            let values = [];
 
-        rl.on('line', function (line) {
-            const numberValues = [];
+            const rl = readline.createInterface({
+                input: fs.createReadStream(filePath)
+            });
 
-            const stringValues = line.replace(',', '.').split(/\s+/);
-            let numberValue;
-            for (let i = 0; i < stringValues.length; i++) {
-                numberValue = parseFloat(stringValues[i]);
-                if (!isNaN(numberValue)) {
-                    numberValues.push(numberValue);
+            rl.on('line', function (line) {
+                const numberValues = [];
+
+                const stringValues = line.replace(',', '.').split(/\s+/);
+                let numberValue;
+                for (let i = 0; i < stringValues.length; i++) {
+                    numberValue = parseFloat(stringValues[i]);
+                    if (!isNaN(numberValue)) {
+                        numberValues.push(numberValue);
+                    }
                 }
-            }
 
-            for (let i = 0; i < numberValues.length; i++) {
-                values.push(numberValues[i]);
-            }
-        });
-
-        rl.on('close', function () {
-            // sample the values if it is specified
-            if (sampling) {
-                let sampledValues = [];
-                let s;
-                for (let i = 0; i <= values.length - sampling; i += sampling) {
-                    s = values.slice(i, i + sampling);
-                    sampledValues.push(s);
+                for (let i = 0; i < numberValues.length; i++) {
+                    values.push(numberValues[i]);
                 }
-                values = sampledValues;
-            }
+            });
 
-            if (values.length > 0) {
-                resolve(values);
-            } else {
-                reject(Error('File contains no values!'));
-            }
+            rl.on('close', function () {
+                // sample the values if it is specified
+                if (sampling) {
+                    let sampledValues = [];
+                    let s;
+                    for (let i = 0; i <= values.length - sampling; i += sampling) {
+                        s = values.slice(i, i + sampling);
+                        sampledValues.push(s);
+                    }
+                    values = sampledValues;
+                }
+
+                if (values.length > 0) {
+                    resolve(values);
+                } else {
+                    reject(Error('File contains no values!'));
+                }
+            });
         });
-    });
+    }
+
+    /**
+     * Writes given text to a file on given path.
+     * @returns {Promise}
+     */
+    static  writeToFile(filePath, text) {
+        return new Promise(function (resolve, reject) {
+            fs.writeFile(filePath, text, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    /**
+     * Writes given text to a file on given path.
+     * @returns {Promise}
+     */
+    static readFromFile(filePath) {
+        return new Promise(function (resolve, reject) {
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
 }
 
-/**
- * Writes given text to a file on given path.
- * @returns {Promise}
- */
-function writeToFile(filePath, text) {
-    return new Promise(function (resolve, reject) {
-        fs.writeFile(filePath, text, (err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve();
-            }
-        });
-    });
-}
-
-/**
- * Writes given text to a file on given path.
- * @returns {Promise}
- */
-function readFromFile(filePath) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile(filePath, 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data);
-            }
-        });
-    });
-}
-
-module.exports = {
-    readFromFile,
-    readValuesFromFile,
-    writeToFile,
-};
+module.exports = FileUtil;

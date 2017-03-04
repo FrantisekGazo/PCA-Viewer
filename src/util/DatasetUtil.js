@@ -6,31 +6,34 @@ const { sortNumArrayDesc } = require('../util');
 
 
 /**
- * Converts given values to entries.
- * @param addedEntryIds Previously added entry IDs.
- * @param values The values.
- * @param startId Last used entry ID by store.
- * @returns {Promise} that returns an Object of {entryId: entry}
+ * Provides methods for dataset manipulation.
  */
-function valuesToEntries(datasetId, addedEntryIds, values) {
-    return new Promise(function (resolve, reject) {
-        const newEntries = [];
+class DatasetUtil {
 
-        let newId = sortNumArrayDesc(addedEntryIds)[0]; // sort so that the highest ID is first
+    /**
+     * Converts given values to entries.
+     * @param datasetId Dataset ID.
+     * @param addedEntryIds Previously added entry IDs.
+     * @param values The values.
+     * @returns {Promise} that returns an Object of {entryId: entry}
+     */
+    static valuesToEntries(datasetId, addedEntryIds, values) {
+        return new Promise(function (resolve, reject) {
+            const newEntries = [];
 
-        let value, entry;
-        for (let i = 0; i < values.length; i++) {
-            value = values[i];
-            newId += 1;
-            entry = new Entry({datasetId: datasetId, id: newId, value: value});
-            newEntries.push(entry);
-        }
+            let newId = sortNumArrayDesc(addedEntryIds)[0]; // sort so that the highest ID is first
 
-        resolve(newEntries);
-    });
+            let value, entry;
+            for (let i = 0; i < values.length; i++) {
+                value = values[i];
+                newId += 1;
+                entry = new Entry({datasetId: datasetId, id: newId, value: value});
+                newEntries.push(entry);
+            }
+
+            resolve(newEntries);
+        });
+    }
 }
 
-
-module.exports = {
-    valuesToEntries,
-};
+module.exports = DatasetUtil;
