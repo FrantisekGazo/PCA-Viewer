@@ -7,9 +7,9 @@ const { WorkerTaskNames, WorkerUtil } = require('./WorkerUtil');
 
 
 /**
- * Provides methods for calculating the PCA.
+ * Provides methods for calculations.
  */
-class PcaUtil {
+class CalculationUtil {
 
     /**
      * Asynchronously calculates PCA.
@@ -26,13 +26,32 @@ class PcaUtil {
      * @returns {Object} a calculated PCA or null.
      */
     static calculatePcaSync(datasets) {
+        const pcaCalc = new PcaCalculator(datasets);
+        return pcaCalc.calculate();
+    }
+}
+
+
+/**
+ * Calculates PCA
+ */
+class PcaCalculator {
+
+    constructor(datasets) {
+        this.datasets = datasets;
+    }
+
+    /**
+     * Calculates and returns PCA
+     */
+    calculate() {
         const usedEntryValues = [];
         const usedEntryIds = [];
         const datasetStartIndexes = [];
 
         let datasetEntries, entry;
-        for (let i = 0; i < datasets.length; i++) {
-            datasetEntries = datasets[i].entries;
+        for (let i = 0; i < this.datasets.length; i++) {
+            datasetEntries = this.datasets[i].entries;
             datasetStartIndexes.push(usedEntryValues.length);
 
             for (let j = 0; j < datasetEntries.length; j++) {
@@ -53,8 +72,8 @@ class PcaUtil {
             const transformedMatrix = pca.predict(originalMatrix);
 
             const data = [];
-            for (let i = 0; i < datasets.length; i++) {
-                const dataset = datasets[i];
+            for (let i = 0; i < this.datasets.length; i++) {
+                const dataset = this.datasets[i];
 
                 const startIndex = datasetStartIndexes[i];
                 const endIndex = (datasetStartIndexes.length >= i + 1) ? datasetStartIndexes[i + 1] : undefined;
@@ -79,7 +98,8 @@ class PcaUtil {
             return null;
         }
     }
+
 }
 
 
-module.exports = PcaUtil;
+module.exports = CalculationUtil;

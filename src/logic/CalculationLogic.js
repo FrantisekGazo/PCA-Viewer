@@ -5,7 +5,7 @@ const PCA = require('ml-pca');
 
 const CalculationAction = require('../action/CalculationAction');
 const CalculationSelector = require('../store/selector/CalculationSelector');
-const PcaUtil = require('../util/PcaUtil');
+const CalculationUtil = require('../util/CalculationUtil');
 const ProjectAction = require('../action/ProjectAction');
 const ProjectSelector = require('../store/selector/ProjectSelector');
 const { PROJECT_TYPE, ADDITIONAL_SAMPLES_COUNT } = require('../store/Constants');
@@ -48,7 +48,7 @@ const calculatePCA = createLogic({
                 datasets[0].entries = datasets[0].entries.slice(0, samplingWindow.fixedCount);
             }
 
-            PcaUtil.calculatePcaAsync(datasets)
+            CalculationUtil.calculatePcaAsync(datasets)
                 .then((results) => {
                     console.log('PCA result', results);
 
