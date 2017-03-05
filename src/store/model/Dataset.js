@@ -21,7 +21,7 @@ class Dataset {
      *
      * @param id {number} Dataset ID
      */
-    constructor({id, name=undefined, desc=undefined, color=undefined, transformationType=undefined, transformationValue=undefined}) {
+    constructor({id, name, desc, color, transformationType, transformationValue}) {
         if (id === undefined) {
             throw new Error("entry is missing an 'id'");
         }

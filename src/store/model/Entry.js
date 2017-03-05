@@ -23,7 +23,7 @@ class Entry {
      * @param value {Array} Entry value
      * @param streamIndex {number} Index in dataset stream (if there is one)
      */
-    constructor({id, datasetId, name = undefined, value = [], streamIndex = undefined}) {
+    constructor({id, datasetId, name, value, streamIndex}) {
         if (id === undefined) {
             throw new Error("entry is missing an 'id'");
         }
@@ -34,7 +34,7 @@ class Entry {
         this.id = id;
         this.datasetId = datasetId;
         this.name = (name) ? name : `E${id}`;
-        this.value = value;
+        this.value = value ? value : [];
         this.streamIndex = streamIndex;
     }
 
