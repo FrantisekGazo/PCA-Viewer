@@ -65,10 +65,7 @@ class PcaCalculator {
 
         if (usedEntryValues.length > 0) {
             const originalMatrix = new Matrix(usedEntryValues);
-            const pca = new PCA(originalMatrix, {
-                scale: false,
-                center: false
-            });
+            const pca = this._calculatePca(originalMatrix);
             const transformedMatrix = pca.predict(originalMatrix);
 
             const data = [];
@@ -85,6 +82,9 @@ class PcaCalculator {
                     values: transformedMatrix.slice(startIndex, endIndex),
                     entryIds: usedEntryIds.slice(startIndex, endIndex)
                 });
+
+                const values = usedEntryValues.slice(startIndex, endIndex);
+                this._calculateArea(values);
             }
 
             return {
@@ -99,6 +99,19 @@ class PcaCalculator {
         }
     }
 
+    _calculateArea(values) {
+        const matrix = new Matrix(values);
+        const pca = this._calculatePca(matrix);
+
+        console.log('_calculateArea:', values, pca);
+    }
+
+    _calculatePca(matrix) {
+        return new PCA(matrix, {
+            scale: false,
+            center: false
+        });
+    }
 }
 
 
