@@ -18,8 +18,20 @@ class CalculationUtil {
      * @returns {Promise} that will resolve with a calculated PCA or null.
      */
     static calculatePcaAsync(datasets) {
+        const usedEntryValues = [];
+        let datasetEntries, entry;
+        for (let i = 0; i < datasets.length; i++) {
+            datasetEntries = datasets[i].entries;
 
-        CmdUtil.executePcaScript(['-a', '123'])
+            for (let j = 0; j < datasetEntries.length; j++) {
+                entry = datasetEntries[j];
+                if (entry) {
+                    usedEntryValues.push(entry.value);
+                }
+            }
+        }
+
+        CmdUtil.executePcaScript(usedEntryValues)
             .then((out) => {
                 console.log(out);
             })

@@ -1,27 +1,29 @@
 #!/usr/bin/python
 
 import argparse
+import json
 import numpy as np
+from sklearn.decomposition import PCA as sklearnPCA
 
-def main(arg):
-    print 'done', arg
+def main(data):
+    result = {}
 
-    a = np.array([1, 2, 3])  # Create a rank 1 array
-    print type(a)            # Prints "<type 'numpy.ndarray'>"
-    print a.shape            # Prints "(3,)"
-    print a[0], a[1], a[2]   # Prints "1 2 3"
-    a[0] = 5                 # Change an element of the array
-    print a                  # Prints "[5, 2, 3]"
+    d = json.loads(data)
+    all_samples = np.array(d)
+    result['all_samples'] = all_samples.tolist()
 
-    b = np.array([[1,2,3],[4,5,6]])   # Create a rank 2 array
-    print b.shape                     # Prints "(2, 3)"
-    print b[0, 0], b[0, 1], b[1, 0]   # Prints "1 2 4"
+    sklearn_pca = sklearnPCA(n_components=5)
+    #result['sklearn_pca'] = sklearn_pca
+    sklearn_transf = sklearn_pca.fit_transform(all_samples)
+    result['sklearn_transf'] = sklearn_transf.tolist()
+
+    print(json.dumps(result))
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--alpha', required=False,
-                        help="Alpha")
+    parser.add_argument('-d', '--data', required=True)
     args = parser.parse_args()
 
     # run
-    main(args.alpha)
+    main(args.data)

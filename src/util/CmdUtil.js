@@ -34,11 +34,15 @@ class CmdUtil {
 
     /**
      * Executes script for PCA calculation.
-     * @param args Script arguments
+     * @param entryValues {Array} Values
      * @returns {Promise}
      */
-    static executePcaScript(args) {
-        return CmdUtil._executeScript(SCRIPTS.PCA, args);
+    static executePcaScript(entryValues) {
+        const data = JSON.stringify(entryValues);
+        return CmdUtil._executeScript(SCRIPTS.PCA, ['--data', data])
+            .then((result) => {
+                return JSON.parse(result);
+            });
     }
 
     /**
