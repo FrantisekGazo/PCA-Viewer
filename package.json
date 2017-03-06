@@ -64,7 +64,6 @@
     "material-ui": "^0.16.7",
     "ml-matrix": "^2.2.0",
     "ml-pca": "^1.1.2",
-    "numeric": "^1.2.6",
     "plotly.js": "^1.21.2",
     "pure-color": "^1.2.0",
     "react": "^15.3.2",
