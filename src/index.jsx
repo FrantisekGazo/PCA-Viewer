@@ -44,9 +44,25 @@ if (process.env.NODE_ENV === 'development') {
     // whyDidYouUpdate(React, { include: /^EntrySpectrumPlot/, exclude: /^Connect/ });
 }
 
+
 // set window IDs
 const { startListeningForWindowIds } = require('./util/WorkerUtil');
 startListeningForWindowIds();
+
+
+// set path for scripts
+const CmdUtil = require('./util/CmdUtil');
+if (process.env.NODE_ENV === 'development') {
+    const path = require('path');
+    const dirPath = path.join(__dirname, 'script');
+    CmdUtil.setScriptDirectory(dirPath);
+} else {
+    const path = require('path');
+    const { app } = require('electron').remote;
+    const dirPath = path.join(app.getAppPath(), 'dist', 'script');
+    CmdUtil.setScriptDirectory(dirPath);
+}
+
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(hashHistory, store);

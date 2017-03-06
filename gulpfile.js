@@ -76,7 +76,12 @@ gulp.task('assets', function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['html', 'assets', 'bundle-index', 'bundle-worker']);
+gulp.task('scripts', function () {
+    return gulp.src('./src/script/**/*', {"base": "./src"})
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('default', ['html', 'assets', 'scripts', 'bundle-index', 'bundle-worker']);
 
 
 // PACKAGING

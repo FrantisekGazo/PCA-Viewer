@@ -164,7 +164,7 @@ class ScatterPlot extends React.Component {
             // // Plotting the mesh
             // plotData.push({
             //     opacity: 0.5,
-            //     color: hexToRgbString('#8879ff'),
+            //     color: '#8879ff',
             //     type: 'mesh3d',
             //     x: x,
             //     y: y,
