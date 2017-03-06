@@ -77,7 +77,7 @@ gulp.task('assets', function () {
 });
 
 gulp.task('scripts', function () {
-    return gulp.src('./src/script/**/*', {"base": "./src"})
+    return gulp.src('./src/script/dist/*', {"base": "./src"})
         .pipe(gulp.dest('dist'));
 });
 

@@ -14,7 +14,7 @@ let SCRIPT_DIRECTORY = '';
  * Supported scripts
  */
 const SCRIPTS = {
-    TEST: 'py/dist/test',
+    PCA: 'pca',
 };
 
 
@@ -38,7 +38,7 @@ class CmdUtil {
      * @returns {Promise}
      */
     static executePcaScript(args) {
-        return CmdUtil._executeScript(SCRIPTS.TEST, args);
+        return CmdUtil._executeScript(SCRIPTS.PCA, args);
     }
 
     /**

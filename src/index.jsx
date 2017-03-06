@@ -54,12 +54,12 @@ startListeningForWindowIds();
 const CmdUtil = require('./util/CmdUtil');
 if (process.env.NODE_ENV === 'development') {
     const path = require('path');
-    const dirPath = path.join(__dirname, 'script');
+    const dirPath = path.join(__dirname, 'script', 'dist');
     CmdUtil.setScriptDirectory(dirPath);
 } else {
     const path = require('path');
     const { app } = require('electron').remote;
-    const dirPath = path.join(app.getAppPath(), 'dist', 'script');
+    const dirPath = path.join(app.getAppPath(), 'dist', 'script', 'dist');
     CmdUtil.setScriptDirectory(dirPath);
 }
 
