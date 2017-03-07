@@ -76,14 +76,14 @@ class PcaCalculator {
                 const startIndex = datasetStartIndexes[i];
                 const endIndex = (datasetStartIndexes.length >= i + 1) ? datasetStartIndexes[i + 1] : undefined;
 
-                const values = usedEntryValues.slice(startIndex, endIndex);
-                const area = this._calculateArea(values, pca);
+                const transformedValues = transformedMatrix.slice(startIndex, endIndex);
+                const area = this._calculateArea(transformedValues, pca);
 
                 data.push({
                     id: dataset.id,
                     name: dataset.name,
                     color: dataset.color,
-                    values: transformedMatrix.slice(startIndex, endIndex),
+                    values: transformedValues,
                     entryIds: usedEntryIds.slice(startIndex, endIndex),
                     area: area
                 });
@@ -107,27 +107,10 @@ class PcaCalculator {
 
         console.log('_calculateArea', pca);
 
-        const transformedMeans = fullPca.predict([pca.means]);
-
-        // ADD 0 for missing dimensions - not correct approach
-        // const dimen = fullPca.getEigenvectors().length;
-        // let eigenvectors = pca.getEigenvectors().map(v => {
-        //     let resV = [].concat(v);
-        //     for (let i = resV.length; i < dimen; i++) {
-        //         // resV.push(0);
-        //     }
-        //     return resV;
-        // });
-        // const transformedEigenvectors = fullPca.predict(eigenvectors.slice(0, 10));
-
-        let eigenvectors = pca.getEigenvectors();
-        const transformedEigenvectors = fullPca.predict(eigenvectors);
-
         return {
-            mean: transformedMeans[0],
+            mean: pca.means,
             eigenvalues: pca.getEigenvalues(),
-            eigenvectors: eigenvectors,
-            transformedEigenvectors: transformedEigenvectors,
+            eigenvectors: pca.getEigenvectors(),
         };
     }
 

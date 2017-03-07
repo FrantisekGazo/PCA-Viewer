@@ -152,8 +152,8 @@ class ScatterPlot extends React.Component {
                 const area = d.area;
                 const a = {
                     name: d.name + ' V 0',
-                    x: [area.mean[usedIndexX], area.eigenvectors[0][usedIndexX]],
-                    y: [area.mean[usedIndexY], area.eigenvectors[0][usedIndexY]],
+                    x: [area.mean[usedIndexX], area.eigenvectors[0][usedIndexX] * area.eigenvalues[0]],
+                    y: [area.mean[usedIndexY], area.eigenvectors[0][usedIndexY] * area.eigenvalues[0]],
                     mode: 'lines',
                     type: 'scatter',
                     marker: {
@@ -168,8 +168,8 @@ class ScatterPlot extends React.Component {
                 const area = d.area;
                 const a = {
                     name: d.name + ' V 2',
-                    x: [area.mean[usedIndexX], area.eigenvectors[1][usedIndexX]],
-                    y: [area.mean[usedIndexY], area.eigenvectors[1][usedIndexY]],
+                    x: [area.mean[usedIndexX], area.eigenvectors[1][usedIndexX] * area.eigenvalues[1]],
+                    y: [area.mean[usedIndexY], area.eigenvectors[1][usedIndexY] * area.eigenvalues[1]],
                     mode: 'lines',
                     type: 'scatter',
                     marker: {
@@ -222,9 +222,9 @@ class ScatterPlot extends React.Component {
                 const area = d.area;
                 const a = {
                     name: d.name + ' V 0',
-                    x: [area.mean[usedIndexX], area.eigenvectors[0][usedIndexX]],
-                    y: [area.mean[usedIndexY], area.eigenvectors[0][usedIndexY]],
-                    z: [area.mean[usedIndexZ], area.eigenvectors[0][usedIndexZ]],
+                    x: [area.mean[usedIndexX], area.eigenvectors[0][usedIndexX] * area.eigenvalues[0]],
+                    y: [area.mean[usedIndexY], area.eigenvectors[0][usedIndexY] * area.eigenvalues[0]],
+                    z: [area.mean[usedIndexZ], area.eigenvectors[0][usedIndexZ] * area.eigenvalues[0]],
                     mode: 'lines',
                     type: 'scatter3d',
                     marker: {
@@ -239,9 +239,9 @@ class ScatterPlot extends React.Component {
                 const area = d.area;
                 const a = {
                     name: d.name + ' V 1',
-                    x: [area.mean[usedIndexX], area.eigenvectors[1][usedIndexX]],
-                    y: [area.mean[usedIndexY], area.eigenvectors[1][usedIndexY]],
-                    z: [area.mean[usedIndexZ], area.eigenvectors[1][usedIndexZ]],
+                    x: [area.mean[usedIndexX], area.eigenvectors[1][usedIndexX] * area.eigenvalues[1]],
+                    y: [area.mean[usedIndexY], area.eigenvectors[1][usedIndexY] * area.eigenvalues[1]],
+                    z: [area.mean[usedIndexZ], area.eigenvectors[1][usedIndexZ] * area.eigenvalues[1]],
                     mode: 'lines',
                     type: 'scatter3d',
                     marker: {
@@ -256,9 +256,9 @@ class ScatterPlot extends React.Component {
                 const area = d.area;
                 const a = {
                     name: d.name + ' V 2',
-                    x: [area.mean[usedIndexX], area.eigenvectors[2][usedIndexX]],
-                    y: [area.mean[usedIndexY], area.eigenvectors[2][usedIndexY]],
-                    z: [area.mean[usedIndexZ], area.eigenvectors[2][usedIndexZ]],
+                    x: [area.mean[usedIndexX], area.eigenvectors[2][usedIndexX] * area.eigenvalues[2]],
+                    y: [area.mean[usedIndexY], area.eigenvectors[2][usedIndexY] * area.eigenvalues[2]],
+                    z: [area.mean[usedIndexZ], area.eigenvectors[2][usedIndexZ] * area.eigenvalues[2]],
                     mode: 'lines',
                     type: 'scatter3d',
                     marker: {
