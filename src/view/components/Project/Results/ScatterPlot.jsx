@@ -131,6 +131,55 @@ class ScatterPlot extends React.Component {
                     }
                 }
             });
+            plotData = plotData.concat(data.map(d => {
+                const area = d.area;
+                const a = {
+                    name: d.name + ' MEAN',
+                    x: [area.mean[usedIndexX]],
+                    y: [area.mean[usedIndexY]],
+                    mode: 'markers',
+                    type: 'scatter',
+                    marker: {
+                        symbol: 'circle',
+                        color: d.color,
+                        size: this.size
+                    }
+                };
+                console.log('data area', a);
+                return a;
+            }));
+            plotData = plotData.concat(data.map(d => {
+                const area = d.area;
+                const a = {
+                    name: d.name + ' V 0',
+                    x: [area.mean[usedIndexX], area.eigenvectors[0][usedIndexX]],
+                    y: [area.mean[usedIndexY], area.eigenvectors[0][usedIndexY]],
+                    mode: 'lines',
+                    type: 'scatter',
+                    marker: {
+                        color: d.color,
+                        size: this.size
+                    }
+                };
+                console.log('data area', a);
+                return a;
+            }));
+            plotData = plotData.concat(data.map(d => {
+                const area = d.area;
+                const a = {
+                    name: d.name + ' V 2',
+                    x: [area.mean[usedIndexX], area.eigenvectors[1][usedIndexX]],
+                    y: [area.mean[usedIndexY], area.eigenvectors[1][usedIndexY]],
+                    mode: 'lines',
+                    type: 'scatter',
+                    marker: {
+                        color: d.color,
+                        size: this.size
+                    }
+                };
+                console.log('data area', a);
+                return a;
+            }));
         } else if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ !== undefined) {
             this.size = SIZE_3D;
             this.lineWidth = this.size / 10;
@@ -152,6 +201,74 @@ class ScatterPlot extends React.Component {
                     }
                 }
             });
+            plotData = plotData.concat(data.map(d => {
+                const area = d.area;
+                const a = {
+                    name: d.name + ' MEAN',
+                    x: [area.mean[usedIndexX]],
+                    y: [area.mean[usedIndexY]],
+                    mode: 'markers',
+                    type: 'scatter3d',
+                    marker: {
+                        symbol: 'circle',
+                        color: d.color,
+                        size: this.size
+                    }
+                };
+                console.log('data area', a);
+                return a;
+            }));
+            plotData = plotData.concat(data.map(d => {
+                const area = d.area;
+                const a = {
+                    name: d.name + ' V 0',
+                    x: [area.mean[usedIndexX], area.eigenvectors[0][usedIndexX]],
+                    y: [area.mean[usedIndexY], area.eigenvectors[0][usedIndexY]],
+                    z: [area.mean[usedIndexZ], area.eigenvectors[0][usedIndexZ]],
+                    mode: 'lines',
+                    type: 'scatter3d',
+                    marker: {
+                        color: d.color,
+                        size: this.size
+                    }
+                };
+                console.log('data area', a);
+                return a;
+            }));
+            plotData = plotData.concat(data.map(d => {
+                const area = d.area;
+                const a = {
+                    name: d.name + ' V 1',
+                    x: [area.mean[usedIndexX], area.eigenvectors[1][usedIndexX]],
+                    y: [area.mean[usedIndexY], area.eigenvectors[1][usedIndexY]],
+                    z: [area.mean[usedIndexZ], area.eigenvectors[1][usedIndexZ]],
+                    mode: 'lines',
+                    type: 'scatter3d',
+                    marker: {
+                        color: d.color,
+                        size: this.size
+                    }
+                };
+                console.log('data area', a);
+                return a;
+            }));
+            plotData = plotData.concat(data.map(d => {
+                const area = d.area;
+                const a = {
+                    name: d.name + ' V 2',
+                    x: [area.mean[usedIndexX], area.eigenvectors[2][usedIndexX]],
+                    y: [area.mean[usedIndexY], area.eigenvectors[2][usedIndexY]],
+                    z: [area.mean[usedIndexZ], area.eigenvectors[2][usedIndexZ]],
+                    mode: 'lines',
+                    type: 'scatter3d',
+                    marker: {
+                        color: d.color,
+                        size: this.size
+                    }
+                };
+                console.log('data area', a);
+                return a;
+            }));
 
             // Generating random data..
             //
