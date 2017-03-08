@@ -2,52 +2,64 @@
 
 
 /**
- * Returns calculation part of the state.
- * @param state {Object} Current store state
- * @returns {Object}
+ * Selects data from the Store.
  */
-const getCalculationState = (state) => state.calculation;
+class CalculationSelector {
 
-/**
- * Returns current version of the results.
- * @param state {Object} Current store state
- * @returns {number}
- */
-const getVersion = (state) => getCalculationState(state).version;
+    /**
+     * Returns calculation part of the state.
+     * @param state {Object} Current store state
+     * @returns {Object}
+     */
+    static getCalculationState(state) {
+        return state.calculation;
+    }
 
-/**
- * Returns calculated PCA.
- * @param state {Object} Current store state
- * @returns {Object}
- */
-const getPCA = (state) => getCalculationState(state).pca;
+    /**
+     * Returns current version of the results.
+     * @param state {Object} Current store state
+     * @returns {number}
+     */
+    static getVersion(state) {
+        return CalculationSelector.getCalculationState(state).version;
+    }
 
-/**
- * Returns <code>true</code> if calculation is in progress.
- * @param state {Object} Current store state
- * @returns {bool}
- */
-const isLoading = (state) => getCalculationState(state).loading;
+    /**
+     * Returns calculated PCA.
+     * @param state {Object} Current store state
+     * @returns {Object}
+     */
+    static getPCA(state) {
+        return CalculationSelector.getCalculationState(state).pca;
+    }
 
-/**
- * Returns <code>true</code> if calculation has finished successfully.
- * @param state {Object} Current store state
- * @returns {bool}
- */
-const isLoaded = (state) => getCalculationState(state).loaded;
+    /**
+     * Returns <code>true</code> if calculation is in progress.
+     * @param state {Object} Current store state
+     * @returns {bool}
+     */
+    static isLoading(state) {
+        return CalculationSelector.getCalculationState(state).loading;
+    }
 
-/**
- * Returns an error message (if none occurred, then empty string).
- * @param state {Object} Current store state
- * @returns {string}
- */
-const getError = (state) => getCalculationState(state).error;
+    /**
+     * Returns <code>true</code> if calculation has finished successfully.
+     * @param state {Object} Current store state
+     * @returns {bool}
+     */
+    static isLoaded(state) {
+        return CalculationSelector.getCalculationState(state).loaded;
+    }
+
+    /**
+     * Returns an error message (if none occurred, then empty string).
+     * @param state {Object} Current store state
+     * @returns {string}
+     */
+    static getError(state) {
+        return CalculationSelector.getCalculationState(state).error;
+    }
+}
 
 
-module.exports = {
-    getVersion,
-    getPCA,
-    isLoading,
-    isLoaded,
-    getError,
-};
+module.exports = CalculationSelector;
