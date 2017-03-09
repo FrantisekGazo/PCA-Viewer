@@ -33,6 +33,7 @@ class DatasetInfo extends React.Component {
     handleAddClick() {
         const { sampling, onAdd } = this.props;
 
+        const values = [];
         const newErrors = {};
         let valid = true;
         for (let i = 0; i < sampling; i++) {
@@ -41,10 +42,11 @@ class DatasetInfo extends React.Component {
                 newErrors[i] = 'Enter a number';
                 valid = false;
             }
+            values.push(value);
         }
 
         if (valid) {
-            onAdd(this.values);
+            onAdd(values);
         } else {
             this.setState({
                 errors: newErrors

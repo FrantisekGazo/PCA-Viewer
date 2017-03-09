@@ -47,6 +47,22 @@ class DatasetDetail extends React.Component {
         });
     }
 
+    handleAddEntryClick(entryValue) {
+        const addedEntryIds = this.state.entries.map(entry => entry.id);
+        addedEntryIds.push(this.props.lastEntryId);
+
+        DatasetUtil.valuesToEntries(this.state.dataset.id, addedEntryIds, [entryValue])
+            .then((entries) => {
+                this.setState({
+                    entries: this.state.entries.concat(entries),
+                    update: this.state.update + 1
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
+
     handleLoadClick() {
         DialogUtil.showOpenFileDialog()
             .then((filePath) => {
@@ -106,6 +122,7 @@ class DatasetDetail extends React.Component {
                 onDatasetChange={this.handleDatasetChange.bind(this)}
                 onDeleteClick={this.handleDeleteClick.bind(this)}
                 onCloseClick={this.handleCloseClick.bind(this)}
+                onAddEntry={this.handleAddEntryClick.bind(this)}
                 onLoadClick={this.handleLoadClick.bind(this)}
                 onSaveClick={this.handleSaveClick.bind(this)}/>
         );

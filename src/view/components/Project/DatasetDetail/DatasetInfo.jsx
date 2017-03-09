@@ -41,6 +41,7 @@ class DatasetInfo extends React.Component {
         this.setState({
             openAddDialog: false
         });
+        this.props.onAddEntry(entryValue);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -201,6 +202,7 @@ DatasetInfo.propTypes = {
     onDeleteClick: React.PropTypes.func.isRequired,
     onCloseClick: React.PropTypes.func.isRequired,
     onLoadClick: React.PropTypes.func.isRequired,
+    onAddEntry: React.PropTypes.func.isRequired,
     onIncludeChange: React.PropTypes.func.isRequired,
 };
 
