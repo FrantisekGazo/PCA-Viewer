@@ -11,18 +11,42 @@ const IconSave = require('material-ui/svg-icons/content/save').default;
 const MenuItem = require('material-ui/MenuItem').default;
 const TextField = require('material-ui/TextField').default;
 
+const AddEntryDialog = require('./AddEntryDialog.jsx');
 const ColorPicker = require('../../Common/ColorPicker');
 
 
 class DatasetInfo extends React.Component {
 
-    handleAddClick() {
-        console.error('TODO handleAddClick()');
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            openAddDialog: false
+        };
     }
 
-    shouldComponentUpdate(nextProps) {
+    openAddDialog() {
+        this.setState({
+            openAddDialog: true
+        });
+    }
+
+    closeAddDialog() {
+        this.setState({
+            openAddDialog: false
+        });
+    }
+
+    handleAddEntry(entryValue) {
+        this.setState({
+            openAddDialog: false
+        });
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
         return this.props.dataset !== nextProps.dataset
-            || this.props.included !== nextProps.included;
+            || this.props.included !== nextProps.included
+            || this.state.openAddDialog !== nextState.openAddDialog;
     }
 
     render() {
@@ -141,12 +165,22 @@ class DatasetInfo extends React.Component {
                             sampling ? (
                                 <MenuItem
                                     primaryText="Add"
-                                    onTouchTap={this.handleAddClick.bind(this)}/>
+                                    onTouchTap={this.openAddDialog.bind(this)}/>
                             ): null
                         }
 
                         { extraAction }
                     </IconMenu>
+
+                    {
+                        sampling ? (
+                            <AddEntryDialog
+                                open={this.state.openAddDialog}
+                                sampling={sampling}
+                                onAdd={this.handleAddEntry.bind(this)}
+                                onClose={this.closeAddDialog.bind(this)}/>
+                        ) : null
+                    }
                 </CardActions>
             </Card>
         );
