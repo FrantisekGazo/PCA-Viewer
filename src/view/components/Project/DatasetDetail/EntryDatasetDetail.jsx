@@ -101,6 +101,7 @@ class DatasetDetail extends React.Component {
                 dataset={dataset}
                 included={this.state.included}
                 single={false}
+                sampling={this.props.sampling}
                 onIncludeChange={this.handleIncludeChange.bind(this)}
                 onDatasetChange={this.handleDatasetChange.bind(this)}
                 onDeleteClick={this.handleDeleteClick.bind(this)}

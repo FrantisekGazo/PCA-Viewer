@@ -16,6 +16,10 @@ const ColorPicker = require('../../Common/ColorPicker');
 
 class DatasetInfo extends React.Component {
 
+    handleAddClick() {
+        console.error('TODO handleAddClick()');
+    }
+
     shouldComponentUpdate(nextProps) {
         return this.props.dataset !== nextProps.dataset
             || this.props.included !== nextProps.included;
@@ -26,6 +30,7 @@ class DatasetInfo extends React.Component {
             dataset,
             included,
             single,
+            sampling,
             onSaveClick,
             onDeleteClick,
             onCloseClick,
@@ -131,6 +136,15 @@ class DatasetInfo extends React.Component {
                         <MenuItem
                             primaryText="Load"
                             onTouchTap={onLoadClick}/>
+
+                        {
+                            sampling ? (
+                                <MenuItem
+                                    primaryText="Add"
+                                    onTouchTap={this.handleAddClick.bind(this)}/>
+                            ): null
+                        }
+
                         { extraAction }
                     </IconMenu>
                 </CardActions>
@@ -145,6 +159,8 @@ DatasetInfo.propTypes = {
     included: React.PropTypes.bool.isRequired,
     /* indicator whether this project can have only 1 dataset */
     single: React.PropTypes.bool.isRequired,
+    /* size of the sampling window (if it is constant) */
+    sampling: React.PropTypes.number,
     /* callbacks */
     onDatasetChange: React.PropTypes.func.isRequired,
     onSaveClick: React.PropTypes.func.isRequired,
