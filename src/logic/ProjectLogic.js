@@ -119,7 +119,18 @@ const validateSelectedEntries = createLogic({
     type: ProjectAction.ACTIONS.SELECT_ENTRIES,
     validate({ getState, action }, allow, reject) {
         const entryIds = action.payload;
-        const currentIds = ProjectSelector.getSelectedEntryIds(getState());
+        const state = getState();
+        const currentIds = ProjectSelector.getSelectedEntryIds(state);
+        const allEntries = ProjectSelector.getAllEntries(state);
+
+        // check if elected entry is in Store
+        for (let i = 0; i < entryIds.length; i++) {
+            const entry = allEntries[entryIds[i]];
+            if (entry === undefined) {
+                reject();
+                return;
+            }
+        }
 
         if (currentIds && currentIds.length > 0) {
             if (entryIds === null) {

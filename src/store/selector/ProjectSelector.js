@@ -55,6 +55,15 @@ class ProjectSelector {
     }
 
     /**
+     * Returns all entries.
+     * @param state {Object} Current store state
+     * @returns {Array}
+     */
+    static getAllEntries(state) {
+        return ProjectSelector.getProjectState(state).entries;
+    }
+
+    /**
      * Returns ID of currently shown dataset.
      * @param state {Object} Current store state
      * @returns {number}
