@@ -123,12 +123,14 @@ const validateSelectedEntries = createLogic({
         const currentIds = ProjectSelector.getSelectedEntryIds(state);
         const allEntries = ProjectSelector.getAllEntries(state);
 
-        // check if elected entry is in Store
-        for (let i = 0; i < entryIds.length; i++) {
-            const entry = allEntries[entryIds[i]];
-            if (entry === undefined) {
-                reject();
-                return;
+        if (entryIds) {
+            // check if elected entry is in Store
+            for (let i = 0; i < entryIds.length; i++) {
+                const entry = allEntries[entryIds[i]];
+                if (entry === undefined) {
+                    reject();
+                    return;
+                }
             }
         }
 

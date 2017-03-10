@@ -13,7 +13,7 @@ class EntryList extends React.Component {
         const currentEntries = this.props.entries;
         const newEntries = newProps.entries;
 
-        if (this.props.selectedEntryIds !== newProps.selectedEntryIds) {
+        if (this.props.selectedEntryIds.lenght !== newProps.selectedEntryIds.length) {
             return true;
         }
 
