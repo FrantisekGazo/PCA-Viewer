@@ -14,7 +14,7 @@ const StreamUtil = require('../../../../util/StreamUtil');
 /**
  * Shows a detail of dataset with stream of values.
  */
-class DatasetDetail extends React.Component {
+class StreamDatasetDetail extends React.Component {
 
     constructor(props) {
         super(props);
@@ -159,7 +159,7 @@ class DatasetDetail extends React.Component {
     }
 }
 
-DatasetDetail.propTypes = {
+StreamDatasetDetail.propTypes = {
     /* dataset object */
     dataset: React.PropTypes.object.isRequired,
     included: React.PropTypes.bool.isRequired,
@@ -178,4 +178,4 @@ DatasetDetail.propTypes = {
     onEntrySelected: React.PropTypes.func.isRequired
 };
 
-module.exports = DatasetDetail;
+module.exports = StreamDatasetDetail;

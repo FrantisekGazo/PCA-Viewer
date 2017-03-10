@@ -10,7 +10,7 @@ const DialogUtil = require('../../../../util/DialogUtil');
 const FileUtil = require('../../../../util/FileUtil');
 
 
-class DatasetDetail extends React.Component {
+class EntryDatasetDetail extends React.Component {
 
     constructor(props) {
         super(props);
@@ -149,7 +149,7 @@ class DatasetDetail extends React.Component {
     }
 }
 
-DatasetDetail.propTypes = {
+EntryDatasetDetail.propTypes = {
     /* dataset object */
     dataset: React.PropTypes.object.isRequired,
     included: React.PropTypes.bool.isRequired,
@@ -167,4 +167,4 @@ DatasetDetail.propTypes = {
     onEntrySelected: React.PropTypes.func.isRequired
 };
 
-module.exports = DatasetDetail;
+module.exports = EntryDatasetDetail;

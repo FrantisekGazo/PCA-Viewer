@@ -9,7 +9,7 @@ const TextField = require('material-ui/TextField').default;
 /**
  * Shows a dialog for manually adding a new entry.
  */
-class DatasetInfo extends React.Component {
+class AddEntryDialog extends React.Component {
 
     constructor(props) {
         super(props);
@@ -95,7 +95,7 @@ class DatasetInfo extends React.Component {
     }
 }
 
-DatasetInfo.propTypes = {
+AddEntryDialog.propTypes = {
     /* true if the dialog should be open */
     open: React.PropTypes.bool.isRequired,
     /* size of the sampling window (if it is constant) */
@@ -105,4 +105,4 @@ DatasetInfo.propTypes = {
     onAdd: React.PropTypes.func.isRequired,
 };
 
-module.exports = DatasetInfo;
+module.exports = AddEntryDialog;

@@ -202,7 +202,7 @@ DatasetInfo.propTypes = {
     onDeleteClick: React.PropTypes.func.isRequired,
     onCloseClick: React.PropTypes.func.isRequired,
     onLoadClick: React.PropTypes.func.isRequired,
-    onAddEntry: React.PropTypes.func.isRequired,
+    onAddEntry: React.PropTypes.func,
     onIncludeChange: React.PropTypes.func.isRequired,
 };
 
