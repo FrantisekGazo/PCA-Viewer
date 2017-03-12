@@ -127,7 +127,8 @@ class EntryDatasetDetail extends React.Component {
                 onSaveClick={this.handleSaveClick.bind(this)}/>
         );
 
-        if (entries.length > 0) {
+        // if (entries.length > 0) {
+        if (false) {
             content.push(
                 <div
                     key='dataset-entries'

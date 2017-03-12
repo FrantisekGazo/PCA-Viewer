@@ -1,7 +1,7 @@
 "use strict";
 
 const { createLogic } = require('redux-logic');
-const PCA = require('ml-pca');
+const Matrix = require('ml-matrix');
 
 const CalculationAction = require('../action/CalculationAction');
 const CalculationSelector = require('../store/selector/CalculationSelector');
@@ -53,17 +53,18 @@ const calculatePCA = createLogic({
                     console.log('PCA result', results);
 
                     if (results && isOnlinePca && additionalEntries.length > 0) {
-                        const pca = PCA.load(results.b);
                         const data = results.data;
 
                         const entryIds = additionalEntries.map(entry => entry.id);
                         // project additional entries to the new base
                         const additionalValues = additionalEntries.map(entry => entry.value);
-                        const projectedValues = pca.predict(additionalValues);
+                        const M = new Matrix(additionalValues);
+                        const U = new Matrix(results.eigenvectors);
+                        const C = M.mmul(U);
 
                         data.push(Object.assign({}, data[0], {
                             color: '#ff2200',
-                            values: projectedValues,
+                            values: C.to2DArray(),
                             entryIds: entryIds
                         }));
 
