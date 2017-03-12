@@ -34,6 +34,15 @@ class CalculationSelector {
     }
 
     /**
+     * Returns selected eigenpairs indexes.
+     * @param state {Object} Current store state
+     * @returns {[number]}
+     */
+    static getEigens(state) {
+        return CalculationSelector.getCalculationState(state).eigens;
+    }
+
+    /**
      * Returns <code>true</code> if calculation is in progress.
      * @param state {Object} Current store state
      * @returns {bool}

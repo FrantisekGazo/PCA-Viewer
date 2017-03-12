@@ -197,8 +197,8 @@ class PcaCalculator {
         // console.log('e', e.length);
         // console.log(e);
 
-        const k1 = 2; // FIXME : optimalne je 3
-        const k2 = 2; // FIXME : optimalne je 3
+        const k1 = 3; // FIXME : optimalne je 3
+        const k2 = 3; // FIXME : optimalne je 3
         const K = new Matrix([
             [k1, 0],
             [0, k2]

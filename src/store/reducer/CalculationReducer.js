@@ -135,7 +135,7 @@ const initState = {
     /* calculated PCA */
     pca: null,
     /* selected eigenpairs for PCA space */
-    eigens: null,
+    eigens: [0, 1],
     /* calculated areas */
     areas: null,
 

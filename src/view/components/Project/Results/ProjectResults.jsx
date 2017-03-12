@@ -9,25 +9,16 @@ const EigenvaluesPlot = require('./EigenvaluesPlot.jsx');
 const ScatterPlot = require('./ScatterPlot.jsx');
 
 
+/**
+ * Shows calculated results
+ */
 class ProjectResults extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            usedEigenpairs: [0, 1],
-        };
-    }
-
-    handleEigenPairsChange(newIndexes) {
-        this.setState({
-            usedEigenpairs: newIndexes
-        });
-    }
-
     render() {
-        const { usedEigenpairs } = this.state;
-        const { loading, loaded, error, pca, resultsVersion, selectedEntryIds, onEntrySelected } = this.props;
+        const {
+            loading, loaded, error, pca, eigens, resultsVersion, selectedEntryIds,
+            onEntrySelected, onEigensChange
+        } = this.props;
 
         if (loading) {
             return (
@@ -50,8 +41,8 @@ class ProjectResults extends React.Component {
                         <Card style={{marginTop: '10px'}}>
                             <EigenvaluesSelector
                                 eigenvalues={pca.eigenvalues}
-                                selected={usedEigenpairs}
-                                onSelectionChange={this.handleEigenPairsChange.bind(this)}/>
+                                selected={eigens}
+                                onSelectionChange={onEigensChange}/>
                         </Card>
 
                         <Card style={{marginTop: '10px', marginBottom: '10px'}}>
@@ -61,7 +52,7 @@ class ProjectResults extends React.Component {
                                     selectedColor={'#ff0000'}
                                     data={pca.data}
                                     dataVersion={resultsVersion}
-                                    usedColumns={usedEigenpairs}
+                                    usedColumns={eigens}
                                     onPlotClick={onEntrySelected}/>
                             </CardMedia>
                         </Card>
@@ -96,11 +87,13 @@ ProjectResults.propTypes = {
     loaded: React.PropTypes.bool.isRequired,
     error: React.PropTypes.string.isRequired,
     pca: React.PropTypes.object, // can be null
+    eigens: React.PropTypes.array.isRequired,
     resultsVersion: React.PropTypes.number.isRequired,
     // selected entry IDs
     selectedEntryIds: React.PropTypes.array.isRequired,
     // callback
     onEntrySelected: React.PropTypes.func.isRequired,
+    onEigensChange: React.PropTypes.func.isRequired,
 };
 
 module.exports = ProjectResults;

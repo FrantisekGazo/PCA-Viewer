@@ -3,10 +3,11 @@
 const React = require('react');
 const { connect } = require('react-redux');
 
-const ProjectResults = require('../../components/Project/Results/ProjectResults.jsx');
-const ProjectActionCreator = require('../../../action/ProjectActionCreator');
-const ProjectSelector = require('../../../store/selector/ProjectSelector');
+const CalculationActionCreator = require('../../../action/CalculationActionCreator');
 const CalculationSelector = require('../../../store/selector/CalculationSelector');
+const ProjectActionCreator = require('../../../action/ProjectActionCreator');
+const ProjectResults = require('../../components/Project/Results/ProjectResults.jsx');
+const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
 
 module.exports = connect(
@@ -18,6 +19,7 @@ module.exports = connect(
             error: CalculationSelector.getError(state),
             resultsVersion: CalculationSelector.getVersion(state),
             pca: CalculationSelector.getPCA(state),
+            eigens: CalculationSelector.getEigens(state),
             selectedEntryIds: ProjectSelector.getSelectedEntryIds(state),
         };
     },
@@ -26,6 +28,9 @@ module.exports = connect(
         return {
             onEntrySelected: (entryIds) => {
                 dispatch(ProjectActionCreator.createSelectEntryAction(entryIds));
+            },
+            onEigensChange: (selectedIndexes) => {
+                dispatch(CalculationActionCreator.createSetEigensAction(selectedIndexes));
             }
         };
     }
