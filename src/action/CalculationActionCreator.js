@@ -10,9 +10,7 @@ const ACTIONS = {
 
     SET_EIGENS: 'SET_EIGENS',
 
-    AREA_CALC_STARTED: 'AREA_CALC_STARTED',
-    AREA_CALC_DONE: 'AREA_CALC_DONE',
-    AREA_CALC_FAILED: 'AREA_CALC_FAILED',
+    SET_AREAS: 'SET_AREAS',
 
     CLEAR: 'CLEAR',
 };
@@ -60,30 +58,11 @@ class CalculationActionCreator {
     }
 
     /**
-     * Creates an action for starting the area calculation.
+     * Creates an action for setting the calculated areas.
      * @returns {Object} An action
      */
-    static createAreaCalculationStartedAction() {
-        return createAction(ACTIONS.AREA_CALC_STARTED);
-    }
-
-    /**
-     * Creates an action for showing the area calculation results.
-     * @param areas {[Object]} Calculation results
-     * @param version {number} Version of the results
-     * @returns {Object} An action
-     */
-    static createAreaCalculationDoneAction(areas, version) {
-        return createAction(ACTIONS.AREA_CALC_DONE, {areas, version});
-    }
-
-    /**
-     * Creates an action for showing the area calculation error.
-     * @param error {string} Error message
-     * @returns {Object} An action
-     */
-    static createAreaCalculationFailedAction(error) {
-        return createAction(ACTIONS.AREA_CALC_FAILED, error);
+    static createSetAreasAction(areas) {
+        return createAction(ACTIONS.SET_AREAS, areas);
     }
 
     /**

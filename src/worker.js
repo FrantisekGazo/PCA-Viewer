@@ -24,3 +24,13 @@ ipcRenderer.on(WorkerTaskNames.CALCULATE_PCA, function (event, datasetsJson, cal
     }
 });
 
+ipcRenderer.on(WorkerTaskNames.CALCULATE_AREAS, function (event, argJson, callerId) {
+    try {
+        const { pca, eigens } = JSON.parse(argJson);
+        const areas = CalculationUtil.calculateAreasSync(pca, eigens);
+        sendEnd(callerId, WorkerTaskNames.CALCULATE_AREAS, argJson, areas, null);
+    } catch (error) {
+        sendEnd(callerId, WorkerTaskNames.CALCULATE_AREAS, argJson, null, error);
+    }
+});
+

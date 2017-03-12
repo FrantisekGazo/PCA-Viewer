@@ -17,9 +17,9 @@ module.exports = connect(
             loading: CalculationSelector.isLoading(state),
             loaded: CalculationSelector.isLoaded(state),
             error: CalculationSelector.getError(state),
-            resultsVersion: CalculationSelector.getVersion(state),
-            pca: CalculationSelector.getPCA(state),
+            pca: CalculationSelector.getPca(state),
             eigens: CalculationSelector.getEigens(state),
+            results: CalculationSelector.getResults(state),
             selectedEntryIds: ProjectSelector.getSelectedEntryIds(state),
         };
     },

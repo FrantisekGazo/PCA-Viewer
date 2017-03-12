@@ -1,7 +1,7 @@
 "use strict";
 
 const React = require('react');
-const {Card, CardHeader, CardMedia, CardText} = require('material-ui/Card');
+const {Card, CardMedia, CardText} = require('material-ui/Card');
 const LinearProgress = require('material-ui/LinearProgress').default;
 
 const EigenvaluesSelector = require('./EigenvaluesSelector.jsx');
@@ -16,7 +16,7 @@ class ProjectResults extends React.Component {
 
     render() {
         const {
-            loading, loaded, error, pca, eigens, resultsVersion, selectedEntryIds,
+            loading, loaded, error, pca, eigens, results, selectedEntryIds,
             onEntrySelected, onEigensChange
         } = this.props;
 
@@ -50,9 +50,7 @@ class ProjectResults extends React.Component {
                                 <ScatterPlot
                                     selectedEntryIds={selectedEntryIds}
                                     selectedColor={'#ff0000'}
-                                    data={pca.data}
-                                    dataVersion={resultsVersion}
-                                    usedColumns={eigens}
+                                    results={results}
                                     onPlotClick={onEntrySelected}/>
                             </CardMedia>
                         </Card>
@@ -82,13 +80,13 @@ class ProjectResults extends React.Component {
 }
 
 ProjectResults.propTypes = {
-    /* results */
     loading: React.PropTypes.bool.isRequired,
     loaded: React.PropTypes.bool.isRequired,
     error: React.PropTypes.string.isRequired,
+    /* results */
     pca: React.PropTypes.object, // can be null
     eigens: React.PropTypes.array.isRequired,
-    resultsVersion: React.PropTypes.number.isRequired,
+    results: React.PropTypes.object.isRequired,
     // selected entry IDs
     selectedEntryIds: React.PropTypes.array.isRequired,
     // callback

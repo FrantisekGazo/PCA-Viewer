@@ -29,7 +29,7 @@ class CalculationSelector {
      * @param state {Object} Current store state
      * @returns {Object}
      */
-    static getPCA(state) {
+    static getPca(state) {
         return CalculationSelector.getCalculationState(state).pca;
     }
 
@@ -40,6 +40,58 @@ class CalculationSelector {
      */
     static getEigens(state) {
         return CalculationSelector.getCalculationState(state).eigens;
+    }
+
+    /**
+     * Returns calculated areas.
+     * @param state {Object} Current store state
+     * @returns {Object}
+     */
+    static getAreas(state) {
+        return CalculationSelector.getCalculationState(state).areas;
+    }
+
+    /**
+     * Returns calculated areas.
+     * @param state {Object} Current store state
+     * @returns {Object}
+     */
+    static getResults(state) {
+        const eigens = CalculationSelector.getEigens(state);
+        const pca = CalculationSelector.getPca(state);
+        const areas = CalculationSelector.getAreas(state);
+        const version = CalculationSelector.getVersion(state);
+
+        const projectedData = [];
+
+        if (pca && eigens && areas) {
+            const data = pca.data;
+            for (let i = 0; i < data.length; i++) {
+                const d = data[i];
+
+                const v = d.values;
+                const pv = [];
+                for (let r = 0; r < v.length; r++) {
+                    const row = [];
+                    for (let c = 0; c < eigens.length; c++) {
+                        row.push(v[r][eigens[c]]);
+                    }
+                    pv.push(row);
+                }
+
+                const pd = Object.assign({}, d, {
+                    values: pv,
+                    area: areas[i]
+                });
+
+                projectedData.push(pd);
+            }
+        }
+
+        return {
+            data: projectedData,
+            version: `${version}-` + eigens.map(v => `${v}`).join('-')
+        };
     }
 
     /**

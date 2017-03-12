@@ -85,7 +85,7 @@ class ScatterPlot extends React.Component {
             for (let i = 0; i < points.length; i++) {
                 point = points[i];
 
-                d = this.props.data[point.curveNumber];
+                d = this.props.results.data[point.curveNumber];
                 entryId = d.entryIds[point.pointNumber];
 
                 entryIds.push(entryId);
@@ -98,30 +98,33 @@ class ScatterPlot extends React.Component {
         }
     }
 
-    drawPlot() {
-        const { data, usedColumns, selectedEntryIds, selectedColor } = this.props;
+    is2D() {
+        return this.props.results.data[0].values[0].length === 2;
+    }
 
-        const usedIndexX = usedColumns[0];
-        const usedIndexY = usedColumns[1];
-        const usedIndexZ = usedColumns[2];
+    drawPlot() {
+        const { results, selectedEntryIds, selectedColor } = this.props;
+        const { data } = results;
 
         let plotData = [];
 
-        if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ === undefined) {
+        if (this.is2D()) { // show 2D plot
             this.size = SIZE_2D;
             this.lineWidth = this.size / 10;
-            // show 2D plot
-            plotData = data.map(d => {
-                const selected = d.entryIds.map(id => isSelected(selectedEntryIds, id));
-                return {
-                    name: d.name,
-                    x: d.values.map(val => val[usedIndexX]),
-                    y: d.values.map(val => val[usedIndexY]),
+
+            for (let i = 0; i < data.length; i++) {
+                const { name, color, values, entryIds, area } = data[i];
+
+                const selected = entryIds.map(id => isSelected(selectedEntryIds, id));
+                const plotPoints = {
+                    name: name,
+                    x: values.map(val => val[0]),
+                    y: values.map(val => val[1]),
                     mode: 'markers',
                     type: 'scatter',
                     marker: {
                         symbol: 'circle',
-                        color: d.color,
+                        color: color,
                         opacity: OPACITY,
                         size: this.size,
                         line: {
@@ -129,77 +132,95 @@ class ScatterPlot extends React.Component {
                             width: selected.map(s => s ? this.lineWidth * 2 : this.lineWidth)
                         }
                     }
+                };
+
+                if (area) {
+                    const plotMean = {
+                        name: name + ' MEAN',
+                        x: [area.mean[0]],
+                        y: [area.mean[1]],
+                        mode: 'markers',
+                        type: 'scatter',
+                        marker: {
+                            symbol: 'circle',
+                            color: color,
+                            size: this.size
+                        }
+                    };
+
+                    const plotEllipse = {
+                        name: name + ' AREA',
+                        x: area.ellipse.map(v => v[0]),
+                        y: area.ellipse.map(v => v[1]),
+                        mode: 'lines',
+                        type: 'line',
+                        marker: {
+                            color: color,
+                        }
+                    };
+
+                    plotData.push(plotMean);
+                    plotData.push(plotEllipse);
                 }
-            });
-            plotData = plotData.concat(data.map(d => {
-                const area = d.area;
-                const a = {
-                    name: d.name + ' MEAN',
-                    x: [area.mean[0]],
-                    y: [area.mean[1]],
-                    mode: 'markers',
-                    type: 'scatter',
-                    marker: {
-                        symbol: 'circle',
-                        color: d.color,
-                        size: this.size
-                    }
-                };
-                return a;
-            }));
-            plotData = plotData.concat(data.map(d => {
-                const area = d.area;
-                const a = {
-                    name: d.name + ' AREA',
-                    x: area.ellipse.map(v => v[0]),
-                    y: area.ellipse.map(v => v[1]),
-                    mode: 'lines',
-                    type: 'line',
-                    marker: {
-                        color: d.color,
-                    }
-                };
-                return a;
-            }));
-        } else if (usedIndexX !== undefined && usedIndexY !== undefined && usedIndexZ !== undefined) {
+                plotData.push(plotPoints);
+            }
+        } else { // show 3D plot
             this.size = SIZE_3D;
             this.lineWidth = this.size / 10;
-            // show 3D plot
-            plotData = data.map(d => {
-                const selected = d.entryIds.map(id => isSelected(selectedEntryIds, id));
-                return {
-                    name: d.name,
-                    x: d.values.map(val => val[usedIndexX]),
-                    y: d.values.map(val => val[usedIndexY]),
-                    z: d.values.map(val => val[usedIndexZ]),
+
+            for (let i = 0; i < data.length; i++) {
+                const { name, color, values, entryIds, area } = data[i];
+
+                const selected = entryIds.map(id => isSelected(selectedEntryIds, id));
+                const plotPoints = {
+                    name: name,
+                    x: values.map(val => val[0]),
+                    y: values.map(val => val[1]),
+                    z: values.map(val => val[2]),
                     mode: 'markers',
                     type: 'scatter3d',
                     marker: {
                         symbol: 'circle',
-                        color: selected.map(s => s ? selectedColor : d.color),
+                        color: selected.map(s => s ? selectedColor : color),
                         opacity: OPACITY,
                         size: this.size
                     }
-                }
-            });
-            // plotData = plotData.concat(data.map(d => {
-            //     const area = d.area;
-            //     const a = {
-            //         name: d.name + ' MEAN',
-            //         x: [area.mean[usedIndexX]],
-            //         y: [area.mean[usedIndexY]],
-            //         mode: 'markers',
-            //         type: 'scatter3d',
-            //         marker: {
-            //             symbol: 'circle',
-            //             color: d.color,
-            //             size: this.size
-            //         }
-            //     };
-            //     console.log('data area', a);
-            //     return a;
-            // }));
+                };
 
+                if (area) {
+                    const plotMean = {
+                        name: name + ' MEAN',
+                        x: [area.mean[0]],
+                        y: [area.mean[1]],
+                        z: [area.mean[2]],
+                        mode: 'markers',
+                        type: 'scatter3d',
+                        marker: {
+                            symbol: 'circle',
+                            color: color,
+                            size: this.size
+                        }
+                    };
+
+                    const plotEllipse = {
+                        name: name + ' AREA',
+                        x: area.ellipse.map(v => v[0]),
+                        y: area.ellipse.map(v => v[1]),
+                        z: area.ellipse.map(v => v[2]),
+                        mode: 'lines',
+                        type: 'line',
+                        marker: {
+                            color: color,
+                        }
+                    };
+
+                    plotData.push(plotMean);
+                    plotData.push(plotEllipse);
+                }
+                plotData.push(plotPoints);
+            }
+
+            // TODO
             // Generating random data..
             //
             // let x = [], y = [], z = [];
@@ -218,10 +239,6 @@ class ScatterPlot extends React.Component {
             //     z: z,
             //     alphahull: 0
             // });
-        } else {
-            // other number is not supported
-            console.error('Only 2D and 3D plot is supported', usedColumns);
-            return;
         }
 
         Plotly.newPlot(
@@ -250,8 +267,7 @@ class ScatterPlot extends React.Component {
     }
 
     didDataChange(nextProps) {
-        return this.props.dataVersion !== nextProps.dataVersion
-            || this.props.usedColumns !== nextProps.usedColumns;
+        return this.props.results.version !== nextProps.results.version;
     }
 
     didSelectionChange(nextProps) {
@@ -260,39 +276,38 @@ class ScatterPlot extends React.Component {
 
     redrawSelection(nextProps) {
         const plot = document.getElementById(ELEMENT_ID);
-        const { data, usedColumns } = this.props;
+        const data = this.props.results.data;
         const { selectedColor } = nextProps;
         const newSelectedEntryIds = nextProps.selectedEntryIds;
         const oldSelectedEntryIds = this.props.selectedEntryIds;
 
-
-        let d, update;
         for (let i = 0; i < data.length; i++) {
-            d = data[i];
+            let update;
+            const { color, entryIds } = data[i];
 
-            if (areDisjunct(newSelectedEntryIds, d.entryIds) && areDisjunct(oldSelectedEntryIds, d.entryIds)) {
+            if (areDisjunct(newSelectedEntryIds, entryIds) && areDisjunct(oldSelectedEntryIds, entryIds)) {
                 continue;
             }
 
-            const selected = d.entryIds.map(id => isSelected(newSelectedEntryIds, id));
-            if (usedColumns[2]) { //3D
+            const selected = entryIds.map(id => isSelected(newSelectedEntryIds, id));
+            if (this.is2D()) { //2D
                 update = {
                     marker: {
-                        color: selected.map(s => s ? selectedColor : d.color),
-                        opacity: OPACITY,
-                        size: this.size
-                    }
-                };
-            } else { //2D
-                update = {
-                    marker: {
-                        color: d.color,
+                        color: color,
                         opacity: OPACITY,
                         size: this.size,
                         line: {
                             color: selected.map(s => s ? selectedColor : '#cccccc'),
                             width: selected.map(s => s ? this.lineWidth * 2 : this.lineWidth)
                         }
+                    }
+                };
+            } else { //3D
+                update = {
+                    marker: {
+                        color: selected.map(s => s ? selectedColor : color),
+                        opacity: OPACITY,
+                        size: this.size
                     }
                 };
             }
@@ -322,14 +337,11 @@ class ScatterPlot extends React.Component {
 }
 
 ScatterPlot.propTypes = {
-    // array of data objects
-    data: React.PropTypes.array.isRequired,
-    dataVersion: React.PropTypes.number.isRequired,
+    // object containing calculated results
+    results: React.PropTypes.object.isRequired,
     // selection information
     selectedEntryIds: React.PropTypes.array.isRequired,
     selectedColor: React.PropTypes.string.isRequired,
-    // array of column indexes
-    usedColumns: React.PropTypes.array.isRequired,
     // click callback
     onPlotClick: React.PropTypes.func.isRequired,
 };

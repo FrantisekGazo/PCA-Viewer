@@ -38,6 +38,7 @@ const calculatePCA = createLogic({
         if (calcVersion < dataVersion) {
             dispatch(CalculationActionCreator.createPcaCalculationStartedAction());
             const datasets = ProjectSelector.getIncludedDatasetsWithEntries(state);
+            const eigens = CalculationSelector.getEigens(state);
 
             const isOnlinePca = ProjectSelector.getType(state) === PROJECT_TYPE.ONLINE_PCA;
             let additionalEntries;
@@ -52,26 +53,32 @@ const calculatePCA = createLogic({
                 .then((results) => {
                     console.log('PCA result', results);
 
-                    if (results && isOnlinePca && additionalEntries.length > 0) {
-                        const data = results.data;
+                    return CalculationUtil.calculateAreasAsync(results, eigens)
+                        .then((areas) => {
+                            dispatch(CalculationActionCreator.createSetAreasAction(areas));
 
-                        const entryIds = additionalEntries.map(entry => entry.id);
-                        // project additional entries to the new base
-                        const additionalValues = additionalEntries.map(entry => entry.value);
-                        const M = new Matrix(additionalValues);
-                        const U = new Matrix(results.eigenvectors);
-                        const C = M.mmul(U);
+                            if (results && isOnlinePca && additionalEntries.length > 0) {
+                                const data = results.data;
 
-                        data.push(Object.assign({}, data[0], {
-                            color: '#ff2200',
-                            values: C.to2DArray(),
-                            entryIds: entryIds
-                        }));
+                                const entryIds = additionalEntries.map(entry => entry.id);
+                                // project additional entries to the new base
+                                const additionalValues = additionalEntries.map(entry => entry.value);
+                                const M = new Matrix(additionalValues);
+                                const U = new Matrix(results.eigenvectors);
+                                const C = M.mmul(U);
 
-                        console.log('additional PCA result', results);
-                    }
+                                data.push(Object.assign({}, data[0], {
+                                    color: '#ff2200',
+                                    values: C.to2DArray(),
+                                    entryIds: entryIds,
+                                    additional: true
+                                }));
 
-                    dispatch(CalculationActionCreator.createPcaCalculationDoneAction(results, dataVersion));
+                                console.log('additional PCA result', results);
+                            }
+
+                            dispatch(CalculationActionCreator.createPcaCalculationDoneAction(results, dataVersion));
+                        });
                 })
                 .catch((error) => {
                     console.error('PCA error', error);
@@ -81,6 +88,30 @@ const calculatePCA = createLogic({
         } else {
             done();
         }
+    }
+});
+
+/**
+ * Updates calculated areas.
+ */
+const recalculateAreas = createLogic({
+    type: [
+        CalculationActionCreator.ACTIONS.SET_EIGENS,
+    ],
+    process({ getState, action }, dispatch, done) {
+        const state = getState();
+        const pca = CalculationSelector.getPca(state);
+        const eigens = action.payload;
+
+        CalculationUtil.calculateAreasAsync(pca, eigens)
+            .then((areas) => {
+                dispatch(CalculationActionCreator.createSetAreasAction(areas));
+            })
+            .catch((error) => {
+                console.error('AREA error', error);
+                dispatch(CalculationActionCreator.createPcaCalculationFailedAction(error.message));
+            })
+            .then(() => done());
     }
 });
 
@@ -101,5 +132,6 @@ const clearCalulation = createLogic({
 
 module.exports = [
     calculatePCA,
+    recalculateAreas,
     clearCalulation
 ];

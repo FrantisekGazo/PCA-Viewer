@@ -38,6 +38,7 @@ function startListeningForWindowIds() {
  */
 const WorkerTaskNames = {
     CALCULATE_PCA: 'calculate-pca',
+    CALCULATE_AREAS: 'calculate-areas',
 };
 
 
