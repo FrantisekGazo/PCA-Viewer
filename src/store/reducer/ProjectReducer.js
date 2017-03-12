@@ -2,7 +2,7 @@
 
 const update = require('immutability-helper');
 
-const { ACTIONS } = require('../../action/ProjectAction');
+const { ACTIONS } = require('../../action/ProjectActionCreator');
 const Dataset = require('../model/Dataset');
 const { sortNumArrayDesc } = require('../../util');
 const { DEFAULT_SAMPLING_WINDOW_SIZE, PROJECT_TYPE, TRANSFORMATIONS } = require('../Constants');

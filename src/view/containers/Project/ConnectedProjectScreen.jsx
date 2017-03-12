@@ -4,7 +4,7 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const ProjectScreen = require('../../components/Project/ProjectScreen.jsx');
-const ProjectAction = require('../../../action/ProjectAction');
+const ProjectActionCreator = require('../../../action/ProjectActionCreator');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
 
@@ -20,10 +20,10 @@ module.exports = connect(
     (dispatch) => {
         return {
             onSaveClick: () => {
-                dispatch(ProjectAction.createSaveProjectAction());
+                dispatch(ProjectActionCreator.createSaveProjectAction());
             },
             onCloseClick: () => {
-                dispatch(ProjectAction.createCloseProjectAction());
+                dispatch(ProjectActionCreator.createCloseProjectAction());
             }
         };
     }

@@ -4,8 +4,8 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const SetupScreen = require('../../components/Setup/SetupScreen.jsx');
-const ProjectAction = require('../../../action/ProjectAction');
-const RouterAction = require('../../../action/RouterAction');
+const ProjectActionCreator = require('../../../action/ProjectActionCreator');
+const RouterActionCreator = require('../../../action/RouterActionCreator');
 
 
 module.exports = connect(
@@ -17,10 +17,10 @@ module.exports = connect(
     (dispatch) => {
         return {
             onBackClick: () => {
-                dispatch(RouterAction.createGoToStartScreenAction());
+                dispatch(RouterActionCreator.createGoToStartScreenAction());
             },
             onCreateClick: (params) => {
-                dispatch(ProjectAction.createSetProjectAction(params));
+                dispatch(ProjectActionCreator.createSetProjectAction(params));
             }
         };
     }

@@ -3,10 +3,10 @@
 const { createLogic } = require('redux-logic');
 const Matrix = require('ml-matrix');
 
-const CalculationAction = require('../action/CalculationAction');
+const CalculationActionCreator = require('../action/CalculationActionCreator');
 const CalculationSelector = require('../store/selector/CalculationSelector');
 const CalculationUtil = require('../util/CalculationUtil');
-const ProjectAction = require('../action/ProjectAction');
+const ProjectActionCreator = require('../action/ProjectActionCreator');
 const ProjectSelector = require('../store/selector/ProjectSelector');
 const { PROJECT_TYPE, ADDITIONAL_SAMPLES_COUNT } = require('../store/Constants');
 
@@ -16,18 +16,18 @@ const { PROJECT_TYPE, ADDITIONAL_SAMPLES_COUNT } = require('../store/Constants')
  */
 const calculatePCA = createLogic({
     type: [
-        ProjectAction.ACTIONS.SET_PROJECT,
-        ProjectAction.ACTIONS.UPDATE_DATASET,
-        ProjectAction.ACTIONS.DELETE_DATASET,
-        ProjectAction.ACTIONS.SET_SAMPLED_ENTRIES,
-        ProjectAction.ACTIONS.DELETE_ENTRIES,
+        ProjectActionCreator.ACTIONS.SET_PROJECT,
+        ProjectActionCreator.ACTIONS.UPDATE_DATASET,
+        ProjectActionCreator.ACTIONS.DELETE_DATASET,
+        ProjectActionCreator.ACTIONS.SET_SAMPLED_ENTRIES,
+        ProjectActionCreator.ACTIONS.DELETE_ENTRIES,
     ],
     latest: true,
     process({ getState, action }, dispatch, done) {
         const state = getState();
         // if project contains streams this will be called after entries are sampled
         if (!ProjectSelector.getSamplingWindow(state).isConstant
-            && action.type === ProjectAction.ACTIONS.UPDATE_DATASET) {
+            && action.type === ProjectActionCreator.ACTIONS.UPDATE_DATASET) {
             done();
             return;
         }
@@ -36,7 +36,7 @@ const calculatePCA = createLogic({
         const calcVersion = CalculationSelector.getVersion(state);
 
         if (calcVersion < dataVersion) {
-            dispatch(CalculationAction.createStartAction());
+            dispatch(CalculationActionCreator.createPcaCalculationStartedAction());
             const datasets = ProjectSelector.getIncludedDatasetsWithEntries(state);
 
             const isOnlinePca = ProjectSelector.getType(state) === PROJECT_TYPE.ONLINE_PCA;
@@ -71,11 +71,11 @@ const calculatePCA = createLogic({
                         console.log('additional PCA result', results);
                     }
 
-                    dispatch(CalculationAction.createDoneAction(results, dataVersion));
+                    dispatch(CalculationActionCreator.createPcaCalculationDoneAction(results, dataVersion));
                 })
                 .catch((error) => {
                     console.error('PCA error', error);
-                    dispatch(CalculationAction.createFailedAction(error.message));
+                    dispatch(CalculationActionCreator.createPcaCalculationFailedAction(error.message));
                 })
                 .then(() => done());
         } else {
@@ -89,11 +89,11 @@ const calculatePCA = createLogic({
  */
 const clearCalulation = createLogic({
     type: [
-        ProjectAction.ACTIONS.CLOSE_PROJECT,
+        ProjectActionCreator.ACTIONS.CLOSE_PROJECT,
     ],
     process({ getState, action }, dispatch, done) {
         const state = getState();
-        dispatch(CalculationAction.createClearAction());
+        dispatch(CalculationActionCreator.createClearAction());
         done();
     }
 });

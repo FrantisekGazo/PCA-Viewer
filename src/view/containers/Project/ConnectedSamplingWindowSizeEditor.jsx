@@ -4,7 +4,7 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const SamplingWindowSizeEditor = require('../../components/Project/CalculationParams/SamplingWindowSizeEditor.jsx');
-const ProjectAction = require('../../../action/ProjectAction');
+const ProjectActionCreator = require('../../../action/ProjectActionCreator');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
 
@@ -19,7 +19,7 @@ module.exports = connect(
     (dispatch) => {
         return {
             onChange: (sampling) => {
-                dispatch(ProjectAction.createSetSamplingAction({size: sampling}));
+                dispatch(ProjectActionCreator.createSetSamplingAction({size: sampling}));
             }
         };
     }

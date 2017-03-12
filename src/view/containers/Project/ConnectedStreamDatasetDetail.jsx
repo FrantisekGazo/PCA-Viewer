@@ -4,7 +4,7 @@ const React = require('react');
 const {connect} = require('react-redux');
 
 const StreamDatasetDetail = require('../../components/Project/DatasetDetail/StreamDatasetDetail.jsx');
-const ProjectAction = require('../../../action/ProjectAction');
+const ProjectActionCreator = require('../../../action/ProjectActionCreator');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 const { PROJECT_TYPE } = require('../../../store/Constants');
 
@@ -27,16 +27,16 @@ module.exports = connect(
     (dispatch) => {
         return {
             onSaveClick: (datasetId, changes) => {
-                dispatch(ProjectAction.createUpdateDatasetAction(datasetId, changes));
+                dispatch(ProjectActionCreator.createUpdateDatasetAction(datasetId, changes));
             },
             onCloseClick: (datasetId) => {
-                dispatch(ProjectAction.createCloseDatasetDetailAction(datasetId));
+                dispatch(ProjectActionCreator.createCloseDatasetDetailAction(datasetId));
             },
             onDeleteClick: (datasetId) => {
-                dispatch(ProjectAction.createDeleteDatasetAction(datasetId));
+                dispatch(ProjectActionCreator.createDeleteDatasetAction(datasetId));
             },
             onEntrySelected: (entryIds) => {
-                dispatch(ProjectAction.createSelectEntryAction(entryIds));
+                dispatch(ProjectActionCreator.createSelectEntryAction(entryIds));
             }
         };
     }

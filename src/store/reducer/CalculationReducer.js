@@ -2,7 +2,7 @@
 
 const update = require('immutability-helper');
 
-const { ACTIONS } = require('../../action/CalculationAction');
+const { ACTIONS } = require('../../action/CalculationActionCreator');
 
 
 // HELPER FUNCTIONS ----------------------------------------------------------------------
@@ -91,11 +91,11 @@ const initState = {
  */
 function calculation(state = initState, action) {
     switch (action.type) {
-        case ACTIONS.START:
+        case ACTIONS.PCA_CALC_STARTED:
             return start(state, action);
-        case ACTIONS.DONE:
+        case ACTIONS.PCA_CALC_DONE:
             return done(state, action);
-        case ACTIONS.FAILED:
+        case ACTIONS.PCA_CALC_FAILED:
             return failed(state, action);
         case ACTIONS.CLEAR:
             return clear(state, action);

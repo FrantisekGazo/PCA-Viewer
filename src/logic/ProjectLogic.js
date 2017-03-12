@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const { createLogic } = require('redux-logic');
 
-const ProjectAction = require('../action/ProjectAction');
-const RouterAction = require('../action/RouterAction');
+const ProjectActionCreator = require('../action/ProjectActionCreator');
+const RouterActionCreator = require('../action/RouterActionCreator');
 const ProjectSelector = require('../store/selector/ProjectSelector');
 const ProjectReducer = require('../store/reducer/ProjectReducer');
 const { PROJECT_TYPE, PROJECT_FILE_NAME } = require('../store/Constants');
@@ -18,16 +18,16 @@ const { sortNumArrayAsc } = require('../util');
  * Loads project from a file.
  */
 const loadProject = createLogic({
-    type: ProjectAction.ACTIONS.LOAD_PROJECT,
+    type: ProjectActionCreator.ACTIONS.LOAD_PROJECT,
     process({ getState, action }, dispatch, done) {
         const projectPath = action.payload;
         const filePath = path.join(projectPath, PROJECT_FILE_NAME);
 
-        dispatch(RouterAction.createGoToProjectScreenLoadingAction());
+        dispatch(RouterActionCreator.createGoToProjectScreenLoadingAction());
 
         // check if project file exists
         if (!fs.existsSync(filePath)) {
-            dispatch(ProjectAction.createProjectErrorAction('Selected directory is not a PCA project'));
+            dispatch(ProjectActionCreator.createProjectErrorAction('Selected directory is not a PCA project'));
             done();
         }
 
@@ -37,10 +37,10 @@ const loadProject = createLogic({
                 projectState.path = projectPath;
                 projectState.detailDatasetId = null; // do not show detail after opening a project
 
-                dispatch(ProjectAction.createSetProjectAction(projectState));
+                dispatch(ProjectActionCreator.createSetProjectAction(projectState));
             })
             .catch((err) => {
-                dispatch(ProjectAction.createProjectErrorAction(err.message));
+                dispatch(ProjectActionCreator.createProjectErrorAction(err.message));
             })
             .then(() => done());
     }
@@ -50,18 +50,18 @@ const loadProject = createLogic({
  * Navigates to the correct project screen depending on stored project type.
  */
 const openProjectScreen = createLogic({
-    type: ProjectAction.ACTIONS.SET_PROJECT,
+    type: ProjectActionCreator.ACTIONS.SET_PROJECT,
     process({ getState, action }, dispatch, done) {
         const state = getState();
         const type = ProjectSelector.getType(state);
         const samplingWindow = ProjectSelector.getSamplingWindow(state);
 
         if (type === PROJECT_TYPE.ONLINE_PCA) {
-            dispatch(RouterAction.createGoToProjectScreenOnlineAction());
+            dispatch(RouterActionCreator.createGoToProjectScreenOnlineAction());
         } else if (samplingWindow.isConstant) {
-            dispatch(RouterAction.createGoToProjectScreenOfflineConstantAction());
+            dispatch(RouterActionCreator.createGoToProjectScreenOfflineConstantAction());
         } else {
-            dispatch(RouterAction.createGoToProjectScreenOfflineAction());
+            dispatch(RouterActionCreator.createGoToProjectScreenOfflineAction());
         }
         done();
     }
@@ -71,9 +71,9 @@ const openProjectScreen = createLogic({
  * Navigates back to the start screen when project is closed.
  */
 const closeProjectScreen = createLogic({
-    type: ProjectAction.ACTIONS.CLOSE_PROJECT,
+    type: ProjectActionCreator.ACTIONS.CLOSE_PROJECT,
     process({ getState, action }, dispatch, done) {
-        dispatch(RouterAction.createGoToStartScreenAction());
+        dispatch(RouterActionCreator.createGoToStartScreenAction());
         done();
     }
 });
@@ -82,7 +82,7 @@ const closeProjectScreen = createLogic({
  * Saves the project to a file.
  */
 const saveProject = createLogic({
-    type: ProjectAction.ACTIONS.SAVE_PROJECT,
+    type: ProjectActionCreator.ACTIONS.SAVE_PROJECT,
     process({ getState, action }, dispatch, done) {
         const state = getState();
         const projectPath = ProjectSelector.getPath(state);
@@ -99,7 +99,7 @@ const saveProject = createLogic({
  * Validates if dataset detail can be shown. (It won't be set if it already is shown)
  */
 const validateShowDataset = createLogic({
-    type: ProjectAction.ACTIONS.SHOW_DATASET_DETAIL,
+    type: ProjectActionCreator.ACTIONS.SHOW_DATASET_DETAIL,
     validate({ getState, action }, allow, reject) {
         const currentId = ProjectSelector.getDetailDatasetId(getState());
         const datasetId = action.payload;
@@ -116,7 +116,7 @@ const validateShowDataset = createLogic({
  * Validates selected entries. This also makes sure no ID is selected twice.
  */
 const validateSelectedEntries = createLogic({
-    type: ProjectAction.ACTIONS.SELECT_ENTRIES,
+    type: ProjectActionCreator.ACTIONS.SELECT_ENTRIES,
     validate({ getState, action }, allow, reject) {
         const entryIds = action.payload;
         const state = getState();
@@ -148,13 +148,13 @@ const validateSelectedEntries = createLogic({
                 }
 
                 if (currentIds.length !== ids.length) {
-                    allow(ProjectAction.createSelectEntryAction(ids));
+                    allow(ProjectActionCreator.createSelectEntryAction(ids));
                 } else {
                     reject();
                 }
             }
         } else {
-            allow(ProjectAction.createSelectEntryAction(sortNumArrayAsc(entryIds)));
+            allow(ProjectActionCreator.createSelectEntryAction(sortNumArrayAsc(entryIds)));
         }
     }
 });
@@ -164,7 +164,7 @@ const validateSelectedEntries = createLogic({
  * Prevents saving invalid sampling.
  */
 const validateNewSampling = createLogic({
-    type: ProjectAction.ACTIONS.SET_SAMPLING,
+    type: ProjectActionCreator.ACTIONS.SET_SAMPLING,
     validate({ getState, action }, allow, reject) {
         const samplingWindow = ProjectSelector.getSamplingWindow(getState());
         const newSamplingWindow = Object.assign({}, samplingWindow, action.payload);
@@ -184,8 +184,8 @@ const validateNewSampling = createLogic({
  */
 const sampleStreams = createLogic({
     type: [
-        ProjectAction.ACTIONS.SET_SAMPLING,
-        ProjectAction.ACTIONS.UPDATE_DATASET,
+        ProjectActionCreator.ACTIONS.SET_SAMPLING,
+        ProjectActionCreator.ACTIONS.UPDATE_DATASET,
     ],
     latest: true,
     process({ getState, action }, dispatch, done) {
@@ -218,7 +218,7 @@ const sampleStreams = createLogic({
         }
 
         promise.then(() => {
-            dispatch(ProjectAction.createSetSampledEntriesAction(entries));
+            dispatch(ProjectActionCreator.createSetSampledEntriesAction(entries));
             done();
         });
     }

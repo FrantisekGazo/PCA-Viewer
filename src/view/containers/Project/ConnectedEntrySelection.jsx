@@ -5,7 +5,7 @@ const {connect} = require('react-redux');
 
 const { PROJECT_TYPE } = require('../../../store/Constants');
 const EntrySelection = require('../../components/Project/EntrySelection/EntrySelection.jsx');
-const ProjectAction = require('../../../action/ProjectAction');
+const ProjectActionCreator = require('../../../action/ProjectActionCreator');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 
 
@@ -21,10 +21,10 @@ module.exports = connect(
     (dispatch) => {
         return {
             onClearClick: () => {
-                dispatch(ProjectAction.createSelectEntryAction(null));
+                dispatch(ProjectActionCreator.createSelectEntryAction(null));
             },
             onDeleteClick: (entryIds) => {
-                dispatch(ProjectAction.createDeleteEntriesAction(entryIds));
+                dispatch(ProjectActionCreator.createDeleteEntriesAction(entryIds));
             }
         };
     }

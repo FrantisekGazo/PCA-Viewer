@@ -4,7 +4,7 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const ProjectResults = require('../../components/Project/Results/ProjectResults.jsx');
-const ProjectAction = require('../../../action/ProjectAction');
+const ProjectActionCreator = require('../../../action/ProjectActionCreator');
 const ProjectSelector = require('../../../store/selector/ProjectSelector');
 const CalculationSelector = require('../../../store/selector/CalculationSelector');
 
@@ -25,7 +25,7 @@ module.exports = connect(
     (dispatch) => {
         return {
             onEntrySelected: (entryIds) => {
-                dispatch(ProjectAction.createSelectEntryAction(entryIds));
+                dispatch(ProjectActionCreator.createSelectEntryAction(entryIds));
             }
         };
     }
