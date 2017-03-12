@@ -5,52 +5,110 @@ const update = require('immutability-helper');
 const { ACTIONS } = require('../../action/CalculationActionCreator');
 
 
-// HELPER FUNCTIONS ----------------------------------------------------------------------
-
-
 /**
- * Starts the calculation.
+ * Starts the PCA calculation.
  *
  * @param state {Object} Current state
  * @param action {{type: string, payload: undefined}} Received action without a payload
  * @returns {Object} New state
  */
-function start(state, action) {
+function pcaCalcStarted(state, action) {
     return update(initState, {
-        loading: {$set: true}
+        loading: {$set: true},
+        eigens: {$set: state.eigens} // keep selected eigens
     });
 }
 
 /**
- * Finishes the calculation.
+ * Finishes the PCA calculation.
  *
  * @param state {Object} Current state
  * @param action {{type: string, payload: Object}} Received action with the calculation result
  * @returns {Object} New state
  */
-function done(state, action) {
-    const results = action.payload;
+function pcaCalcDone(state, action) {
+    const { pca, version } = action.payload;
 
     return update(state, {
         loading: {$set: false},
         loaded: {$set: true},
         // results
-        pca: {$set: results.pca},
-        version: {$set: results.version},
+        pca: {$set: pca},
+        version: {$set: version},
     });
 }
 
 /**
- * Fails the calculation.
+ * Fails the PCA calculation.
  *
  * @param state {Object} Current state
  * @param action {{type: string, payload: string}} Received action with the calculation error message
  * @returns {Object} New state
  */
-function failed(state, action) {
+function pcaCalcFailed(state, action) {
+    return update(state, {
+        loading: {$set: false},
+        loaded: {$set: false},
+        error: {$set: action.payload},
+    });
+}
+
+/**
+ * Set selected aigenpairs.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: [number]}} Received action with the selected eigenpairs
+ * @returns {Object} New state
+ */
+function setEigens(state, action) {
+    return update(state, {
+        eigens: {$set: action.payload}
+    });
+}
+
+/**
+ * Starts the area calculation.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: undefined}} Received action without a payload
+ * @returns {Object} New state
+ */
+function areaCalcStarted(state, action) {
+    return update(state, {
+        loading: {$set: true},
+        areas: {$set: null}
+    });
+}
+
+/**
+ * Finishes the area calculation.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: Object}} Received action with the calculation result
+ * @returns {Object} New state
+ */
+function areaCalcDone(state, action) {
+    const { areas, version } = action.payload;
+
     return update(state, {
         loading: {$set: false},
         loaded: {$set: true},
+        // results
+        areas: {$set: areas},
+    });
+}
+
+/**
+ * Fails the area calculation.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: string}} Received action with the calculation error message
+ * @returns {Object} New state
+ */
+function areaCalcFailed(state, action) {
+    return update(state, {
+        loading: {$set: false},
+        loaded: {$set: false},
         error: {$set: action.payload},
     });
 }
@@ -76,6 +134,10 @@ const initState = {
 
     /* calculated PCA */
     pca: null,
+    /* selected eigenpairs for PCA space */
+    eigens: null,
+    /* calculated areas */
+    areas: null,
 
     /* this needs to be incremented if results needs to be refreshed */
     version: 0
@@ -92,11 +154,19 @@ const initState = {
 function calculation(state = initState, action) {
     switch (action.type) {
         case ACTIONS.PCA_CALC_STARTED:
-            return start(state, action);
+            return pcaCalcStarted(state, action);
         case ACTIONS.PCA_CALC_DONE:
-            return done(state, action);
+            return pcaCalcDone(state, action);
         case ACTIONS.PCA_CALC_FAILED:
-            return failed(state, action);
+            return pcaCalcFailed(state, action);
+        case ACTIONS.SET_EIGENS:
+            return setEigens(state, action);
+        case ACTIONS.AREA_CALC_STARTED:
+            return areaCalcStarted(state, action);
+        case ACTIONS.AREA_CALC_DONE:
+            return areaCalcDone(state, action);
+        case ACTIONS.AREA_CALC_FAILED:
+            return areaCalcFailed(state, action);
         case ACTIONS.CLEAR:
             return clear(state, action);
         default:
