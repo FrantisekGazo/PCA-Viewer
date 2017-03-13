@@ -57,6 +57,7 @@ const isSelected = (selectedIds, id) => selectedIds.indexOf(id) >= 0;
 const SIZE_2D = 10;
 const SIZE_3D = 5;
 const OPACITY = .5;
+const SERIES_PER_DATASET = 2;
 
 
 class ScatterPlot extends React.Component {
@@ -85,10 +86,13 @@ class ScatterPlot extends React.Component {
             for (let i = 0; i < points.length; i++) {
                 point = points[i];
 
-                d = this.props.results.data[point.curveNumber];
-                entryId = d.entryIds[point.pointNumber];
+                // console.log('point', point);
+                if (point.curveNumber % SERIES_PER_DATASET === 0) {
+                    d = this.props.results.data[point.curveNumber / SERIES_PER_DATASET];
+                    entryId = d.entryIds[point.pointNumber];
 
-                entryIds.push(entryId);
+                    entryIds.push(entryId);
+                }
             }
 
             if (!equalArrays(this.lastSelection, entryIds)) {
@@ -131,11 +135,13 @@ class ScatterPlot extends React.Component {
                             color: selected.map(s => s ? selectedColor : '#cccccc'),
                             width: selected.map(s => s ? this.lineWidth * 2 : this.lineWidth)
                         }
-                    }
+                    },
+                    legendgroup: `group-${i}`,
                 };
+                plotData.push(plotPoints);
 
                 if (area) {
-                    const plotMean = { // FIXME: make point non-selectable
+                    const plotMean = {
                         name: name + ' MEAN',
                         x: [area.mean[0]],
                         y: [area.mean[1]],
@@ -145,10 +151,13 @@ class ScatterPlot extends React.Component {
                             symbol: 'circle',
                             color: color,
                             size: this.size
-                        }
+                        },
+                        hoverinfo: 'none',
+                        showlegend: false,
+                        legendgroup: `group-${i}`,
                     };
 
-                    const plotEllipse = { // FIXME: make point non-selectable
+                    const plotEllipse = {
                         name: name + ' AREA',
                         x: area.ellipse.map(v => v[0]),
                         y: area.ellipse.map(v => v[1]),
@@ -156,13 +165,15 @@ class ScatterPlot extends React.Component {
                         type: 'line',
                         marker: {
                             color: color,
-                        }
+                        },
+                        hoverinfo: 'none',
+                        showlegend: false,
+                        legendgroup: `group-${i}`,
                     };
 
                     // plotData.push(plotMean);
                     plotData.push(plotEllipse);
                 }
-                plotData.push(plotPoints);
             }
         } else { // show 3D plot
             this.size = SIZE_3D;
@@ -184,8 +195,10 @@ class ScatterPlot extends React.Component {
                         color: selected.map(s => s ? selectedColor : color),
                         opacity: OPACITY,
                         size: this.size
-                    }
+                    },
+                    legendgroup: `group-${i}`,
                 };
+                plotData.push(plotPoints);
 
                 if (area) {
                     const plotMean = { // FIXME: make point non-selectable
@@ -199,7 +212,10 @@ class ScatterPlot extends React.Component {
                             symbol: 'circle',
                             color: color,
                             size: this.size
-                        }
+                        },
+                        hoverinfo: 'none',
+                        showlegend: false,
+                        legendgroup: `group-${i}`,
                     };
 
                     const plotEllipsoid = { // FIXME: make point non-selectable
@@ -212,12 +228,14 @@ class ScatterPlot extends React.Component {
                         opacity: 0.3,
                         alphahull: 0,
                         color: color,
+                        hoverinfo: 'none',
+                        showlegend: false,
+                        legendgroup: `group-${i}`,
                     };
 
                     // plotData.push(plotMean);
-                    plotData.push(plotEllipsoid); // FIXME: show in legend ?
+                    plotData.push(plotEllipsoid);
                 }
-                plotData.push(plotPoints);
             }
         }
 
@@ -292,7 +310,7 @@ class ScatterPlot extends React.Component {
                 };
             }
 
-            Plotly.restyle(plot, update, i);
+            Plotly.restyle(plot, update, i * SERIES_PER_DATASET);
         }
     }
 
