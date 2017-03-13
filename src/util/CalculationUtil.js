@@ -160,6 +160,13 @@ class Calculator {
         }
     }
 
+
+    /**
+     * Calculates 2D/3D areas for given data.
+     * @param pca Calculated PCA with projected data
+     * @param eigens selected eigenpairs indexes
+     * @returns {[Object]}
+     */
     calculateAreas(pca, eigens) {
         if (pca === null) {
             return null;
@@ -175,9 +182,9 @@ class Calculator {
 
             let area;
             if (eigens.length === 2) {
-                area = this._calculateArea2D(d.values, eigens[0], eigens[1]);
+                area = this._calculateArea2D(d.values, {xIndex: eigens[0], yIndex: eigens[1]});
             } else {
-                area = this._calculateArea2D(d.values, eigens[0], eigens[1]);
+                area = this._calculateArea3D(d.values, {xIndex: eigens[0], yIndex: eigens[1], zIndex: eigens[2]});
             }
             // console.log('area:', area);
             areas.push(area);
@@ -189,6 +196,7 @@ class Calculator {
     /**
      * Returns the proportion of variance for each component
      * @return {[number]}
+     * @private
      */
     _getExplainedVariance(eigenvalues) {
         var sum = 0;
@@ -201,6 +209,7 @@ class Calculator {
     /**
      * Returns the cumulative proportion of variance
      * @return {[number]}
+     * @private
      */
     _getCumulativeVariance(eigenvalues) {
         var explained = this._getExplainedVariance(eigenvalues);
@@ -210,6 +219,14 @@ class Calculator {
         return explained;
     }
 
+    /**
+     * Creates an array that is linearly filled.
+     * @param start Start value
+     * @param end End value
+     * @param count Number of elements in created array
+     * @returns {[number]}
+     * @private
+     */
     _linSpace(start, end, count) {
         const result = [];
 
@@ -223,7 +240,15 @@ class Calculator {
         return result;
     }
 
-    _calculateArea2D(values, xIndex, yIndex) {
+    /**
+     * Calculates 2D areas for given values.
+     * @param values Values
+     * @param xIndex X data index
+     * @param yIndex Y data index
+     * @returns {{mean: [number], ellipse: [[number]]}}
+     * @private
+     */
+    _calculateArea2D(values, {xIndex, yIndex}) {
         const Ci = new Matrix(values.map(v => [v[xIndex], v[yIndex]]));
 
         const mi = mean(Ci);
@@ -237,7 +262,7 @@ class Calculator {
         const Si = Matrix.diag(SVDi.diagonal);
         // console.log('Si', Si);
 
-        const t = this._linSpace(0, 2 * Math.PI, Ci.rows);
+        const t = this._linSpace(0, 2 * Math.PI, 50);
         const e = Matrix.zeros(t.length, 2);
         for (let i = 0; i < t.length; i++) {
             e.set(i, 0, Math.cos(t[i]));
@@ -248,11 +273,10 @@ class Calculator {
         // console.log('e', e.length);
         // console.log(e);
 
-        const k1 = 3; // FIXME : optimalne je 3
-        const k2 = 3; // FIXME : optimalne je 3
+        const k = 3; // FIXME : optimalne je 3
         const K = new Matrix([
-            [k1, 0],
-            [0, k2]
+            [k, 0],
+            [0, k]
         ]);
 
         const Si_sqrt = new Matrix(Si);
@@ -271,6 +295,80 @@ class Calculator {
         for (let i = 0; i < ellipse.rows; i++) {
             ellipse.set(i, 0, ellipse.get(i, 0) + mi[0]);
             ellipse.set(i, 1, ellipse.get(i, 1) + mi[1]);
+        }
+        // console.log('ellipse', ellipse);
+
+        return {
+            mean: mi,
+            ellipse: ellipse.to2DArray()
+        };
+    }
+
+    /**
+     * Calculates 3D areas for given values.
+     * @param values Values
+     * @param xIndex X data index
+     * @param yIndex Y data index
+     * @param zIndex Z data index
+     * @returns {{mean: [number], ellipse: [[number]]}}
+     * @private
+     */
+    _calculateArea3D(values, {xIndex, yIndex, zIndex}) {
+        const Ci = new Matrix(values.map(v => [v[xIndex], v[yIndex], v[zIndex]]));
+
+        const mi = mean(Ci);
+        const Ci_center = MatrixUtil.center(Ci);
+        const Ri = Ci_center.transposeView().mmul(Ci_center).div(Ci.rows - 1);
+        // console.log('Ri', Ri);
+
+        const SVDi = svd(Ri, {autoTranspose: true});
+        const Ui = new Matrix(SVDi.rightSingularVectors);
+        // console.log('Ui', Ui);
+        const Si = Matrix.diag(SVDi.diagonal);
+        // console.log('Si', Si);
+
+        let c = 0;
+        const nn = 30;
+        const e = Matrix.zeros(nn * nn, 3);
+        for (let i = 0; i < nn; i++) {
+            const th = i * 2 * Math.PI / nn;
+            for (let j = 0; j < nn; j++) {
+                const fi = j * 2 * Math.PI / nn;
+
+                e.set(c, 0, Math.cos(th) * Math.sin(fi));
+                e.set(c, 1, Math.sin(th) * Math.sin(fi));
+                e.set(c, 2, Math.cos(fi));
+
+                c++;
+            }
+        }
+        // console.log('e', e.length);
+        // console.log(e);
+
+        const k = 3; // FIXME : optimalne je 3
+        const K = new Matrix([
+            [k, 0, 0],
+            [0, k, 0],
+            [0, 0, k]
+        ]);
+
+        const Si_sqrt = new Matrix(Si);
+        Si_sqrt.apply(function(r, c) {
+            const s = this.get(r, c);
+            const sqrtS = Math.sqrt(s);
+            this.set(r, c, sqrtS);
+        });
+        // console.log('Si_sqrt', Si_sqrt);
+
+        const Wi = Ui.mmul(K.mmul(Si_sqrt));
+        // console.log('Wi', Wi);
+
+        const ellipse = Wi.mmul(e.transpose()).transpose();
+        // console.log('Wie', ellipse);
+        for (let i = 0; i < ellipse.rows; i++) {
+            ellipse.set(i, 0, ellipse.get(i, 0) + mi[0]);
+            ellipse.set(i, 1, ellipse.get(i, 1) + mi[1]);
+            ellipse.set(i, 2, ellipse.get(i, 2) + mi[2]);
         }
         // console.log('ellipse', ellipse);
 

@@ -135,7 +135,7 @@ class ScatterPlot extends React.Component {
                 };
 
                 if (area) {
-                    const plotMean = {
+                    const plotMean = { // FIXME: make point non-selectable
                         name: name + ' MEAN',
                         x: [area.mean[0]],
                         y: [area.mean[1]],
@@ -148,7 +148,7 @@ class ScatterPlot extends React.Component {
                         }
                     };
 
-                    const plotEllipse = {
+                    const plotEllipse = { // FIXME: make point non-selectable
                         name: name + ' AREA',
                         x: area.ellipse.map(v => v[0]),
                         y: area.ellipse.map(v => v[1]),
@@ -159,7 +159,7 @@ class ScatterPlot extends React.Component {
                         }
                     };
 
-                    plotData.push(plotMean);
+                    // plotData.push(plotMean);
                     plotData.push(plotEllipse);
                 }
                 plotData.push(plotPoints);
@@ -188,7 +188,7 @@ class ScatterPlot extends React.Component {
                 };
 
                 if (area) {
-                    const plotMean = {
+                    const plotMean = { // FIXME: make point non-selectable
                         name: name + ' MEAN',
                         x: [area.mean[0]],
                         y: [area.mean[1]],
@@ -202,43 +202,23 @@ class ScatterPlot extends React.Component {
                         }
                     };
 
-                    const plotEllipse = {
+                    const plotEllipsoid = { // FIXME: make point non-selectable
                         name: name + ' AREA',
                         x: area.ellipse.map(v => v[0]),
                         y: area.ellipse.map(v => v[1]),
                         z: area.ellipse.map(v => v[2]),
                         mode: 'lines',
-                        type: 'line',
-                        marker: {
-                            color: color,
-                        }
+                        type: 'mesh3d',
+                        opacity: 0.3,
+                        alphahull: 0,
+                        color: color,
                     };
 
-                    plotData.push(plotMean);
-                    plotData.push(plotEllipse);
+                    // plotData.push(plotMean);
+                    plotData.push(plotEllipsoid); // FIXME: show in legend ?
                 }
                 plotData.push(plotPoints);
             }
-
-            // TODO
-            // Generating random data..
-            //
-            // let x = [], y = [], z = [];
-            // for (let i = 0; i < 50; i++) {
-            //     x.push(10 * Math.random() - 5);
-            //     y.push(10 * Math.random() - 5);
-            //     z.push(10 * Math.random() - 5);
-            // }
-            // // Plotting the mesh
-            // plotData.push({
-            //     opacity: 0.5,
-            //     color: '#8879ff',
-            //     type: 'mesh3d',
-            //     x: x,
-            //     y: y,
-            //     z: z,
-            //     alphahull: 0
-            // });
         }
 
         Plotly.newPlot(
