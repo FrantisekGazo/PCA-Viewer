@@ -1,17 +1,19 @@
 "use strict";
 
+const BaseActionCreator = require('./BaseActionCreator');
 const { replace, push, goBack } = require('react-router-redux');
 
 
 /**
  * Creates router actions.
  */
-class RouterActionCreator {
+class RouterActionCreator extends BaseActionCreator {
+
     /**
      * Navigates user to the previous screen.
      * @returns {object} Action
      */
-    static createGoBackAction() {
+    createGoBackAction() {
         return goBack();
     }
 
@@ -19,7 +21,7 @@ class RouterActionCreator {
      * Navigates user to the Start screen.
      * @returns {object} Action
      */
-    static createGoToStartScreenAction() {
+    createGoToStartScreenAction() {
         return replace({pathname: '/'});
     }
 
@@ -27,7 +29,7 @@ class RouterActionCreator {
      * Navigates user to the Setup screen.
      * @returns {object} Action
      */
-    static createGoToSetupScreenAction() {
+    createGoToSetupScreenAction() {
         return replace({pathname: '/setup/'});
     }
 
@@ -35,7 +37,7 @@ class RouterActionCreator {
      * Navigates user to the Project screen. (no project will be shown yet)
      * @returns {object} Action
      */
-    static createGoToProjectScreenLoadingAction() {
+    createGoToProjectScreenLoadingAction() {
         return replace({pathname: '/project/'});
     }
 
@@ -43,7 +45,7 @@ class RouterActionCreator {
      * Navigates user to the Project screen for Offline PCA.
      * @returns {object} Action
      */
-    static createGoToProjectScreenOfflineAction() {
+    createGoToProjectScreenOfflineAction() {
         return replace({pathname: '/project/offline0/'});
     }
 
@@ -51,7 +53,7 @@ class RouterActionCreator {
      * Navigates user to the Project screen for Offline PCA with constant dimension.
      * @returns {object} Action
      */
-    static createGoToProjectScreenOfflineConstantAction() {
+    createGoToProjectScreenOfflineConstantAction() {
         return replace({pathname: '/project/offline1/'});
     }
 
@@ -59,10 +61,10 @@ class RouterActionCreator {
      * Navigates user to the Project screen for Online PCA.
      * @returns {object} Action
      */
-    static createGoToProjectScreenOnlineAction() {
+    createGoToProjectScreenOnlineAction() {
         return replace({pathname: '/project/online/'});
     }
 }
 
 
-module.exports = RouterActionCreator;
+module.exports = new RouterActionCreator();

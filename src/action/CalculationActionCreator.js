@@ -1,32 +1,33 @@
 "use strict";
 
-const { createAction } = require('./index');
-
-
-const ACTIONS = {
-    PCA_CALC_STARTED: 'PCA_CALC_STARTED',
-    PCA_CALC_DONE: 'PCA_CALC_DONE',
-    PCA_CALC_FAILED: 'PCA_CALC_FAILED',
-
-    SET_EIGENS: 'SET_EIGENS',
-
-    SET_AREAS: 'SET_AREAS',
-
-    CLEAR: 'CLEAR',
-};
+const BaseActionCreator = require('./BaseActionCreator');
 
 
 /**
  * Creates calculation actions.
  */
-class CalculationActionCreator {
+class CalculationActionCreator extends BaseActionCreator {
+
+    constructor() {
+        super({
+            PCA_CALC_STARTED: 'PCA_CALC_STARTED',
+            PCA_CALC_DONE: 'PCA_CALC_DONE',
+            PCA_CALC_FAILED: 'PCA_CALC_FAILED',
+
+            SET_EIGENS: 'SET_EIGENS',
+
+            SET_AREAS: 'SET_AREAS',
+
+            CLEAR: 'CLEAR',
+        });
+    }
 
     /**
      * Creates an action for starting the PCA calculation.
      * @returns {Object} An action
      */
-    static createPcaCalculationStartedAction() {
-        return createAction(ACTIONS.PCA_CALC_STARTED);
+    createPcaCalculationStartedAction() {
+        return this.createAction(this.ACTIONS.PCA_CALC_STARTED);
     }
 
     /**
@@ -35,8 +36,8 @@ class CalculationActionCreator {
      * @param version {number} Version of the results
      * @returns {Object} An action
      */
-    static createPcaCalculationDoneAction(pca, version) {
-        return createAction(ACTIONS.PCA_CALC_DONE, {pca, version});
+    createPcaCalculationDoneAction(pca, version) {
+        return this.createAction(this.ACTIONS.PCA_CALC_DONE, {pca, version});
     }
 
     /**
@@ -44,8 +45,8 @@ class CalculationActionCreator {
      * @param error {string} Error message
      * @returns {Object} An action
      */
-    static createPcaCalculationFailedAction(error) {
-        return createAction(ACTIONS.PCA_CALC_FAILED, error);
+    createPcaCalculationFailedAction(error) {
+        return this.createAction(this.ACTIONS.PCA_CALC_FAILED, error);
     }
 
     /**
@@ -53,28 +54,26 @@ class CalculationActionCreator {
      * @param eigens {[number]} Eigenpair indexes.
      * @returns {Object} An action
      */
-    static createSetEigensAction(eigens) {
-        return createAction(ACTIONS.SET_EIGENS, eigens);
+    createSetEigensAction(eigens) {
+        return this.createAction(this.ACTIONS.SET_EIGENS, eigens);
     }
 
     /**
      * Creates an action for setting the calculated areas.
      * @returns {Object} An action
      */
-    static createSetAreasAction(areas) {
-        return createAction(ACTIONS.SET_AREAS, areas);
+    createSetAreasAction(areas) {
+        return this.createAction(this.ACTIONS.SET_AREAS, areas);
     }
 
     /**
      * Creates an action for clearing all calculation results.
      * @returns {Object} An action
      */
-    static createClearAction() {
-        return createAction(ACTIONS.CLEAR);
+    createClearAction() {
+        return this.createAction(this.ACTIONS.CLEAR);
     }
 }
 
-CalculationActionCreator.ACTIONS = ACTIONS;
 
-
-module.exports = CalculationActionCreator;
+module.exports = new CalculationActionCreator();
