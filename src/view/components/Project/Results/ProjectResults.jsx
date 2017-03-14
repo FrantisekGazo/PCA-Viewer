@@ -4,6 +4,7 @@ const React = require('react');
 const {Card, CardMedia, CardText} = require('material-ui/Card');
 const LinearProgress = require('material-ui/LinearProgress').default;
 
+const AreaEditor = require('./AreaEditor.jsx');
 const EigenvaluesSelector = require('./EigenvaluesSelector.jsx');
 const EigenvaluesPlot = require('./EigenvaluesPlot.jsx');
 const ScatterPlot = require('./ScatterPlot.jsx');
@@ -17,7 +18,8 @@ class ProjectResults extends React.Component {
     render() {
         const {
             loading, loaded, error, pca, eigens, results, selectedEntryIds,
-            onEntrySelected, onEigensChange
+            areaCoefficient, showAreas,
+            onEntrySelected, onEigensChange, onAreaCoefficientChange, onShowAreasChange
         } = this.props;
 
         if (loading) {
@@ -43,6 +45,16 @@ class ProjectResults extends React.Component {
                                 eigenvalues={pca.eigenvalues}
                                 selected={eigens}
                                 onSelectionChange={onEigensChange}/>
+                        </Card>
+
+                        <Card style={{marginTop: '10px', marginBottom: '10px'}}>
+                            <CardMedia>
+                                <AreaEditor
+                                    coefficient={areaCoefficient}
+                                    shown={showAreas}
+                                    onShownChange={onShowAreasChange}
+                                    onCoefficientChange={onAreaCoefficientChange}/>
+                            </CardMedia>
                         </Card>
 
                         <Card style={{marginTop: '10px', marginBottom: '10px'}}>
@@ -87,11 +99,15 @@ ProjectResults.propTypes = {
     pca: React.PropTypes.object, // can be null
     eigens: React.PropTypes.array.isRequired,
     results: React.PropTypes.object.isRequired,
+    areaCoefficient: React.PropTypes.number.isRequired,
+    showAreas: React.PropTypes.bool.isRequired,
     // selected entry IDs
     selectedEntryIds: React.PropTypes.array.isRequired,
-    // callback
+    // callbacks
     onEntrySelected: React.PropTypes.func.isRequired,
     onEigensChange: React.PropTypes.func.isRequired,
+    onShowAreasChange: React.PropTypes.func.isRequired,
+    onAreaCoefficientChange: React.PropTypes.func.isRequired,
 };
 
 module.exports = ProjectResults;

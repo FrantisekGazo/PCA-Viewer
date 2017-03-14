@@ -81,7 +81,7 @@ class CalculationActionCreator extends BaseActionCreator {
      * @param k {number} value
      * @returns {Object} An action
      */
-    createSetAreaKoefAction(k) {
+    createSetAreaCoefficientAction(k) {
         return this.createAction(this.ACTIONS.SET_AREA_COEF, k);
     }
 

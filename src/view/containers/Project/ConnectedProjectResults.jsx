@@ -20,17 +20,25 @@ module.exports = connect(
             pca: CalculationSelector.getPca(state),
             eigens: CalculationSelector.getEigens(state),
             results: CalculationSelector.getResults(state),
+            areaCoefficient: CalculationSelector.getAreaCoefficient(state),
+            showAreas: CalculationSelector.areAreasShown(state),
             selectedEntryIds: ProjectSelector.getSelectedEntryIds(state),
         };
     },
     // dispatch functions to props
     (dispatch) => {
         return {
-            onEntrySelected: (entryIds) => {
-                dispatch(ProjectActionCreator.createSelectEntryAction(entryIds));
+            onAreaCoefficientChange: (k) => {
+                dispatch(CalculationActionCreator.createSetAreaCoefficientAction(k));
             },
             onEigensChange: (selectedIndexes) => {
                 dispatch(CalculationActionCreator.createSetEigensAction(selectedIndexes));
+            },
+            onEntrySelected: (entryIds) => {
+                dispatch(ProjectActionCreator.createSelectEntryAction(entryIds));
+            },
+            onShowAreasChange: (show) => {
+                dispatch(CalculationActionCreator.createShowAreasAction(show));
             }
         };
     }
