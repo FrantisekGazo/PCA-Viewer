@@ -5,6 +5,9 @@ const { AutoSizer, List } = require('react-virtualized');
 const SelectedEntry = require('./SelectedEntry');
 
 
+const MAX_SHOWN_ITEMS = 5;
+const SHOWN_ITEMS_HEIGHT = 70;
+
 /**
  * Shows list of selected entries.
  */
@@ -28,12 +31,12 @@ class SelectedEntryList extends React.Component {
 
         return (
             <div style={{ flex: '1 1 auto' }}>
-                <AutoSizer>
-                    {({ height, width }) => (
+                <AutoSizer disableHeight={true}>
+                    {({ width }) => (
                         <List
-                            height={500}
+                            height={Math.min(MAX_SHOWN_ITEMS, entries.length) * SHOWN_ITEMS_HEIGHT}
                             rowCount={entries.length}
-                            rowHeight={70}
+                            rowHeight={SHOWN_ITEMS_HEIGHT}
                             rowRenderer={this.renderRow.bind(this)}
                             width={width}/>
                     )}

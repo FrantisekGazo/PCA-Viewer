@@ -7,13 +7,6 @@ const FlatButton = require('material-ui/FlatButton').default;
 const SelectedEntryList = require('./SelectedEntryList.jsx');
 
 
-const styles = {
-    list: {
-        height: '500px',
-    }
-};
-
-
 /**
  * Shows list of selected entries and options for clear/delete.
  */
@@ -38,7 +31,7 @@ class EntrySelection extends React.Component {
                 <CardHeader
                     title={`${selectedEntries.length} Selected:`}/>
 
-                <CardMedia style={styles.list}>
+                <CardMedia>
                     <SelectedEntryList
                         entries={selectedEntries}
                         deletable={deletable}
