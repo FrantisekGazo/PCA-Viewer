@@ -13,8 +13,9 @@ class ProjectSelector {
      * Returns project part of the state.
      * @param state {Object} Current store state
      * @returns {Object}
+     * @private
      */
-    static getProjectState(state) {
+    _getProjectState(state) {
         return state.project;
     }
 
@@ -23,8 +24,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {string}
      */
-    static getPath(state) {
-        return ProjectSelector.getProjectState(state).path;
+    getPath(state) {
+        return this._getProjectState(state).path;
     }
 
     /**
@@ -32,8 +33,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {string}
      */
-    static getName(state) {
-        return ProjectSelector.getProjectState(state).name;
+    getName(state) {
+        return this._getProjectState(state).name;
     }
 
     /**
@@ -41,8 +42,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {Object}
      */
-    static getSamplingWindow(state) {
-        return ProjectSelector.getProjectState(state).samplingWindow;
+    getSamplingWindow(state) {
+        return this._getProjectState(state).samplingWindow;
     }
 
     /**
@@ -50,8 +51,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {number}
      */
-    static getVersion(state) {
-        return ProjectSelector.getProjectState(state).version;
+    getVersion(state) {
+        return this._getProjectState(state).version;
     }
 
     /**
@@ -59,8 +60,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {Array}
      */
-    static getAllEntries(state) {
-        return ProjectSelector.getProjectState(state).entries;
+    getAllEntries(state) {
+        return this._getProjectState(state).entries;
     }
 
     /**
@@ -68,8 +69,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {number}
      */
-    static getDetailDatasetId(state) {
-        return ProjectSelector.getProjectState(state).detailDatasetId;
+    getDetailDatasetId(state) {
+        return this._getProjectState(state).detailDatasetId;
     }
 
     /**
@@ -78,8 +79,8 @@ class ProjectSelector {
      * @param datasetId {number} Dataset ID
      * @returns {Object}
      */
-    static getDataset(state, datasetId) {
-        return ProjectSelector.getProjectState(state).datasets[datasetId];
+    getDataset(state, datasetId) {
+        return this._getProjectState(state).datasets[datasetId];
     }
 
     /**
@@ -87,8 +88,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {number}
      */
-    static getLastEntryId(state) {
-        return ProjectSelector.getProjectState(state).lastEntryId;
+    getLastEntryId(state) {
+        return this._getProjectState(state).lastEntryId;
     }
 
     /**
@@ -97,10 +98,10 @@ class ProjectSelector {
      * @param datasetId {number} Dataset ID
      * @returns {Array}
      */
-    static getDatasetEntries(state, datasetId) {
+    getDatasetEntries(state, datasetId) {
         let entries = [];
 
-        const entryMap = ProjectSelector.getProjectState(state).entries;
+        const entryMap = this._getProjectState(state).entries;
         const entryIds = Object.keys(entryMap);
         let entry;
         for (let i = 0; i < entryIds.length; i++) {
@@ -119,8 +120,8 @@ class ProjectSelector {
      * @param datasetId {number} Dataset ID
      * @returns {Array}
      */
-    static getDatasetStream(state, datasetId) {
-        const stream = ProjectSelector.getProjectState(state).streams[baseStreamId(datasetId)];
+    getDatasetStream(state, datasetId) {
+        const stream = this._getProjectState(state).streams[baseStreamId(datasetId)];
         return stream ? stream : [];
     }
 
@@ -130,8 +131,8 @@ class ProjectSelector {
      * @param datasetId {number} Dataset ID
      * @returns {Array}
      */
-    static getDatasetTransformedStream(state, datasetId) {
-        const stream = ProjectSelector.getProjectState(state).streams[transformedStreamId(datasetId)];
+    getDatasetTransformedStream(state, datasetId) {
+        const stream = this._getProjectState(state).streams[transformedStreamId(datasetId)];
         return stream ? stream : [];
     }
 
@@ -140,8 +141,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {Array}
      */
-    static getIncludedDatasetIds(state) {
-        return ProjectSelector.getProjectState(state).usedDatasetIds;
+    getIncludedDatasetIds(state) {
+        return this._getProjectState(state).usedDatasetIds;
     }
 
     /**
@@ -150,8 +151,8 @@ class ProjectSelector {
      * @param datasetId {number}
      * @returns {boolean}
      */
-    static isDatasetIncluded(state, datasetId) {
-        return ProjectSelector.getIncludedDatasetIds(state).indexOf(datasetId) >= 0;
+    isDatasetIncluded(state, datasetId) {
+        return this.getIncludedDatasetIds(state).indexOf(datasetId) >= 0;
     }
 
     /**
@@ -159,8 +160,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {Array}
      */
-    static getAllDatasets(state) {
-        const s = ProjectSelector.getProjectState(state);
+    getAllDatasets(state) {
+        const s = this._getProjectState(state);
         return Object.keys(s.datasets)
             .map(id => s.datasets[id])
             .filter(d => d !== undefined && d !== null);
@@ -171,10 +172,10 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {Array}
      */
-    static getIncludedDatasetsWithEntries(state) {
-        const includedDatasetIds = ProjectSelector.getIncludedDatasetIds(state);
-        const includedDatasets = includedDatasetIds.map(id => Object.assign({entries: []}, ProjectSelector.getDataset(state, id))); // make modifiable copy
-        const { entries } = ProjectSelector.getProjectState(state);
+    getIncludedDatasetsWithEntries(state) {
+        const includedDatasetIds = this.getIncludedDatasetIds(state);
+        const includedDatasets = includedDatasetIds.map(id => Object.assign({entries: []}, this.getDataset(state, id))); // make modifiable copy
+        const { entries } = this._getProjectState(state);
 
         let entry, index;
         for (let id in entries) {
@@ -202,8 +203,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {number}
      */
-    static getType(state) {
-        return ProjectSelector.getProjectState(state).type;
+    getType(state) {
+        return this._getProjectState(state).type;
     }
 
     /**
@@ -211,8 +212,8 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {Array}
      */
-    static getSelectedEntryIds(state) {
-        const ids = ProjectSelector.getProjectState(state).selectedEntryIds;
+    getSelectedEntryIds(state) {
+        const ids = this._getProjectState(state).selectedEntryIds;
         return ids ? ids : [];
     }
 
@@ -221,11 +222,11 @@ class ProjectSelector {
      * @param state {Object} Current store state
      * @returns {Array}
      */
-    static getSelectedEntries(state) {
-        const entryIds = ProjectSelector.getSelectedEntryIds(state);
-        const projectState = ProjectSelector.getProjectState(state);
+    getSelectedEntries(state) {
+        const entryIds = this.getSelectedEntryIds(state);
+        const projectState = this._getProjectState(state);
         const datasetColors = {};
-        ProjectSelector.getAllDatasets(state).map(d => datasetColors[d.id] = d.color);
+        this.getAllDatasets(state).map(d => datasetColors[d.id] = d.color);
 
         return entryIds.map(id => {
             const entry = projectState.entries[id];
@@ -239,9 +240,9 @@ class ProjectSelector {
      * @param datasetId {number} Dataset ID
      * @returns {Array}
      */
-    static getSelectedDatasetEntries(state, datasetId) {
-        const entryIds = ProjectSelector.getSelectedEntryIds(state);
-        const projectState = ProjectSelector.getProjectState(state);
+    getSelectedDatasetEntries(state, datasetId) {
+        const entryIds = this.getSelectedEntryIds(state);
+        const projectState = this._getProjectState(state);
 
         return entryIds.map(id => projectState.entries[id])
             .filter(entry => entry.datasetId === datasetId);
@@ -249,4 +250,4 @@ class ProjectSelector {
 }
 
 
-module.exports = ProjectSelector;
+module.exports = new ProjectSelector();
