@@ -4,9 +4,19 @@ const React = require('react');
 const { Card, CardHeader, CardActions, CardMedia } = require('material-ui/Card');
 const FlatButton = require('material-ui/FlatButton').default;
 
-const SelectedEntry = require('./SelectedEntry.jsx');
+const SelectedEntryList = require('./SelectedEntryList.jsx');
 
 
+const styles = {
+    list: {
+        height: '500px',
+    }
+};
+
+
+/**
+ * Shows list of selected entries and options for clear/delete.
+ */
 class EntrySelection extends React.Component {
 
     handleDeleteAll() {
@@ -16,16 +26,6 @@ class EntrySelection extends React.Component {
 
     render() {
         const { selectedEntries, deletable, onClearClick, onDeleteClick } = this.props;
-
-        const list = selectedEntries.map(entry => {
-            return (
-                <SelectedEntry
-                    key={`${entry.id}`}
-                    entry={entry}
-                    deletable={deletable}
-                    onDeleteClick={onDeleteClick}/>
-            );
-        });
 
         const deleteButton = (
             <FlatButton
@@ -38,8 +38,11 @@ class EntrySelection extends React.Component {
                 <CardHeader
                     title={`${selectedEntries.length} Selected:`}/>
 
-                <CardMedia>
-                    { list }
+                <CardMedia style={styles.list}>
+                    <SelectedEntryList
+                        entries={selectedEntries}
+                        deletable={deletable}
+                        onDeleteClick={onDeleteClick}/>
                 </CardMedia>
 
                 <CardActions>

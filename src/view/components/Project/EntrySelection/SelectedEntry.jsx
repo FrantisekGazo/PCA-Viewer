@@ -6,10 +6,13 @@ const IconButton = require('material-ui/IconButton').default;
 const IconDelete = require('material-ui/svg-icons/action/delete').default;
 
 
+/**
+ * Show selected entry information.
+ */
 class SelectedEntry extends React.Component {
 
     render() {
-        const { entry, deletable, onDeleteClick } = this.props;
+        const { style, entry, deletable, onDeleteClick } = this.props;
 
         let desc = entry.value.join(', ');
         if (entry.streamIndex) {
@@ -19,13 +22,16 @@ class SelectedEntry extends React.Component {
         const deleteIcon = <IconButton onTouchTap={() => onDeleteClick([entry.id])}><IconDelete color={'#ae0000'}/></IconButton>;
 
         return (
-            <ListItem
-                style={{ color: entry.color }}
-                primaryText={entry.name}
-                secondaryText={desc}
-                rightIconButton={
-                    deletable ? deleteIcon : null
-                }/>
+            <div
+                style={style}>
+                <ListItem
+                    style={{ color: entry.color }}
+                    primaryText={entry.name}
+                    secondaryText={desc}
+                    rightIconButton={
+                        deletable ? deleteIcon : null
+                    }/>
+            </div>
         );
     }
 
