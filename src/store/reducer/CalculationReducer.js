@@ -67,7 +67,7 @@ function setEigens(state, action) {
 }
 
 /**
- * Sets the calculated area.
+ * Sets the calculated areas.
  *
  * @param state {Object} Current state
  * @param action {{type: string, payload: [Object]}} Received action with the calculation result
@@ -76,6 +76,32 @@ function setEigens(state, action) {
 function setAreas(state, action) {
     return update(state, {
         areas: {$set: action.payload},
+    });
+}
+
+/**
+ * Shows/hides the calculated areas.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: [Object]}} Received action with the calculation result
+ * @returns {Object} New state
+ */
+function showAreas(state, action) {
+    return update(state, {
+        showAreas: {$set: action.payload},
+    });
+}
+
+/**
+ * Sets the calculated area coefficient.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: [Object]}} Received action with the calculation result
+ * @returns {Object} New state
+ */
+function setAreaCoefficient(state, action) {
+    return update(state, {
+        areaCoefficient: {$set: action.payload},
     });
 }
 
@@ -103,6 +129,8 @@ const initState = {
     /* selected eigenpairs for PCA space */
     eigens: [0, 1],
     /* calculated areas */
+    showAreas: true,
+    areaCoefficient: 3, // 3 * sigma is optimal
     areas: null,
 
     /* this needs to be incremented if results needs to be refreshed */
@@ -129,6 +157,10 @@ function calculation(state = initState, action) {
             return setEigens(state, action);
         case ACTIONS.SET_AREAS:
             return setAreas(state, action);
+        case ACTIONS.SHOW_AREAS:
+            return showAreas(state, action);
+        case ACTIONS.SET_AREA_COEF:
+            return setAreaCoefficient(state, action);
         case ACTIONS.CLEAR:
             return clear(state, action);
         default:

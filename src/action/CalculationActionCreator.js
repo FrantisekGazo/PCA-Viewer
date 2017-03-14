@@ -15,8 +15,9 @@ class CalculationActionCreator extends BaseActionCreator {
             PCA_CALC_FAILED: 'PCA_CALC_FAILED',
 
             SET_EIGENS: 'SET_EIGENS',
-
             SET_AREAS: 'SET_AREAS',
+            SHOW_AREAS: 'SHOW_AREAS',
+            SET_AREA_COEF: 'SET_AREA_COEF',
 
             CLEAR: 'CLEAR',
         });
@@ -64,6 +65,24 @@ class CalculationActionCreator extends BaseActionCreator {
      */
     createSetAreasAction(areas) {
         return this.createAction(this.ACTIONS.SET_AREAS, areas);
+    }
+
+    /**
+     * Creates an action for showing/hiding the calculated areas.
+     * @param show {boolean} <code>true</code> if areas should be shown
+     * @returns {Object} An action
+     */
+    createShowAreasAction(show) {
+        return this.createAction(this.ACTIONS.SHOW_AREAS, show);
+    }
+
+    /**
+     * Creates an action for setting the calculated area coefficient.
+     * @param k {number} value
+     * @returns {Object} An action
+     */
+    createSetAreaKoefAction(k) {
+        return this.createAction(this.ACTIONS.SET_AREA_COEF, k);
     }
 
     /**

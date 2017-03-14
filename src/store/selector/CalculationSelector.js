@@ -10,8 +10,9 @@ class CalculationSelector {
      * Returns calculation part of the state.
      * @param state {Object} Current store state
      * @returns {Object}
+     * @private
      */
-    static getCalculationState(state) {
+    _getCalculationState(state) {
         return state.calculation;
     }
 
@@ -20,8 +21,8 @@ class CalculationSelector {
      * @param state {Object} Current store state
      * @returns {number}
      */
-    static getVersion(state) {
-        return CalculationSelector.getCalculationState(state).version;
+    getVersion(state) {
+        return this._getCalculationState(state).version;
     }
 
     /**
@@ -29,8 +30,8 @@ class CalculationSelector {
      * @param state {Object} Current store state
      * @returns {Object}
      */
-    static getPca(state) {
-        return CalculationSelector.getCalculationState(state).pca;
+    getPca(state) {
+        return this._getCalculationState(state).pca;
     }
 
     /**
@@ -38,8 +39,8 @@ class CalculationSelector {
      * @param state {Object} Current store state
      * @returns {[number]}
      */
-    static getEigens(state) {
-        return CalculationSelector.getCalculationState(state).eigens;
+    getEigens(state) {
+        return this._getCalculationState(state).eigens;
     }
 
     /**
@@ -47,8 +48,8 @@ class CalculationSelector {
      * @param state {Object} Current store state
      * @returns {Object}
      */
-    static getAreas(state) {
-        return CalculationSelector.getCalculationState(state).areas;
+    getAreas(state) {
+        return this._getCalculationState(state).areas;
     }
 
     /**
@@ -56,11 +57,11 @@ class CalculationSelector {
      * @param state {Object} Current store state
      * @returns {Object}
      */
-    static getResults(state) {
-        const eigens = CalculationSelector.getEigens(state);
-        const pca = CalculationSelector.getPca(state);
-        const areas = CalculationSelector.getAreas(state);
-        const version = CalculationSelector.getVersion(state);
+    getResults(state) {
+        const eigens = this.getEigens(state);
+        const pca = this.getPca(state);
+        const areas = this.getAreas(state);
+        const version = this.getVersion(state);
 
         const projectedData = [];
 
@@ -99,8 +100,8 @@ class CalculationSelector {
      * @param state {Object} Current store state
      * @returns {bool}
      */
-    static isLoading(state) {
-        return CalculationSelector.getCalculationState(state).loading;
+    isLoading(state) {
+        return this._getCalculationState(state).loading;
     }
 
     /**
@@ -108,8 +109,8 @@ class CalculationSelector {
      * @param state {Object} Current store state
      * @returns {bool}
      */
-    static isLoaded(state) {
-        return CalculationSelector.getCalculationState(state).loaded;
+    isLoaded(state) {
+        return this._getCalculationState(state).loaded;
     }
 
     /**
@@ -117,10 +118,28 @@ class CalculationSelector {
      * @param state {Object} Current store state
      * @returns {string}
      */
-    static getError(state) {
-        return CalculationSelector.getCalculationState(state).error;
+    getError(state) {
+        return this._getCalculationState(state).error;
+    }
+
+    /**
+     * Returns <code>true</code> if areas are shown.
+     * @param state {Object} Current store state
+     * @returns {boolean}
+     */
+    areAreasShown(state) {
+        return this._getCalculationState(state).showAreas;
+    }
+
+    /**
+     * Returns the value of area coefficient.
+     * @param state {Object} Current store state
+     * @returns {number}
+     */
+    getAreaCoefficient(state) {
+        return this._getCalculationState(state).areaCoefficient;
     }
 }
 
 
-module.exports = CalculationSelector;
+module.exports = new CalculationSelector();
