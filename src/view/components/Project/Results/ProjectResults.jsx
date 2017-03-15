@@ -63,6 +63,7 @@ class ProjectResults extends React.Component {
                                     selectedEntryIds={selectedEntryIds}
                                     selectedColor={'#ff0000'}
                                     results={results}
+                                    showAreas={showAreas}
                                     onPlotClick={onEntrySelected}/>
                             </CardMedia>
                         </Card>

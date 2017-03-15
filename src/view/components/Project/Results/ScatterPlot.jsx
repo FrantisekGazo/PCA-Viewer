@@ -107,7 +107,7 @@ class ScatterPlot extends React.Component {
     }
 
     drawPlot() {
-        const { results, selectedEntryIds, selectedColor } = this.props;
+        const { results, showAreas, selectedEntryIds, selectedColor } = this.props;
         const { data } = results;
 
         let plotData = [];
@@ -140,7 +140,7 @@ class ScatterPlot extends React.Component {
                 };
                 plotData.push(plotPoints);
 
-                if (area) {
+                if (showAreas && area) {
                     const plotMean = {
                         name: name + ' MEAN',
                         x: [area.mean[0]],
@@ -200,7 +200,7 @@ class ScatterPlot extends React.Component {
                 };
                 plotData.push(plotPoints);
 
-                if (area) {
+                if (showAreas && area) {
                     const plotMean = {
                         name: name + ' MEAN',
                         x: [area.mean[0]],
@@ -337,6 +337,7 @@ class ScatterPlot extends React.Component {
 ScatterPlot.propTypes = {
     // object containing calculated results
     results: React.PropTypes.object.isRequired,
+    showAreas: React.PropTypes.bool.isRequired,
     // selection information
     selectedEntryIds: React.PropTypes.array.isRequired,
     selectedColor: React.PropTypes.string.isRequired,
