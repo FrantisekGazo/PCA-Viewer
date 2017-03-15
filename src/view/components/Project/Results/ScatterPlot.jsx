@@ -201,7 +201,7 @@ class ScatterPlot extends React.Component {
                 plotData.push(plotPoints);
 
                 if (area) {
-                    const plotMean = { // FIXME: make point non-selectable
+                    const plotMean = {
                         name: name + ' MEAN',
                         x: [area.mean[0]],
                         y: [area.mean[1]],
@@ -218,14 +218,14 @@ class ScatterPlot extends React.Component {
                         legendgroup: `group-${i}`,
                     };
 
-                    const plotEllipsoid = { // FIXME: make point non-selectable
+                    const plotEllipsoid = { // FIXME : make point non-selectable
                         name: name + ' AREA',
                         x: area.ellipse.map(v => v[0]),
                         y: area.ellipse.map(v => v[1]),
                         z: area.ellipse.map(v => v[2]),
                         mode: 'lines',
                         type: 'mesh3d',
-                        opacity: 0.3,
+                        opacity: 0.2,
                         alphahull: 0,
                         color: color,
                         hoverinfo: 'none',

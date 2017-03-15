@@ -39,6 +39,7 @@ const calculatePCA = createLogic({
             dispatch(CalculationActionCreator.createPcaCalculationStartedAction());
             const datasets = ProjectSelector.getIncludedDatasetsWithEntries(state);
             const eigens = CalculationSelector.getEigens(state);
+            const k = CalculationSelector.getAreaCoefficient(state);
 
             const isOnlinePca = ProjectSelector.getType(state) === PROJECT_TYPE.ONLINE_PCA;
             let additionalEntries;
@@ -53,7 +54,7 @@ const calculatePCA = createLogic({
                 .then((results) => {
                     console.log('PCA result', results);
 
-                    return CalculationUtil.calculateAreasAsync(results, eigens)
+                    return CalculationUtil.calculateAreasAsync(results, eigens, k)
                         .then((areas) => {
                             dispatch(CalculationActionCreator.createSetAreasAction(areas));
 
@@ -97,13 +98,15 @@ const calculatePCA = createLogic({
 const recalculateAreas = createLogic({
     type: [
         CalculationActionCreator.ACTIONS.SET_EIGENS,
+        CalculationActionCreator.ACTIONS.SET_AREA_COEF,
     ],
     process({ getState, action }, dispatch, done) {
         const state = getState();
         const pca = CalculationSelector.getPca(state);
-        const eigens = action.payload;
+        const eigens = CalculationSelector.getEigens(state);
+        const k = CalculationSelector.getAreaCoefficient(state);
 
-        CalculationUtil.calculateAreasAsync(pca, eigens)
+        CalculationUtil.calculateAreasAsync(pca, eigens, k)
             .then((areas) => {
                 dispatch(CalculationActionCreator.createSetAreasAction(areas));
             })

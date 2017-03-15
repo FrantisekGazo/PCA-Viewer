@@ -36,21 +36,23 @@ class CalculationUtil {
      * Asynchronously calculates areas.
      * @param pca {Object} Calculated PCA
      * @param eigens {[number]} Selected eigenpairs indexes
+     * @param k {number} Coefficient
      * @returns {Promise} that will resolve with a calculated PCA or null.
      */
-    static calculateAreasAsync(pca, eigens) {
-        return WorkerUtil.execByWorker(WorkerTaskNames.CALCULATE_AREAS, {pca, eigens});
+    static calculateAreasAsync(pca, eigens, k) {
+        return WorkerUtil.execByWorker(WorkerTaskNames.CALCULATE_AREAS, {pca, eigens, k});
     }
 
     /**
      * Synchronously calculates areas. This should be called only by a worker process!
      * @param pca {Object} Calculated PCA
      * @param eigens {[number]} Selected eigenpairs indexes
+     * @param k {number} Coefficient
      * @returns {Object} a calculated PCA or null.
      */
-    static calculateAreasSync(pca, eigens) {
+    static calculateAreasSync({pca, eigens, k}) {
         const pcaCalc = new Calculator();
-        return pcaCalc.calculateAreas(pca, eigens);
+        return pcaCalc.calculateAreas(pca, eigens, k);
     }
 }
 
@@ -165,9 +167,10 @@ class Calculator {
      * Calculates 2D/3D areas for given data.
      * @param pca Calculated PCA with projected data
      * @param eigens selected eigenpairs indexes
+     * @param k {number} Coefficient
      * @returns {[Object]}
      */
-    calculateAreas(pca, eigens) {
+    calculateAreas(pca, eigens, k) {
         if (pca === null) {
             return null;
         }
@@ -182,9 +185,9 @@ class Calculator {
 
             let area;
             if (eigens.length === 2) {
-                area = this._calculateArea2D(d.values, {xIndex: eigens[0], yIndex: eigens[1]});
+                area = this._calculateArea2D(d.values, {xIndex: eigens[0], yIndex: eigens[1]}, k);
             } else {
-                area = this._calculateArea3D(d.values, {xIndex: eigens[0], yIndex: eigens[1], zIndex: eigens[2]});
+                area = this._calculateArea3D(d.values, {xIndex: eigens[0], yIndex: eigens[1], zIndex: eigens[2]}, k);
             }
             // console.log('area:', area);
             areas.push(area);
@@ -195,12 +198,13 @@ class Calculator {
 
     /**
      * Returns the proportion of variance for each component
+     * @param eigenvalues Eigenvalues
      * @return {[number]}
      * @private
      */
     _getExplainedVariance(eigenvalues) {
-        var sum = 0;
-        for (var i = 0; i < eigenvalues.length; i++) {
+        let sum = 0;
+        for (let i = 0; i < eigenvalues.length; i++) {
             sum += eigenvalues[i];
         }
         return eigenvalues.map(value => value / sum);
@@ -242,13 +246,14 @@ class Calculator {
 
     /**
      * Calculates 2D areas for given values.
-     * @param values Values
-     * @param xIndex X data index
-     * @param yIndex Y data index
+     * @param values {[[number]]} Values
+     * @param xIndex {number} X data index
+     * @param yIndex {number} Y data index
+     * @param k {number} Coefficient
      * @returns {{mean: [number], ellipse: [[number]]}}
      * @private
      */
-    _calculateArea2D(values, {xIndex, yIndex}) {
+    _calculateArea2D(values, {xIndex, yIndex}, k) {
         const Ci = new Matrix(values.map(v => [v[xIndex], v[yIndex]]));
 
         const mi = mean(Ci);
@@ -273,7 +278,6 @@ class Calculator {
         // console.log('e', e.length);
         // console.log(e);
 
-        const k = 3; // FIXME : optimalne je 3
         const K = new Matrix([
             [k, 0],
             [0, k]
@@ -306,14 +310,15 @@ class Calculator {
 
     /**
      * Calculates 3D areas for given values.
-     * @param values Values
-     * @param xIndex X data index
-     * @param yIndex Y data index
-     * @param zIndex Z data index
+     * @param values {[[number]]} Values
+     * @param xIndex {number} X data index
+     * @param yIndex {number} Y data index
+     * @param zIndex {number} Z data index
+     * @param k {number} Coefficient
      * @returns {{mean: [number], ellipse: [[number]]}}
      * @private
      */
-    _calculateArea3D(values, {xIndex, yIndex, zIndex}) {
+    _calculateArea3D(values, {xIndex, yIndex, zIndex}, k) {
         const Ci = new Matrix(values.map(v => [v[xIndex], v[yIndex], v[zIndex]]));
 
         const mi = mean(Ci);
@@ -345,7 +350,6 @@ class Calculator {
         // console.log('e', e.length);
         // console.log(e);
 
-        const k = 3; // FIXME : optimalne je 3
         const K = new Matrix([
             [k, 0, 0],
             [0, k, 0],

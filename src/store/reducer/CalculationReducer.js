@@ -15,7 +15,10 @@ const { ACTIONS } = require('../../action/CalculationActionCreator');
 function pcaCalcStarted(state, action) {
     return update(initState, {
         loading: {$set: true},
-        eigens: {$set: state.eigens} // keep selected eigens
+        // keep some values
+        eigens: {$set: state.eigens},
+        showAreas: {$set: state.showAreas},
+        areaCoefficient: {$set: state.areaCoefficient}
     });
 }
 

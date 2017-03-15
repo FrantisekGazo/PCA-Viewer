@@ -58,9 +58,11 @@ class CalculationSelector {
      * @returns {Object}
      */
     getResults(state) {
-        const eigens = this.getEigens(state);
+        const eigens = this.getEigens(state);;;;;;;;;;;;;;;;;;
         const pca = this.getPca(state);
         const areas = this.getAreas(state);
+        const k = this.getAreaCoefficient(state);
+        const shown = this.areAreasShown(state);
         const version = this.getVersion(state);
 
         const projectedData = [];
@@ -91,7 +93,7 @@ class CalculationSelector {
 
         return {
             data: projectedData,
-            version: `${version}-` + eigens.map(v => `${v}`).join('-')
+            version: `${version}-` + eigens.map(v => `${v}`).join('-') + `${k}-${shown}`
         };
     }
 
