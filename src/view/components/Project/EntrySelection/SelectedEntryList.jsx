@@ -2,6 +2,7 @@
 
 const React = require('react');
 const { AutoSizer, List } = require('react-virtualized');
+
 const SelectedEntry = require('./SelectedEntry');
 
 

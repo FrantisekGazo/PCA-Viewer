@@ -4,6 +4,9 @@ const React = require('react');
 const { TableRow, TableRowColumn } = require('material-ui/Table');
 
 
+/**
+ * Shows a dataset entry values.
+ */
 class EntryListItem extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {
