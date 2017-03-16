@@ -18,7 +18,7 @@ class EntrySelection extends React.Component {
     }
 
     render() {
-        const { selectedEntries, deletable, onClearClick, onDeleteClick } = this.props;
+        const { selectedEntries, deletable, onDeselect } = this.props;
 
         const deleteButton = (
             <FlatButton
@@ -35,13 +35,13 @@ class EntrySelection extends React.Component {
                     <SelectedEntryList
                         entries={selectedEntries}
                         deletable={deletable}
-                        onDeleteClick={onDeleteClick}/>
+                        onDeselect={onDeselect}/>
                 </CardMedia>
 
                 <CardActions>
                     <FlatButton
                         label='Clear'
-                        onTouchTap={onClearClick}/>
+                        onTouchTap={() => onDeselect(null)}/>
                     { deletable ? deleteButton : null }
                 </CardActions>
             </Card>
@@ -55,7 +55,7 @@ EntrySelection.propTypes = {
     /* true if entries are deletable */
     deletable: React.PropTypes.bool.isRequired,
     /* callbacks */
-    onClearClick: React.PropTypes.func.isRequired,
+    onDeselect: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired,
 };
 

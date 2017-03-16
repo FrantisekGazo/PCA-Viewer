@@ -272,6 +272,30 @@ function selectEntries(state, action) {
 }
 
 /**
+ * Deselects entries.
+ *
+ * @param state {Object} Current state
+ * @param action {{type: string, payload: number}} Received action with deselected entry ID
+ * @returns {Object} New state
+ */
+function deselectEntries(state, action) {
+    const newSelectedIds = [];
+    const deselectedId = action.payload;
+    if (deselectedId) {
+        for (let i = 0; i < state.selectedEntryIds.length; i++) {
+            const id = state.selectedEntryIds[i];
+            if (id !== deselectedId) {
+                newSelectedIds.push(id);
+            }
+        }
+    }
+
+    return update(state, {
+        selectedEntryIds: {$set: newSelectedIds}
+    });
+}
+
+/**
  * Deletes entries.
  *
  * @param state {Object} Current state
@@ -403,6 +427,8 @@ function project(state = initState, action) {
             return closeDatasetDetail(state, action);
         case ACTIONS.SELECT_ENTRIES:
             return selectEntries(state, action);
+        case ACTIONS.DESELECT_ENTRIES:
+            return deselectEntries(state, action);
         case ACTIONS.DELETE_ENTRIES:
             return deleteEntries(state, action);
         case ACTIONS.SET_SAMPLING:

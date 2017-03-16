@@ -20,8 +20,8 @@ module.exports = connect(
     // dispatch functions to props
     (dispatch) => {
         return {
-            onClearClick: () => {
-                dispatch(ProjectActionCreator.createSelectEntryAction(null));
+            onDeselect: (entryId) => {
+                dispatch(ProjectActionCreator.createDeselectEntryAction(entryId));
             },
             onDeleteClick: (entryIds) => {
                 dispatch(ProjectActionCreator.createDeleteEntriesAction(entryIds));

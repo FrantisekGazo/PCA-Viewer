@@ -14,14 +14,14 @@ const SHOWN_ITEMS_HEIGHT = 70;
 class SelectedEntryList extends React.Component {
 
     renderRow({ index, key, style }) {
-        const { entries, deletable, onDeleteClick } = this.props;
+        const { entries, deletable, onDeselect } = this.props;
         const entry = entries[index];
         return (
             <SelectedEntry
                 key={`${entry.id}`}
                 entry={entry}
                 deletable={deletable}
-                onDeleteClick={onDeleteClick}
+                onDeselect={onDeselect}
                 style={style}/>
         );
     }
@@ -52,7 +52,7 @@ SelectedEntryList.propTypes = {
     /* true if this entry is deletable */
     deletable: React.PropTypes.bool.isRequired,
     /* callback */
-    onDeleteClick: React.PropTypes.func.isRequired,
+    onDeselect: React.PropTypes.func.isRequired,
 };
 
 module.exports = SelectedEntryList;

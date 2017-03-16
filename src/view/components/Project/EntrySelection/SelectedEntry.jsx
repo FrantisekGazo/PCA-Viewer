@@ -4,6 +4,7 @@ const React = require('react');
 const { ListItem } = require('material-ui/List');
 const IconButton = require('material-ui/IconButton').default;
 const IconDelete = require('material-ui/svg-icons/action/delete').default;
+const IconClose = require('material-ui/svg-icons/navigation/close').default;
 
 
 /**
@@ -12,14 +13,20 @@ const IconDelete = require('material-ui/svg-icons/action/delete').default;
 class SelectedEntry extends React.Component {
 
     render() {
-        const { style, entry, deletable, onDeleteClick } = this.props;
+        const { style, entry, deletable, onDeselect } = this.props;
 
         let desc = entry.value.join(', ');
         if (entry.streamIndex) {
             desc = `stream index: ${entry.streamIndex}, values: ` + desc;
         }
 
-        const deleteIcon = <IconButton onTouchTap={() => onDeleteClick([entry.id])}><IconDelete color={'#ae0000'}/></IconButton>;
+        const rightIcon = (
+            <IconButton
+                tooltip='Close'
+                onTouchTap={() => onDeselect(entry.id)}>
+                <IconClose/>
+            </IconButton>
+        );
 
         return (
             <div
@@ -29,7 +36,7 @@ class SelectedEntry extends React.Component {
                     primaryText={entry.name}
                     secondaryText={desc}
                     rightIconButton={
-                        deletable ? deleteIcon : null
+                        deletable ? rightIcon : null
                     }/>
             </div>
         );
@@ -43,7 +50,7 @@ SelectedEntry.propTypes = {
     /* true if this entry is deletable */
     deletable: React.PropTypes.bool.isRequired,
     /* callback */
-    onDeleteClick: React.PropTypes.func.isRequired,
+    onDeselect: React.PropTypes.func.isRequired,
 };
 
 module.exports = SelectedEntry;

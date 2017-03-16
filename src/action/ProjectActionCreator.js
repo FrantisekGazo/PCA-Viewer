@@ -24,6 +24,7 @@ class ProjectActionCreator extends BaseActionCreator {
             CLOSE_DATASET_DETAIL: 'CLOSE_DATASET_DETAIL',
 
             SELECT_ENTRIES: 'SELECT_ENTRIES',
+            DESELECT_ENTRIES: 'DESELECT_ENTRIES',
             DELETE_ENTRIES: 'DELETE_ENTRIES',
 
             SET_SAMPLING: 'SET_SAMPLING',
@@ -126,6 +127,15 @@ class ProjectActionCreator extends BaseActionCreator {
      */
     createSelectEntryAction(entryIds) {
         return this.createAction(this.ACTIONS.SELECT_ENTRIES, entryIds);
+    }
+
+    /**
+     * Creates an action for deselecting entry with given ID.
+     * @param entryId {number?} Entry ID or null (if all should be deselected)
+     * @returns {Object} An action
+     */
+    createDeselectEntryAction(entryId) {
+        return this.createAction(this.ACTIONS.DESELECT_ENTRIES, entryId);
     }
 
     /**
