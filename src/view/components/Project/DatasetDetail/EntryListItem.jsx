@@ -32,7 +32,7 @@ class EntryListItem extends React.Component {
         return (
             <TableRow
                 style={{
-                    color: (isEntrySelected ? '#ff0000' : '#000000') //TODO
+                    color: (isEntrySelected ? '#ff0000' : '#000000')
                 }}
                 onTouchTap={this.handleClick.bind(this)}
                 hoverable={true}>
