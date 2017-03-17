@@ -52,31 +52,39 @@ class DatasetInfo extends React.Component {
 
     render() {
         const {
-            dataset,
-            included,
-            single,
-            sampling,
-            onSaveClick,
-            onDeleteClick,
-            onCloseClick,
-            onDatasetChange,
-            onLoadClick,
-            onIncludeChange
+            dataset, included, single, sampling,
+            onSaveClick, onDeleteClick, onCloseClick,
+            onDatasetChange, onLoadClick, onIncludeChange, onProjectedOnlyChange
         } = this.props;
 
-        let extraAction = null;
+        let actionIncludeExclude = null;
+        let actionProjectedOnly = null;
         if (!single) {
             if (included) {
-                extraAction = (
+                actionIncludeExclude = (
                     <MenuItem
                         primaryText="Exclude"
                         onTouchTap={() => onIncludeChange(false)}/>
                 );
             } else {
-                extraAction = (
+                actionIncludeExclude = (
                     <MenuItem
                         primaryText="Include"
                         onTouchTap={() => onIncludeChange(true)}/>
+                );
+            }
+
+            if (dataset.projectedOnly) {
+                actionProjectedOnly = (
+                    <MenuItem
+                        primaryText="Disable Project Only"
+                        onTouchTap={() => onProjectedOnlyChange(false)}/>
+                );
+            } else {
+                actionProjectedOnly = (
+                    <MenuItem
+                        primaryText="Project Only"
+                        onTouchTap={() => onProjectedOnlyChange(true)}/>
                 );
             }
         }
@@ -170,7 +178,8 @@ class DatasetInfo extends React.Component {
                             ): null
                         }
 
-                        { extraAction }
+                        { actionProjectedOnly }
+                        { actionIncludeExclude }
                     </IconMenu>
 
                     {
@@ -204,6 +213,7 @@ DatasetInfo.propTypes = {
     onLoadClick: React.PropTypes.func.isRequired,
     onAddEntry: React.PropTypes.func,
     onIncludeChange: React.PropTypes.func.isRequired,
+    onProjectedOnlyChange: React.PropTypes.func.isRequired,
 };
 
 module.exports = DatasetInfo;

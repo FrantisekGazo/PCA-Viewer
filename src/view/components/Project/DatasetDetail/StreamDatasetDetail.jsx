@@ -12,7 +12,7 @@ const StreamUtil = require('../../../../util/StreamUtil');
 
 
 /**
- * Shows a detail of dataset with stream of values.
+ * Shows dataset detail of a dataset with variable sampling.
  */
 class StreamDatasetDetail extends React.Component {
 
@@ -37,6 +37,14 @@ class StreamDatasetDetail extends React.Component {
     handleIncludeChange(value) {
         this.setState({
             included: value
+        });
+    }
+
+    handleProjectedOnlyChange(value) {
+        this.setState({
+            dataset: Object.assign({}, this.state.dataset, {
+                projectedOnly: value
+            })
         });
     }
 
@@ -129,6 +137,7 @@ class StreamDatasetDetail extends React.Component {
                 included={this.state.included}
                 single={this.props.single}
                 onIncludeChange={this.handleIncludeChange.bind(this)}
+                onProjectedOnlyChange={this.handleProjectedOnlyChange.bind(this)}
                 onDatasetChange={this.handleDatasetChange.bind(this)}
                 onDeleteClick={this.handleDeleteClick.bind(this)}
                 onCloseClick={this.handleCloseClick.bind(this)}

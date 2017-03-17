@@ -10,6 +10,9 @@ const DialogUtil = require('../../../../util/DialogUtil');
 const FileUtil = require('../../../../util/FileUtil');
 
 
+/**
+ * Shows dataset detail of a dataset with constant sampling.
+ */
 class EntryDatasetDetail extends React.Component {
 
     constructor(props) {
@@ -28,6 +31,14 @@ class EntryDatasetDetail extends React.Component {
     handleIncludeChange(value) {
         this.setState({
             included: value
+        });
+    }
+
+    handleProjectedOnlyChange(value) {
+        this.setState({
+            dataset: Object.assign({}, this.state.dataset, {
+                projectedOnly: value
+            })
         });
     }
 
@@ -119,6 +130,7 @@ class EntryDatasetDetail extends React.Component {
                 single={false}
                 sampling={this.props.sampling}
                 onIncludeChange={this.handleIncludeChange.bind(this)}
+                onProjectedOnlyChange={this.handleProjectedOnlyChange.bind(this)}
                 onDatasetChange={this.handleDatasetChange.bind(this)}
                 onDeleteClick={this.handleDeleteClick.bind(this)}
                 onCloseClick={this.handleCloseClick.bind(this)}

@@ -50,9 +50,42 @@ const calculatePCA = createLogic({
                 datasets[0].entries = datasets[0].entries.slice(0, samplingWindow.fixedCount);
             }
 
-            CalculationUtil.calculatePcaAsync(datasets)
+            const projectedOnlyDatasets = [];
+            const pcaDatasets = [];
+            for (let i = 0; i < datasets.length; i++) {
+                const dataset = datasets[i];
+                if (dataset.projectedOnly) {
+                    projectedOnlyDatasets.push(dataset);
+                } else {
+                    pcaDatasets.push(dataset);
+                }
+            }
+
+            CalculationUtil.calculatePcaAsync(pcaDatasets)
                 .then((results) => {
                     console.log('PCA result', results);
+
+                    // project datasets that were not used in PCA calculation
+                    for (let i = 0; i < projectedOnlyDatasets.length; i++) {
+                        const dataset = projectedOnlyDatasets[i];
+                        const values = [];
+                        const entryIds = [];
+                        for (let i = 0; i < dataset.entries.length; i++) {
+                            const entry = dataset.entries[i];
+                            values.push(entry.value);
+                            entryIds.push(entry.id);
+                        }
+                        const projectedValus = CalculationUtil.projectValues(values, results.eigenvectors);
+
+                        results.data.push({
+                            id: dataset.id,
+                            name: dataset.name,
+                            color: dataset.color,
+                            values: projectedValus,
+                            entryIds: entryIds,
+                            additional: true
+                        });
+                    }
 
                     return CalculationUtil.calculateAreasAsync(results, eigens, k)
                         .then((areas) => {
@@ -64,13 +97,11 @@ const calculatePCA = createLogic({
                                 const entryIds = additionalEntries.map(entry => entry.id);
                                 // project additional entries to the new base
                                 const additionalValues = additionalEntries.map(entry => entry.value);
-                                const M = new Matrix(additionalValues);
-                                const U = new Matrix(results.eigenvectors);
-                                const C = M.mmul(U);
+                                const projectedValus = CalculationUtil.projectValues(additionalValues, results.eigenvectors);
 
                                 data.push(Object.assign({}, data[0], {
                                     color: '#ff2200',
-                                    values: C.to2DArray(),
+                                    values: projectedValus,
                                     entryIds: entryIds,
                                     additional: true
                                 }));

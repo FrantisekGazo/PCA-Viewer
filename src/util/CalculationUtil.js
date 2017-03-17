@@ -54,6 +54,20 @@ class CalculationUtil {
         const pcaCalc = new Calculator();
         return pcaCalc.calculateAreas(pca, eigens, k);
     }
+
+    /**
+     * Projects given values to space defined by given base.
+     * @param values {[[number]]} Values that will be projected
+     * @param base {[number]} Space base.
+     * @returns {[[number]]} projected values
+     */
+    static projectValues(values, base) {
+        const M = new Matrix(values);
+        const U = new Matrix(base);
+        const C = M.mmul(U);
+
+        return C.to2DArray();
+    }
 }
 
 

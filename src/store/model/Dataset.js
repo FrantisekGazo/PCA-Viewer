@@ -21,7 +21,7 @@ class Dataset {
      *
      * @param id {number} Dataset ID
      */
-    constructor({id, name, desc, color, transformationType, transformationValue}) {
+    constructor({id}) {
         if (id === undefined) {
             throw new Error("entry is missing an 'id'");
         }
@@ -33,6 +33,7 @@ class Dataset {
         // stream info
         this.transformationType = TRANSFORMATIONS.NONE; // stream transformation type
         this.transformationValue = 0; // stream transformation value
+        this.projectedOnly = false;
     }
 
     /**
@@ -81,6 +82,14 @@ class Dataset {
      */
     getTransformationValue() {
         return this.transformationValue;
+    }
+
+    /**
+     * Returns <code>true</code> if the dataset is only projected into the calculated PCA space.
+     * @returns {boolean}
+     */
+    isProjectedOnly() {
+        return this.projectedOnly;
     }
 }
 
