@@ -34,7 +34,6 @@ class EntrySelection extends React.Component {
                 <CardMedia>
                     <SelectedEntryList
                         entries={selectedEntries}
-                        deletable={deletable}
                         onDeselect={onDeselect}/>
                 </CardMedia>
 

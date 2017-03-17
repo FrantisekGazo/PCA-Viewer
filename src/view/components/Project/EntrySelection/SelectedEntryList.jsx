@@ -3,7 +3,7 @@
 const React = require('react');
 const { AutoSizer, List } = require('react-virtualized');
 
-const SelectedEntry = require('./SelectedEntry');
+const SelectedEntry = require('./SelectedEntry.jsx');
 
 
 const MAX_SHOWN_ITEMS = 5;
@@ -15,13 +15,12 @@ const SHOWN_ITEMS_HEIGHT = 70;
 class SelectedEntryList extends React.Component {
 
     renderRow({ index, key, style }) {
-        const { entries, deletable, onDeselect } = this.props;
+        const { entries, onDeselect } = this.props;
         const entry = entries[index];
         return (
             <SelectedEntry
                 key={`${entry.id}`}
                 entry={entry}
-                deletable={deletable}
                 onDeselect={onDeselect}
                 style={style}/>
         );
@@ -50,8 +49,6 @@ class SelectedEntryList extends React.Component {
 SelectedEntryList.propTypes = {
     /* selected entry */
     entries: React.PropTypes.array.isRequired,
-    /* true if this entry is deletable */
-    deletable: React.PropTypes.bool.isRequired,
     /* callback */
     onDeselect: React.PropTypes.func.isRequired,
 };

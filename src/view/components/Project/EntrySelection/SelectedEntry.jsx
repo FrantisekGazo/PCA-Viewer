@@ -13,14 +13,14 @@ const IconClose = require('material-ui/svg-icons/navigation/close').default;
 class SelectedEntry extends React.Component {
 
     render() {
-        const { style, entry, deletable, onDeselect } = this.props;
+        const { style, entry, onDeselect } = this.props;
 
         let desc = entry.value.join(', ');
         if (entry.streamIndex) {
             desc = `stream index: ${entry.streamIndex}, values: ` + desc;
         }
 
-        const rightIcon = (
+        const rightIconButton = (
             <IconButton
                 tooltip='Close'
                 onTouchTap={() => onDeselect(entry.id)}>
@@ -35,9 +35,7 @@ class SelectedEntry extends React.Component {
                     style={{ color: entry.color }}
                     primaryText={entry.name}
                     secondaryText={desc}
-                    rightIconButton={
-                        deletable ? rightIcon : null
-                    }/>
+                    rightIconButton={rightIconButton}/>
             </div>
         );
     }
@@ -47,8 +45,6 @@ class SelectedEntry extends React.Component {
 SelectedEntry.propTypes = {
     /* selected entry */
     entry: React.PropTypes.object.isRequired,
-    /* true if this entry is deletable */
-    deletable: React.PropTypes.bool.isRequired,
     /* callback */
     onDeselect: React.PropTypes.func.isRequired,
 };
