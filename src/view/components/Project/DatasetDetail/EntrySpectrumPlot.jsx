@@ -53,15 +53,15 @@ class EntrySpectrumPlot extends React.Component {
         const layout = {
             title: 'Spectrum',
             hovermode: 'closest',
-            margin: 30,
+            // margin: 30,
             xaxis: {
                 zeroline: true,
                 gridcolor: "transparent",
-                title: "X axis label"
+                // title: "X axis label"
             },
             yaxis: {
                 zeroline: true,
-                title: "Y axis label"
+                // title: "Y axis label"
             }
         };
 
