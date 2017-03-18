@@ -98,7 +98,6 @@ class ProjectScreen extends React.Component {
                                 <IconButton><IconMore/></IconButton>
                             }>
 
-                            <MenuItem primaryText="Settings"/>
                             <MenuItem primaryText='Help' onTouchTap={() => HelpUtil.showHelp()}/>
                         </IconMenu>
                     }/>
