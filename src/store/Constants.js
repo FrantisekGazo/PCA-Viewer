@@ -31,6 +31,10 @@ const TRANSFORMATIONS = {
     COUNT: 3
 };
 
+/**
+ * Number of additional samples used in Online PCA project.
+ * @type {number}
+ */
 const ADDITIONAL_SAMPLES_COUNT = 1;
 
 
