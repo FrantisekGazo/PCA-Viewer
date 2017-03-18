@@ -6,6 +6,10 @@ const Plotly = require("plotly.js/dist/plotly.js");
 
 const ELEMENT_ID = "spectrumPlot";
 
+
+/**
+ * React component that shows a spectrum chart for dataset entries.
+ */
 class EntrySpectrumPlot extends React.Component {
 
     handlePlotClick(event) {

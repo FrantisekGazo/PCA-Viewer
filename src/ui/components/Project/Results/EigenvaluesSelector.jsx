@@ -8,6 +8,9 @@ const Snackbar = require('material-ui/Snackbar').default;
 const { sortNumArrayAsc } = require('../../../../util');
 
 
+/**
+ * React component that shows a selector for used eigenpairs.
+ */
 class EigenvaluesSelector extends React.Component {
 
     constructor(props) {

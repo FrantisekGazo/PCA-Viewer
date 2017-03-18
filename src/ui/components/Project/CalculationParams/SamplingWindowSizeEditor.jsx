@@ -13,7 +13,7 @@ const styles = {
 };
 
 /**
- * Shows a TextField for changing the size of the sampling window.
+ * React component that shows a sampling window size editor.
  */
 class SamplingWindowSizeEditor extends React.Component {
 

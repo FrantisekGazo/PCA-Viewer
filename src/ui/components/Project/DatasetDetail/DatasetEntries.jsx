@@ -9,7 +9,7 @@ const EntrySpectrumPlot = require('./EntrySpectrumPlot.jsx');
 
 
 /**
- * Shows dataset entries
+ * React component that shows dataset entries
  */
 class DatasetEntries extends React.Component {
 

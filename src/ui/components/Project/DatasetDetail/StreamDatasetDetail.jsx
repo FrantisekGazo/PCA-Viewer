@@ -12,7 +12,7 @@ const StreamUtil = require('../../../../util/StreamUtil');
 
 
 /**
- * Shows dataset detail of a dataset with variable sampling.
+ * React component that shows dataset detail of a dataset with variable sampling.
  */
 class StreamDatasetDetail extends React.Component {
 

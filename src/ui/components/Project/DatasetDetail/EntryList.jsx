@@ -11,7 +11,7 @@ const { range } = require('../../../../util');
 const SHOW_COUNT = 10;
 
 /**
- * Shows list of dataset entries.
+ * React component that shows list of dataset entries.
  */
 class EntryList extends React.Component {
 

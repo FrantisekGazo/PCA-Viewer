@@ -5,6 +5,9 @@ const Highcharts = require('highcharts'); // this has to be here
 const ReactHighstock = require('react-highcharts/ReactHighstock');
 
 
+/**
+ * React component that shows a stream chart (implemented by HighCharts).
+ */
 class StreamPlot extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {

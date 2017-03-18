@@ -15,6 +15,9 @@ const AddEntryDialog = require('./AddEntryDialog.jsx');
 const ColorPicker = require('../../Common/ColorPicker');
 
 
+/**
+ * Shows basic dataset information.
+ */
 class DatasetInfo extends React.Component {
 
     constructor(props) {

@@ -6,23 +6,28 @@ const Avatar = require('material-ui/Avatar').default;
 
 
 /**
- * Shows one dataset in a list item component.
+ * React component that shows one dataset name and color.
  */
-const DatasetListItem = ({dataset, onClick}) => {
-    return (
-        <ListItem onTouchTap={onClick}
-                  primaryText={dataset.name}
-                  leftAvatar={
-                      <Avatar
-                          color="#fff"
-                          backgroundColor={dataset.color}
-                          size={30}
-                          style={{margin: 5}}>
-                          {dataset.name.substr(0, 1)}
-                      </Avatar>
-                  }/>
-    )
-};
+class DatasetListItem extends React.Component {
+
+    render() {
+        const { dataset, onClick } = this.props;
+
+        return (
+            <ListItem onTouchTap={onClick}
+                      primaryText={dataset.name}
+                      leftAvatar={
+                          <Avatar
+                              color={'#FFFFFF'}
+                              backgroundColor={dataset.color}
+                              size={30}
+                              style={{margin: 5}}>
+                              {dataset.name.substr(0, 1)}
+                          </Avatar>
+                      }/>
+        )
+    }
+}
 
 DatasetListItem.propTypes = {
     /* dataset */

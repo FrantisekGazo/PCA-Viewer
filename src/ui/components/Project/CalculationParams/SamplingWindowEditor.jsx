@@ -20,6 +20,10 @@ const styles = {
     }
 };
 
+
+/**
+ * React component that show a sampling window editor.
+ */
 class SamplingWindowEditor extends React.Component {
 
     constructor(props) {

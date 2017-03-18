@@ -11,58 +11,62 @@ const DatasetListItem = require('./DatasetListItem.jsx');
 
 
 /**
- * Converts list for datasets to a list component.
- * @param datasets {Array} of datasets
- * @param onDatasetClick {function} callback that will be called if a dataset was clicked.
- * @returns {Object} Component
+ * React component that shows list of both included and excluded datasets and the option for adding new datasets.
  */
-const datasetsToList = (datasets, onDatasetClick) => {
-    if (datasets.length > 0) {
-        return datasets.map(dataset => {
+class DatasetList extends React.Component {
+
+    /**
+     * Converts list for datasets to a list component.
+     * @param datasets {Array} of datasets
+     * @param onDatasetClick {function} callback that will be called if a dataset was clicked.
+     * @returns {Object} Component
+     */
+    datasetsToList(datasets, onDatasetClick) {
+        if (datasets.length > 0) {
+            return datasets.map(dataset => {
+                return (
+                    <DatasetListItem
+                        key={dataset.id}
+                        dataset={dataset}
+                        onClick={() => onDatasetClick(dataset.id)}/>
+                )
+            });
+        } else {
             return (
-                <DatasetListItem
-                    key={dataset.id}
-                    dataset={dataset}
-                    onClick={() => onDatasetClick(dataset.id)}/>
-            )
-        });
-    } else {
+                <ListItem key="0">None</ListItem>
+            );
+        }
+    }
+
+    render() {
+        const {datasets, includedDatasetIds, onDatasetClick, onAddDatasetClick}  = this.props;
+        const includedList = this.datasetsToList(datasets.filter(d => includedDatasetIds.indexOf(d.id) >= 0), onDatasetClick);
+        const excludedList = this.datasetsToList(datasets.filter(d => includedDatasetIds.indexOf(d.id) === -1), onDatasetClick);
+
         return (
-            <ListItem key="0">None</ListItem>
+            <Card id="dataset-list">
+                <List>
+                    <Subheader>Datasets:</Subheader>
+                    { includedList }
+                </List>
+
+                <List>
+                    <Subheader>Excuded:</Subheader>
+                    { excludedList }
+                </List>
+
+                <CardActions>
+                    <FloatingActionButton
+                        label="Add"
+                        mini={true}
+                        onTouchTap={onAddDatasetClick}>
+                        <ContentAdd />
+                    </FloatingActionButton>
+                </CardActions>
+            </Card>
         );
     }
-};
-
-/**
- * Shows list of both included and excluded datasets and the option for adding new component.
- */
-const DatasetList = ({datasets, includedDatasetIds, onDatasetClick, onAddDatasetClick}) => {
-    const includedList = datasetsToList(datasets.filter(d => includedDatasetIds.indexOf(d.id) >= 0), onDatasetClick);
-    const excludedList = datasetsToList(datasets.filter(d => includedDatasetIds.indexOf(d.id) === -1), onDatasetClick);
-
-    return (
-        <Card id="dataset-list">
-            <List>
-                <Subheader>Datasets:</Subheader>
-                { includedList }
-            </List>
-
-            <List>
-                <Subheader>Excuded:</Subheader>
-                { excludedList }
-            </List>
-
-            <CardActions>
-                <FloatingActionButton
-                    label="Add"
-                    mini={true}
-                    onTouchTap={onAddDatasetClick}>
-                    <ContentAdd />
-                </FloatingActionButton>
-            </CardActions>
-        </Card>
-    );
-};
+}
 
 DatasetList.propTypes = {
     /* list of all datasets */

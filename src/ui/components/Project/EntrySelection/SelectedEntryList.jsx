@@ -10,7 +10,7 @@ const MAX_SHOWN_ITEMS = 5;
 const SHOWN_ITEMS_HEIGHT = 70;
 
 /**
- * Shows list of selected entries.
+ * React component that shows list of selected entries.
  */
 class SelectedEntryList extends React.Component {
 

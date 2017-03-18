@@ -4,6 +4,9 @@ const React = require('react');
 const Plotly = require("plotly.js/dist/plotly.js");
 
 
+/**
+ * React component that shows eigenvalues & cumulative variance in a chart.
+ */
 class EigenvaluePlot extends React.Component {
 
     drawPlot() {

@@ -7,6 +7,7 @@ const Checkbox = require('material-ui/Checkbox').default;
 
 const { PROJECT_TYPE } = require('../../../store/Constants');
 
+
 const styles = {
     typeBlock: {
         position: 'relative',
@@ -24,62 +25,67 @@ const styles = {
 /**
  * React component that shows project type selector.
  */
-const ProjectTypeSelector = ({ type, sampling, hasConstantSampling, onTypeChange }) => {
-    return (
-        <div>
-            <p>Type:</p>
+class ProjectTypeSelector extends React.Component {
 
-            <div style={styles.typeBlock}>
-                <RadioButtonGroup
-                    name='project-type'
-                    valueSelected={type}
-                    onChange={(event, newValue) => {
-                        onTypeChange({type: newValue, hasConstantSampling, sampling});
-                    }}>
+    render() {
+        const { type, sampling, hasConstantSampling, onTypeChange } = this.props;
 
-                    <RadioButton
-                        value={PROJECT_TYPE.OFFLINE_PCA}
-                        label="Offline PCA"
-                        style={styles.radioButton}/>
-                    <RadioButton
-                        value={PROJECT_TYPE.ONLINE_PCA}
-                        label="Online PCA"
-                        style={styles.radioButton}/>
+        return (
+            <div>
+                <p>Type:</p>
 
-                </RadioButtonGroup>
+                <div style={styles.typeBlock}>
+                    <RadioButtonGroup
+                        name='project-type'
+                        valueSelected={type}
+                        onChange={(event, newValue) => {
+                            onTypeChange({type: newValue, hasConstantSampling, sampling});
+                        }}>
+
+                        <RadioButton
+                            value={PROJECT_TYPE.OFFLINE_PCA}
+                            label="Offline PCA"
+                            style={styles.radioButton}/>
+                        <RadioButton
+                            value={PROJECT_TYPE.ONLINE_PCA}
+                            label="Online PCA"
+                            style={styles.radioButton}/>
+
+                    </RadioButtonGroup>
+                </div>
+
+                {
+                    (type === PROJECT_TYPE.OFFLINE_PCA) ?
+                        (
+                            <div style={styles.typeBlock}>
+                                <Checkbox
+                                    label="Dimension"
+                                    checked={hasConstantSampling}
+                                    style={styles.checkbox}
+                                    onCheck={(event, newValue) => {
+                                        onTypeChange({type, hasConstantSampling: newValue, sampling});
+                                    }}/>
+
+                                <TextField
+                                    id='dimension'
+                                    disabled={!hasConstantSampling}
+                                    value={(sampling > 0) ? `${sampling}` : ''}
+                                    onChange={(event, newValue) => {
+
+                                        let number = parseInt(newValue);
+                                        if (isNaN(number)) {
+                                            number = 0;
+                                        }
+                                        onTypeChange({type, hasConstantSampling, sampling: number});
+                                    }}/>
+                            </div>
+                        )
+                        : null
+                }
             </div>
-
-            {
-                (type === PROJECT_TYPE.OFFLINE_PCA) ?
-                    (
-                        <div style={styles.typeBlock}>
-                            <Checkbox
-                                label="Dimension"
-                                checked={hasConstantSampling}
-                                style={styles.checkbox}
-                                onCheck={(event, newValue) => {
-                                    onTypeChange({type, hasConstantSampling: newValue, sampling});
-                                }}/>
-
-                            <TextField
-                                id='dimension'
-                                disabled={!hasConstantSampling}
-                                value={(sampling > 0) ? `${sampling}` : ''}
-                                onChange={(event, newValue) => {
-
-                                    let number = parseInt(newValue);
-                                    if (isNaN(number)) {
-                                        number = 0;
-                                    }
-                                    onTypeChange({type, hasConstantSampling, sampling: number});
-                                }}/>
-                        </div>
-                    )
-                    : null
-            }
-        </div>
-    );
-};
+        );
+    }
+}
 
 ProjectTypeSelector.propTypes = {
     type: React.PropTypes.number.isRequired,

@@ -60,6 +60,9 @@ const OPACITY = .5;
 const SERIES_PER_DATASET = 2;
 
 
+/**
+ * React component that shows a scatter chart.
+ */
 class ScatterPlot extends React.Component {
 
     constructor(props) {

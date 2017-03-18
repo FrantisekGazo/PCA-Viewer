@@ -10,6 +10,9 @@ const FlatButton = require('material-ui/FlatButton').default;
 const { TRANSFORMATIONS } = require('../../../../store/Constants');
 
 
+/**
+ * React component that shows a transformation selector.
+ */
 class StreamTransformationSelector extends React.Component {
 
     constructor(props) {

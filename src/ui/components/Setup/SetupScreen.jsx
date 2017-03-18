@@ -19,6 +19,7 @@ const DialogUtil = require('../../../util/DialogUtil');
 const { PROJECT_TYPE } = require('../../../store/Constants');
 const showMenu = require('../../menu/Menu');
 
+
 const styles = {
     appBar: {
         position: 'fixed',

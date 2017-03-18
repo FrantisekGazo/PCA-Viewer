@@ -9,16 +9,17 @@ const StreamTransformationSelector = require('./StreamTransformationSelector.jsx
 
 
 /**
- * Helper function for showing only several first values.
- * @param s {Array} Array of values.
- */
-const firstValues = (s) => s.slice(0, 10).map(v => v.toString()).join(', ');
-
-
-/**
- * Shows a graph of the stream and selector for transformations.
+ * React component that shows a stream chart and a transformation selector.
  */
 class StreamEditor extends React.Component {
+
+    /**
+     * Helper function for showing only several first values.
+     * @param s {Array} Array of values.
+     */
+    firstValues(s) {
+        return s.slice(0, 10).map(v => v.toString()).join(', ');
+    }
 
     render() {
         const {
@@ -47,7 +48,7 @@ class StreamEditor extends React.Component {
                 </CardMedia>
 
                 <CardText>
-                    Stream: { firstValues(stream) }... ({stream.length} values)
+                    Stream: { this.firstValues(stream) }... ({stream.length} values)
                 </CardText>
 
                 <Divider/>
@@ -61,7 +62,7 @@ class StreamEditor extends React.Component {
                 <Divider/>
 
                 <CardText>
-                    Transformed Stream: { firstValues(transformedStream) }... ({transformedStream.length} values)
+                    Transformed Stream: { this.firstValues(transformedStream) }... ({transformedStream.length} values)
                 </CardText>
             </Card>
         );

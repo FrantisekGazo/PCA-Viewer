@@ -11,7 +11,7 @@ const ScatterPlot = require('./ScatterPlot.jsx');
 
 
 /**
- * Shows calculated results
+ * React component that shows calculated results.
  */
 class ProjectResults extends React.Component {
 

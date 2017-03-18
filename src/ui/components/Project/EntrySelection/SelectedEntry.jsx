@@ -8,7 +8,7 @@ const IconClose = require('material-ui/svg-icons/navigation/close').default;
 
 
 /**
- * Show selected entry information.
+ * React component that show selected entry information.
  */
 class SelectedEntry extends React.Component {
 

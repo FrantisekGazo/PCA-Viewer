@@ -9,38 +9,40 @@ const showMenu = require('../../menu/Menu');
 const DialogUtil = require('../../../util/DialogUtil');
 
 
-const optionContainerStyle = {
-    position: 'absolute',
-    width: '520px', // 4x5 + 2x250
-    // center it:
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-};
-const optionStyle = {
-    display: 'inline-block',
-    margin: '5px',
-    height: '180px',
-    width: '250px',
-};
-const iconStyle = {
-    position: 'relative',
-    top: '20px',
-    width: '100px',
-    height: '100px',
-};
-const textStyle = {
-    position: 'relative',
-    top: '10px',
-};
-const errorStyle = {
-    display: 'block',
-    position: 'fixed',
-    // center horizontally:
-    left: '50%',
-    transform: 'translate(-50%)',
-    padding: '10px',
-    color: '#ffffff',
+const styles = {
+    optionContainer: {
+        position: 'absolute',
+        width: '520px', // 4x5 + 2x250
+        // center it:
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+    },
+    option: {
+        display: 'inline-block',
+        margin: '5px',
+        height: '180px',
+        width: '250px',
+    },
+    icon: {
+        position: 'relative',
+        top: '20px',
+        width: '100px',
+        height: '100px',
+    },
+    text: {
+        position: 'relative',
+        top: '10px',
+    },
+    error: {
+        display: 'block',
+        position: 'fixed',
+        // center horizontally:
+        left: '50%',
+        transform: 'translate(-50%)',
+        padding: '10px',
+        color: '#ffffff',
+    }
 };
 
 
@@ -58,27 +60,27 @@ class StartScreen extends React.Component {
 
     render() {
         const {error, onStartNewClicked} = this.props;
-        let errorMsg = (error) ? (<div style={errorStyle}>{error}</div>) : null;
+        let errorMsg = (error) ? (<div style={styles.error}>{error}</div>) : null;
 
         showMenu();
 
         return (
-            <div style={optionContainerStyle}>
+            <div style={styles.optionContainer}>
 
                 <RaisedButton
-                    style={optionStyle}
+                    style={styles.option}
                     onTouchTap={onStartNewClicked}>
 
-                    <IconCreate style={iconStyle}/>
-                    <p style={textStyle}>Start a new project</p>
+                    <IconCreate style={styles.icon}/>
+                    <p style={styles.text}>Start a new project</p>
                 </RaisedButton>
 
                 <RaisedButton
-                    style={optionStyle}
+                    style={styles.option}
                     onTouchTap={this.handleOpenExisting.bind(this)}>
 
-                    <IconOpen style={iconStyle}/>
-                    <p style={textStyle}>Open an existing project</p>
+                    <IconOpen style={styles.icon}/>
+                    <p style={styles.text}>Open an existing project</p>
                 </RaisedButton>
 
                 { errorMsg }

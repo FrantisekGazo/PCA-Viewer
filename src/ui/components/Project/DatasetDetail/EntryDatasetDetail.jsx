@@ -11,7 +11,7 @@ const FileUtil = require('../../../../util/FileUtil');
 
 
 /**
- * Shows dataset detail of a dataset with constant sampling.
+ * React component that shows dataset detail of a dataset with constant sampling.
  */
 class EntryDatasetDetail extends React.Component {
 

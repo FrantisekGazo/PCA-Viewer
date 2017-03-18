@@ -4,6 +4,9 @@ const React = require('react');
 const Plotly = require("plotly.js/dist/plotly.js");
 
 
+/**
+ * React component that shows a stream chart (implemented by Plotly).
+ */
 class StreamPlot extends React.Component {
 
     drawPlot() {

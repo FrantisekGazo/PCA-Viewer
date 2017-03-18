@@ -10,7 +10,7 @@ const TextField = require('material-ui/TextField').default;
 
 
 /**
- * Shows area editor options
+ * React component that shows area editor options
  */
 class AreaEditor extends React.Component {
 

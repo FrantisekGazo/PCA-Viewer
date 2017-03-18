@@ -8,7 +8,7 @@ const SelectedEntryList = require('./SelectedEntryList.jsx');
 
 
 /**
- * Shows list of selected entries and options for clear/delete.
+ * React component that shows list of selected entries and options for clear/delete.
  */
 class EntrySelection extends React.Component {
 
