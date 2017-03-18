@@ -11,18 +11,18 @@ const {Provider} = require('react-redux');
 const { hashHistory, IndexRoute, Route, Router } = require('react-router');
 const { syncHistoryWithStore } = require('react-router-redux');
 
-const App = require('./view/containers/App.jsx');
-const StartScreen = require('./view/containers/Start/ConnectedStartScreen.jsx');
-const SetupScreen = require('./view/containers/Setup/ConnectedSetupScreen.jsx');
-const ProjectScreen = require('./view/containers/Project/ConnectedProjectScreen.jsx');
-const DatasetList = require('./view/containers/Project/ConnectedDatasetList.jsx');
-const EntryDatasetDetail = require('./view/containers/Project/ConnectedEntryDatasetDetail.jsx');
-const StreamDatasetDetail = require('./view/containers/Project/ConnectedStreamDatasetDetail.jsx');
-const OfflinePcaCalculationParams = require('./view/containers/Project/OfflinePcaCalculationParams.jsx');
-const OnlinePcaCalculationParams = require('./view/containers/Project/OnlinePcaCalculationParams.jsx');
-const ProjectResults = require('./view/containers/Project/ConnectedProjectResults.jsx');
-const EntrySelection = require('./view/containers/Project/ConnectedEntrySelection.jsx');
-const Loading = require('./view/components/Common/Loading.jsx');
+const App = require('./ui/containers/App.jsx');
+const StartScreen = require('./ui/containers/Start/ConnectedStartScreen.jsx');
+const SetupScreen = require('./ui/containers/Setup/ConnectedSetupScreen.jsx');
+const ProjectScreen = require('./ui/containers/Project/ConnectedProjectScreen.jsx');
+const DatasetList = require('./ui/containers/Project/ConnectedDatasetList.jsx');
+const EntryDatasetDetail = require('./ui/containers/Project/ConnectedEntryDatasetDetail.jsx');
+const StreamDatasetDetail = require('./ui/containers/Project/ConnectedStreamDatasetDetail.jsx');
+const OfflinePcaCalculationParams = require('./ui/containers/Project/OfflinePcaCalculationParams.jsx');
+const OnlinePcaCalculationParams = require('./ui/containers/Project/OnlinePcaCalculationParams.jsx');
+const ProjectResults = require('./ui/containers/Project/ConnectedProjectResults.jsx');
+const EntrySelection = require('./ui/containers/Project/ConnectedEntrySelection.jsx');
+const Loading = require('./ui/components/Common/Loading.jsx');
 const store = require('./store/Store');
 
 

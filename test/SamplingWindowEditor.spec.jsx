@@ -4,7 +4,7 @@ const expect = require('expect');
 const shallow = require('enzyme').shallow;
 const React = require('react');
 
-const SamplingWindowEditor = require('../src/view/components/Project/CalculationParams/SamplingWindowEditor.jsx');
+const SamplingWindowEditor = require('../src/ui/components/Project/CalculationParams/SamplingWindowEditor.jsx');
 
 
 describe('Sampling Window Editor', () => {
