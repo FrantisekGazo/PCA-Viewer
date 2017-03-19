@@ -1,19 +1,19 @@
 # PCA Viewer
 
-Simple desktop app created using these technologies:
+Desktop application for PCA calculation and visualization, created using these technologies:
 
 <a href="http://electron.atom.io/"><img src="./readme-res/logo-electron.png" alt="Electron" title="Electron" width="80"></a>
 <a href="https://facebook.github.io/react/"><img src="./readme-res/logo-react.png" alt="React" title="React" width="80"></a>
 <a href="http://redux.js.org/"><img src="./readme-res/logo-redux.png" alt="Redux" title="Redux" width="80"></a>
 
-##Project contains:
+## Project contains:
 
 - Redux devtools 
 - hot reloading for React components without babel nor webpack
-- working test example
+- tests
 
 
-##Dependencies:
+## Dependencies:
 
 - [react](https://www.npmjs.com/package/react), [react-dom](https://www.npmjs.com/package/react-dom), [react-redux](https://www.npmjs.com/package/react-redux), [redux](https://www.npmjs.com/package/redux): basic React+Redux setup
 - [redux-logic](https://www.npmjs.com/package/redux-logic): creates a place for executing a business logic based on dispached actions (Uses RxJS under the hood)
@@ -22,7 +22,7 @@ Simple desktop app created using these technologies:
 - [material-ui](https://www.npmjs.com/package/material-ui), [react-tap-event-plugin](https://www.npmjs.com/package/react-tap-event-plugin): a Set of React Components that Implement Google's Material Design
 - [pure-color](https://www.npmjs.com/package/pure-color): utilities for ColorPicker
 
-##Dev Dependencies:
+## Dev Dependencies:
 
 - [electron](https://www.npmjs.com/package/electron): Electron :)
 - [electron-packager](https://www.npmjs.com/package/electron-packager): Electron packager
@@ -35,4 +35,4 @@ Simple desktop app created using these technologies:
 ## Project specific dependencies:
 
 - [ml-matrix](https://www.npmjs.com/package/ml-matrix), [ml-stat](https://www.npmjs.com/package/ml-stat): matrix manipulation and computation library
-- [plotly.js](https://www.npmjs.com/package/plotly.js): graphing library
+- [plotly.js](https://www.npmjs.com/package/plotly.js), [react-highcharts](https://www.npmjs.com/package/react-highcharts): graphing libraries

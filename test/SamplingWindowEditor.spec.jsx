@@ -7,6 +7,7 @@ const React = require('react');
 const SamplingWindowEditor = require('../src/ui/components/Project/CalculationParams/SamplingWindowEditor.jsx');
 
 
+// tests SamplingWindowEditor
 describe('Sampling Window Editor', () => {
 
     it('should render 2 IconButtons', () => {

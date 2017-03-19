@@ -8,6 +8,7 @@ const DatasetList = require('../src/ui/components/Project/DatasetList/DatasetLis
 const DatasetListItem = require('../src/ui/components/Project/DatasetList/DatasetListItem.jsx');
 
 
+// tests the DatasetList and it's items
 describe('Dataset List', () => {
 
     it('should render an ADD button', () => {
