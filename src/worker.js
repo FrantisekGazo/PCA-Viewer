@@ -14,6 +14,7 @@ function sendEnd(callerId, task, inArg, result, error) {
     fromWindow.webContents.send(WorkerUtil.workerTaskEnded(task), inArg, result, error);
 }
 
+/* Executes the PCA calculation in the Worker process */
 ipcRenderer.on(WorkerTaskNames.CALCULATE_PCA, function (event, datasetsJson, callerId) {
     try {
         const datasets = JSON.parse(datasetsJson);
@@ -24,6 +25,7 @@ ipcRenderer.on(WorkerTaskNames.CALCULATE_PCA, function (event, datasetsJson, cal
     }
 });
 
+/* Executes the area calculation in the Worker process */
 ipcRenderer.on(WorkerTaskNames.CALCULATE_AREAS, function (event, argJson, callerId) {
     try {
         const arg = JSON.parse(argJson);

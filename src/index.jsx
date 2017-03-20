@@ -27,7 +27,8 @@ const store = require('./store/Store');
 
 
 if (process.env.NODE_ENV === 'development') {
-    require('watch-glob')(['src/reducer/**/*.js'], {callbackArg: 'absolute'}, f => {
+    // enable hot-reload for reducers
+    require('watch-glob')(['src/store/reducer/**/*.js'], {callbackArg: 'absolute'}, f => {
         console.log('Hot reload reducer', f);
         // delete changed reducer = require(cache
         delete require.cache[require.resolve(f)];
@@ -53,6 +54,8 @@ startListeningForWindowIds();
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(hashHistory, store);
 
+
+// render the application
 ReactDOM.render(
     <Provider store={store}>
         { /* Tell the Router to use our enhanced history */ }
