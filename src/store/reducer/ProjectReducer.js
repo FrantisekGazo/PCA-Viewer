@@ -111,7 +111,7 @@ function addNewDataset(state, action) {
         datasets: {
             [datasetId]: {$set: new Dataset({id: datasetId})}
         },
-        usedDatasetIds: {$push: [datasetId]},
+        includedDatasetIds: {$push: [datasetId]},
         lastDatasetId: {$set: datasetId},
         detailDatasetId: {$set: datasetId}
     });
@@ -129,15 +129,15 @@ function updateDataset(state, action) {
     const { dataset, included, entries, stream, transformedStream } = changes;
 
     // prepare list of all dataset IDs included in PCA
-    let newUsedDatasetIds = state.usedDatasetIds;
-    const index = state.usedDatasetIds.indexOf(datasetId);
+    let newIncludedDatasetIds = state.includedDatasetIds;
+    const index = state.includedDatasetIds.indexOf(datasetId);
     const currentlyIncluded = index >= 0;
     if (included !== currentlyIncluded) {
-        newUsedDatasetIds = [].concat(state.usedDatasetIds);
+        newIncludedDatasetIds = [].concat(state.includedDatasetIds);
         if (included) {
-            newUsedDatasetIds.push(datasetId);
+            newIncludedDatasetIds.push(datasetId);
         } else {
-            newUsedDatasetIds.splice(index, 1);
+            newIncludedDatasetIds.splice(index, 1);
         }
     }
 
@@ -165,7 +165,7 @@ function updateDataset(state, action) {
             },
             entries: {$set: entryMap},
             lastEntryId: {$set: maxId},
-            usedDatasetIds: {$set: newUsedDatasetIds},
+            includedDatasetIds: {$set: newIncludedDatasetIds},
             version: {$set: state.version + 1}
         });
     } else {
@@ -181,7 +181,7 @@ function updateDataset(state, action) {
                 [bsid]: {$set: stream},
                 [tsid]: {$set: transformedStream}
             },
-            usedDatasetIds: {$set: newUsedDatasetIds},
+            includedDatasetIds: {$set: newIncludedDatasetIds},
             version: {$set: state.version + 1}
         });
     }
@@ -214,8 +214,8 @@ function deleteDataset(state, action) {
     const bsid = baseStreamId(datasetId);
     const tsid = transformedStreamId(datasetId);
     return update(state, {
-        usedDatasetIds: {
-            $set: state.usedDatasetIds.filter(id => id !== datasetId)
+        includedDatasetIds: {
+            $set: state.includedDatasetIds.filter(id => id !== datasetId)
         },
         datasets: {
             [datasetId]: {$set: undefined}
@@ -381,7 +381,7 @@ const initState = {
     error: '',
 
     /* dataset IDs used by project */
-    usedDatasetIds: [],
+    includedDatasetIds: [],
     /* all datasets */
     lastDatasetId: 0,
     datasets: {},

@@ -142,7 +142,7 @@ class ProjectSelector {
      * @returns {Array}
      */
     getIncludedDatasetIds(state) {
-        return this._getProjectState(state).usedDatasetIds;
+        return this._getProjectState(state).includedDatasetIds;
     }
 
     /**
