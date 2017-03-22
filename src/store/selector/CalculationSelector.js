@@ -58,7 +58,7 @@ class CalculationSelector {
      * @returns {Object}
      */
     getResults(state) {
-        const eigens = this.getEigens(state);;;;;;;;;;;;;;;;;;
+        const eigens = this.getEigens(state);
         const pca = this.getPca(state);
         const areas = this.getAreas(state);
         const k = this.getAreaCoefficient(state);
