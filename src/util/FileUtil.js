@@ -3,6 +3,8 @@
 const readline = require('readline');
 const fs = require('fs');
 
+const { WorkerTaskNames, WorkerUtil } = require('./WorkerUtil');
+
 
 /**
  * Provides methods for loading and manipulating data files.
@@ -79,10 +81,10 @@ class FileUtil {
     }
 
     /**
-     * Writes given text to a file on given path.
+     * Reads a file on given path in current process.
      * @returns {Promise}
      */
-    static readFromFile(filePath) {
+    static readTextFromFileSync(filePath) {
         return new Promise(function (resolve, reject) {
             fs.readFile(filePath, 'utf8', (err, data) => {
                 if (err) {
@@ -92,6 +94,25 @@ class FileUtil {
                 }
             });
         });
+    }
+
+    /**
+     * Reads a file on given path in another process.
+     * @returns {Promise}
+     */
+    static readTextFromFileAsync(filePath) {
+        return WorkerUtil.execByWorker(WorkerTaskNames.READ_FILE, filePath);
+    }
+
+    /**
+     * Reads a file on given path.
+     * @returns {Promise}
+     */
+    static readJsonFromFile(filePath) {
+        return FileUtil.readTextFromFileAsync(filePath)
+            .then((content) => {
+                return JSON.parse(content);
+            })
     }
 }
 

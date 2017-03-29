@@ -31,9 +31,8 @@ const loadProject = createLogic({
             done();
         }
 
-        FileUtil.readFromFile(filePath)
-            .then((data) => {
-                const projectState = JSON.parse(data);
+        FileUtil.readJsonFromFile(filePath)
+            .then((projectState) => {
                 projectState.path = projectPath;
                 projectState.detailDatasetId = null; // do not show detail after opening a project
 

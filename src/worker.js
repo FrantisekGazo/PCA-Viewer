@@ -3,6 +3,7 @@ const { BrowserWindow } = require('electron').remote;
 
 const { WorkerTaskNames, WorkerUtil } = require('./util/WorkerUtil');
 const CalculationUtil = require('./util/CalculationUtil');
+const FileUtil = require('./util/FileUtil');
 
 
 function sendEnd(callerId, task, inArg, result, error) {
@@ -34,5 +35,17 @@ ipcRenderer.on(WorkerTaskNames.CALCULATE_AREAS, function (event, argJson, caller
     } catch (error) {
         sendEnd(callerId, WorkerTaskNames.CALCULATE_AREAS, argJson, null, error);
     }
+});
+
+/* Read file content in the Worker process */
+ipcRenderer.on(WorkerTaskNames.READ_FILE, function (event, argJson, callerId) {
+    const filePath = JSON.parse(argJson);
+    FileUtil.readTextFromFileSync(filePath)
+        .then((content) => {
+            sendEnd(callerId, WorkerTaskNames.READ_FILE, argJson, content, null);
+        })
+        .catch((error) => {
+            sendEnd(callerId, WorkerTaskNames.READ_FILE, argJson, null, error);
+        });
 });
 
