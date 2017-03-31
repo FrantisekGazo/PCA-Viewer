@@ -1,10 +1,10 @@
 "use strict";
 
 const React = require('react');
-const RaisedButton = require('material-ui/RaisedButton').default;
 const IconCreate = require('material-ui/svg-icons/file/create-new-folder').default;
 const IconOpen = require('material-ui/svg-icons/file/folder-open').default;
 
+const StartButton = require('./StartButton.jsx');
 const showMenu = require('../../menu/Menu');
 const DialogUtil = require('../../../util/DialogUtil');
 
@@ -17,22 +17,6 @@ const styles = {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-    },
-    option: {
-        display: 'inline-block',
-        margin: '5px',
-        height: '180px',
-        width: '250px',
-    },
-    icon: {
-        position: 'relative',
-        top: '20px',
-        width: '100px',
-        height: '100px',
-    },
-    text: {
-        position: 'relative',
-        top: '10px',
     },
     error: {
         display: 'block',
@@ -67,21 +51,15 @@ class StartScreen extends React.Component {
         return (
             <div style={styles.optionContainer}>
 
-                <RaisedButton
-                    style={styles.option}
-                    onTouchTap={onStartNewClicked}>
+                <StartButton
+                    label={'Start a new project'}
+                    iconComponent={IconCreate}
+                    onClick={onStartNewClicked}/>
 
-                    <IconCreate style={styles.icon}/>
-                    <p style={styles.text}>Start a new project</p>
-                </RaisedButton>
-
-                <RaisedButton
-                    style={styles.option}
-                    onTouchTap={this.handleOpenExisting.bind(this)}>
-
-                    <IconOpen style={styles.icon}/>
-                    <p style={styles.text}>Open an existing project</p>
-                </RaisedButton>
+                <StartButton
+                    label={'Open an existing project'}
+                    iconComponent={IconOpen}
+                    onClick={this.handleOpenExisting.bind(this)}/>
 
                 { errorMsg }
             </div>
