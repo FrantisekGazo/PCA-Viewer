@@ -23,13 +23,14 @@ const loadProject = createLogic({
         const projectPath = action.payload;
         const filePath = path.join(projectPath, PROJECT_FILE_NAME);
 
-        dispatch(RouterActionCreator.createGoToProjectScreenLoadingAction());
-
         // check if project file exists
         if (!fs.existsSync(filePath)) {
             dispatch(ProjectActionCreator.createProjectErrorAction('Selected directory is not a PCA project'));
             done();
+            return;
         }
+
+        dispatch(RouterActionCreator.createGoToProjectScreenLoadingAction());
 
         FileUtil.readJsonFromFile(filePath)
             .then((projectState) => {
