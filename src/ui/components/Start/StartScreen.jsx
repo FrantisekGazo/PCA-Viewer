@@ -38,12 +38,12 @@ class StartScreen extends React.Component {
     handleOpenExisting() {
         DialogUtil.showOpenDirDialog()
             .then((path) => {
-                this.props.onOpenExistingClicked(path);
+                this.props.onOpenExistingClick(path);
             });
     }
 
     render() {
-        const {error, onStartNewClicked} = this.props;
+        const {error, onStartNewClick} = this.props;
         let errorMsg = (error) ? (<div style={styles.error}>{error}</div>) : null;
 
         showMenu();
@@ -54,7 +54,7 @@ class StartScreen extends React.Component {
                 <StartButton
                     label={'Start a new project'}
                     iconComponent={IconCreate}
-                    onClick={onStartNewClicked}/>
+                    onClick={onStartNewClick}/>
 
                 <StartButton
                     label={'Open an existing project'}
@@ -69,8 +69,8 @@ class StartScreen extends React.Component {
 
 StartScreen.propTypes = {
     error: React.PropTypes.string.isRequired,
-    onStartNewClicked: React.PropTypes.func.isRequired,
-    onOpenExistingClicked: React.PropTypes.func.isRequired
+    onStartNewClick: React.PropTypes.func.isRequired,
+    onOpenExistingClick: React.PropTypes.func.isRequired
 };
 
 module.exports = StartScreen;

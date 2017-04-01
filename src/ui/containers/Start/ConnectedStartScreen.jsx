@@ -18,10 +18,10 @@ module.exports = connect(
     // dispatch functions to props
     (dispatch) => {
         return {
-            onStartNewClicked: () => {
+            onStartNewClick: () => {
                 dispatch(RouterActionCreator.createGoToSetupScreenAction());
             },
-            onOpenExistingClicked: (path) => {
+            onOpenExistingClick: (path) => {
                 dispatch(ProjectActionCreator.createLoadProjectAction(path));
             }
         };
