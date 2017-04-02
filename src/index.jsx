@@ -18,8 +18,8 @@ const ProjectScreen = require('./ui/containers/Project/ConnectedProjectScreen.js
 const DatasetList = require('./ui/containers/Project/ConnectedDatasetList.jsx');
 const EntryDatasetDetail = require('./ui/containers/Project/ConnectedEntryDatasetDetail.jsx');
 const StreamDatasetDetail = require('./ui/containers/Project/ConnectedStreamDatasetDetail.jsx');
-const OfflinePcaCalculationParams = require('./ui/containers/Project/OfflinePcaCalculationParams.jsx');
-const OnlinePcaCalculationParams = require('./ui/containers/Project/OnlinePcaCalculationParams.jsx');
+const SamplingWindowSizeEditor = require('./ui/containers/Project/ConnectedSamplingWindowSizeEditor.jsx');
+const SamplingWindowEditor = require('./ui/containers/Project/ConnectedSamplingWindowEditor.jsx');
 const ProjectResults = require('./ui/containers/Project/ConnectedProjectResults.jsx');
 const EntrySelection = require('./ui/containers/Project/ConnectedEntrySelection.jsx');
 const Loading = require('./ui/components/Common/Loading.jsx');
@@ -73,7 +73,7 @@ ReactDOM.render(
                     <Route path="offline0/" components={{
                         datasets: DatasetList,
                         detail: StreamDatasetDetail,
-                        calculationParams: OfflinePcaCalculationParams,
+                        calculationParams: SamplingWindowSizeEditor,
                         results: ProjectResults,
                         entrySelection: EntrySelection,
                     }}/>
@@ -87,7 +87,7 @@ ReactDOM.render(
                     <Route path="online/" components={{
                         datasets: null,
                         detail: StreamDatasetDetail,
-                        calculationParams: OnlinePcaCalculationParams,
+                        calculationParams: SamplingWindowEditor,
                         results: ProjectResults,
                         entrySelection: EntrySelection,
                     }}/>

@@ -1,6 +1,7 @@
 "use strict";
 
 const React = require('react');
+const { Card } = require('material-ui/Card');
 const Subheader = require('material-ui/Subheader').default;
 const TextField = require('material-ui/TextField').default;
 const FlatButton = require('material-ui/FlatButton').default;
@@ -51,7 +52,7 @@ class SamplingWindowSizeEditor extends React.Component {
         const { sampling, errorMessage } = this.state;
 
         return (
-            <div
+            <Card
                 style={{
                     paddingLeft: '20px',
                     paddingBottom: '10px',
@@ -68,7 +69,7 @@ class SamplingWindowSizeEditor extends React.Component {
 
                 <br/>
                 <span style={{color: '#cc0000'}}>{ errorMessage }</span>
-            </div>
+            </Card>
         );
     }
 }

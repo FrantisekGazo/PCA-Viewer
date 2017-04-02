@@ -1,6 +1,7 @@
 "use strict";
 
 const React = require('react');
+const { Card } = require('material-ui/Card');
 const Subheader = require('material-ui/Subheader').default;
 const TextField = require('material-ui/TextField').default;
 const IconButton = require('material-ui/IconButton').default;
@@ -125,7 +126,7 @@ class SamplingWindowEditor extends React.Component {
         const { start, size, overlay, fixedCount, errorMessage } = this.state;
 
         return (
-            <div>
+            <Card>
                 <IconButton
                     id='additional-count-add'
                     onTouchTap={this.handleMoveSamplesLeft.bind(this)}>
@@ -172,7 +173,7 @@ class SamplingWindowEditor extends React.Component {
                     label='Update'
                     onTouchTap={this.handleUpdateClick.bind(this)}/>
                 <span style={{color: '#cc0000'}}>{ errorMessage }</span>
-            </div>
+            </Card>
         );
     }
 }
