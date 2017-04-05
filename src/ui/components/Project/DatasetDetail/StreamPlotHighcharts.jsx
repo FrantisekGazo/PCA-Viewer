@@ -51,7 +51,11 @@ class StreamPlot extends React.Component {
             // change tooltip
             tooltip: {
                 formatter: function () {
-                    return `<strong>Point:</strong> ${this.x}<br/><strong>Value:</strong> ${Math.round(this.y * 100) / 100}`;
+                    let value = this.y;
+                    if (this.y > 1) {
+                        value = Math.round(this.y * 100) / 100;
+                    }
+                    return `<strong>Point:</strong> ${this.x}<br/><strong>Value:</strong> ${value}`;
                 }
             },
             // hide zoom options
