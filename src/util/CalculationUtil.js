@@ -132,7 +132,11 @@ class Calculator {
             // console.log(R[1].slice(0, 10).join(' | '));
             // console.log(R[2].slice(0, 10).join(' | '));
 
-            const SVD = svd(R, {autoTranspose: true});
+            const SVD = svd(R, {
+                computeLeftSingularVectors: false,
+                computeRightSingularVectors: true,
+                autoTranspose: false
+            });
             const U = new Matrix(SVD.rightSingularVectors);
             // console.log('U:', U.rows, ':', U.map(u => u.slice(0, 2)));
             // console.log(U[0].slice(0, 5).join(' | '));
