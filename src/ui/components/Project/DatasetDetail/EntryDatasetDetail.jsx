@@ -95,6 +95,13 @@ class EntryDatasetDetail extends React.Component {
             });
     }
 
+    handleClearClick() {
+        this.setState({
+            entries: [],
+            update: this.state.update + 1
+        });
+    }
+
     handleSaveClick() {
         const { dataset, included, entries } = this.state;
 
@@ -136,6 +143,7 @@ class EntryDatasetDetail extends React.Component {
                 onCloseClick={this.handleCloseClick.bind(this)}
                 onAddEntry={this.handleAddEntryClick.bind(this)}
                 onLoadClick={this.handleLoadClick.bind(this)}
+                onClearClick={this.handleClearClick.bind(this)}
                 onSaveClick={this.handleSaveClick.bind(this)}/>
         );
 

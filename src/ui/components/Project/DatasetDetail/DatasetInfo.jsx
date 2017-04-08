@@ -57,7 +57,7 @@ class DatasetInfo extends React.Component {
         const {
             dataset, included, single, sampling,
             onSaveClick, onDeleteClick, onCloseClick,
-            onDatasetChange, onLoadClick, onIncludeChange, onProjectedOnlyChange
+            onDatasetChange, onLoadClick, onClearClick, onIncludeChange, onProjectedOnlyChange
         } = this.props;
 
         let actionIncludeExclude = null;
@@ -181,6 +181,10 @@ class DatasetInfo extends React.Component {
                             ): null
                         }
 
+                        <MenuItem
+                            primaryText="Clear"
+                            onTouchTap={onClearClick}/>
+
                         { actionProjectedOnly }
                         { actionIncludeExclude }
                     </IconMenu>
@@ -215,6 +219,7 @@ DatasetInfo.propTypes = {
     onCloseClick: React.PropTypes.func.isRequired,
     onLoadClick: React.PropTypes.func.isRequired,
     onAddEntry: React.PropTypes.func,
+    onClearClick: React.PropTypes.func.isRequired,
     onIncludeChange: React.PropTypes.func.isRequired,
     onProjectedOnlyChange: React.PropTypes.func.isRequired,
 };

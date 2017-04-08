@@ -84,6 +84,13 @@ class StreamDatasetDetail extends React.Component {
             });
     }
 
+    handleClearClick() {
+        this.setState({
+            entries: [],
+            update: this.state.update + 1
+        });
+    }
+
     handleStreamTransformationChange(transformation) {
         console.log('changing transformation to', transformation);
         return StreamUtil.transformStream(this.state.stream, transformation)
@@ -142,6 +149,7 @@ class StreamDatasetDetail extends React.Component {
                 onDeleteClick={this.handleDeleteClick.bind(this)}
                 onCloseClick={this.handleCloseClick.bind(this)}
                 onLoadClick={this.handleLoadClick.bind(this)}
+                onClearClick={this.handleClearClick.bind(this)}
                 onSaveClick={this.handleSaveClick.bind(this)}/>
         );
 
