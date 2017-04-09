@@ -141,7 +141,7 @@ function updateDataset(state, action) {
         }
     }
 
-    if (entries) {
+    if (entries !== null && entries !== undefined) {
         // find max ID used
         let maxId = 0;
         if (entries.length > 0) {
@@ -153,9 +153,17 @@ function updateDataset(state, action) {
         }
         // prepare entry map
         const entryMap = Object.assign({}, state.entries);
-        let entry;
+        // remove old
+        const entryIds = Object.keys(entryMap);
+        for (let i = 0; i < entryIds.length; i++) {
+            let entry = entryMap[entryIds[i]];
+            if (entry && entry.datasetId === datasetId) {
+                delete entryMap[entryIds[i]];
+            }
+        }
+        // insert new
         for (let i = 0; i < entries.length; i++) {
-            entry = entries[i];
+            let entry = entries[i];
             entryMap[entry.id] = entry;
         }
 
