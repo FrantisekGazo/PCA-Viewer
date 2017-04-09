@@ -171,7 +171,7 @@ class ScatterPlot extends React.Component {
                         },
                         hoverinfo: 'none',
                         showlegend: false,
-                        legendgroup: `group-${i}`,
+                        // legendgroup: `group-${i}`,
                     };
 
                     // plotData.push(plotMean);
@@ -233,7 +233,7 @@ class ScatterPlot extends React.Component {
                         color: color,
                         hoverinfo: 'none',
                         showlegend: false,
-                        legendgroup: `group-${i}`,
+                        // legendgroup: `group-${i}`,
                     };
 
                     // plotData.push(plotMean);
