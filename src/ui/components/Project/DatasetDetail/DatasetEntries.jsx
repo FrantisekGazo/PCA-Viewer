@@ -52,7 +52,7 @@ class DatasetEntries extends React.Component {
         if (entries.length > 0) {
             return (
                 <Card>
-                    <CardHeader title='Entries:'/>
+                    <CardHeader title={`Entries: (${entries.length})`}/>
 
                     {
                         showChart ? (
