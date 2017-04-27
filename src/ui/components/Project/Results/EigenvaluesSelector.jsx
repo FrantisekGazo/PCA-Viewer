@@ -3,9 +3,18 @@
 const React = require('react');
 const Checkbox = require('material-ui/Checkbox').default;
 const RaisedButton = require('material-ui/RaisedButton').default;
+const MenuItem = require('material-ui/MenuItem').default;
+const SelectField = require('material-ui/SelectField').default;
 const Snackbar = require('material-ui/Snackbar').default;
 
-const { sortNumArrayAsc } = require('../../../../util');
+const { copyArray } = require('../../../../util');
+
+
+const styles = {
+    select: {
+        width: '80px'
+    }
+};
 
 
 /**
@@ -21,34 +30,46 @@ class EigenvaluesSelector extends React.Component {
         };
     }
 
-    onCheck(index, checked) {
-        const { selected } = this.state;
-
-        if (!checked) {
-            this.setState({
-                selected: selected.filter(i => i !== index)
-            });
-        } else if (checked && selected.length < 3) {
-            this.setState({
-                selected: [index].concat(selected)
-            });
-        } else {
-            this.setState({
-                snackbarMsg: 'More than 3 eigenvalues cannot be selected!'
-            });
-        }
+    onChange(index, value) {
+        const newSelection = copyArray(this.state.selected);
+        newSelection[index] = value;
+        this.setState({
+            selected: newSelection
+        });
     }
 
     onUpdateClick() {
-        const { selected } = this.state;
-        if (selected.length < 2) {
+        const selection = copyArray(this.state.selected);
+
+        if (selection.length < 2) {
             this.setState({
                 snackbarMsg: 'At least 2 eigenvalues must be selected!'
             });
             return;
         }
 
-        this.props.onSelectionChange(sortNumArrayAsc(selected));
+        // remove empty selection (if exists)
+        if (selection.length > 2 && selection[2] === -1) {
+            selection.splice(2, 1);
+        }
+
+        if (selection.length > 2) {
+            if (selection[0] === selection[1] || selection[1] === selection[2] || selection[0] === selection[2]) {
+                this.setState({
+                    snackbarMsg: 'Selected eigenvalues must be different!'
+                });
+                return;
+            }
+        } else {
+            if (selection[0] === selection[1]) {
+                this.setState({
+                    snackbarMsg: 'Selected eigenvalues must be different!'
+                });
+                return;
+            }
+        }
+
+        this.props.onSelectionChange(selection);
     }
 
     showMessage(text) {
@@ -75,20 +96,14 @@ class EigenvaluesSelector extends React.Component {
         const { selected } = this.state;
 
         let i = 0;
-        const eigenvaluesPickers = eigenvalues
-            .slice(0, 5) // show only first 5 at max
+        const eigensMenuItems = eigenvalues
             .map(v => {
-            const index = i++;
-            const stringIndex = `${index}`;
-            return (
-                <Checkbox
-                    key={stringIndex}
-                    checked={selected.indexOf(index) >= 0}
-                    label={stringIndex}
-                    onCheck={(event, newValue) => this.onCheck(index, newValue)}
-                    style={{ display: 'inline-block', width: '70px' }}/>
-            );
-        });
+                const index = i++;
+                const text = `${index}`;
+                return (
+                    <MenuItem key={index} value={index} primaryText={text}/>
+                );
+            });
 
         return (
             <div style={{ padding: '10px' }}>
@@ -96,7 +111,27 @@ class EigenvaluesSelector extends React.Component {
                     Select 2 or 3 eigenvalues:
                 </div>
 
-                { eigenvaluesPickers }
+                <SelectField
+                    value={selected[0]}
+                    style={styles.select}
+                    onChange={(event, value) => this.onChange(0, value)}>
+                    { eigensMenuItems }
+                </SelectField>
+
+                <SelectField
+                    value={selected[1]}
+                    style={styles.select}
+                    onChange={(event, value) => this.onChange(1, value)}>
+                    { eigensMenuItems }
+                </SelectField>
+
+                <SelectField
+                    value={selected.length > 2 ? selected[2] : -1}
+                    style={styles.select}
+                    onChange={(event, index, value) => this.onChange(2, value)}>
+                    <MenuItem key={-1} value={-1} primaryText='---'/>
+                    { eigensMenuItems }
+                </SelectField>
 
                 <br/>
                 <RaisedButton label='Update' onTouchTap={this.onUpdateClick.bind(this)}/>
