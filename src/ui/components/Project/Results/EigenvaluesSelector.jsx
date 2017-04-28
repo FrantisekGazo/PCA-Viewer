@@ -99,7 +99,7 @@ class EigenvaluesSelector extends React.Component {
         const eigensMenuItems = eigenvalues
             .map(v => {
                 const index = i++;
-                const text = `${index}`;
+                const text = `${index + 1}`;
                 return (
                     <MenuItem key={index} value={index} primaryText={text}/>
                 );

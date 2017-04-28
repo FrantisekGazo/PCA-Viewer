@@ -12,7 +12,7 @@ class EigenvaluePlot extends React.Component {
     drawPlot() {
         const elementId = "eigenvaluePlot";
 
-        let i = 0;
+        let i = 1;
         const x = this.props.eigenvalues.map(v => i++);
 
         const data = [
