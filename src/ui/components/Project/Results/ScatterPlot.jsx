@@ -18,15 +18,15 @@ const layout = {
     },
     xaxis: {
         zeroline: true,
-        title: "X"
+        // title: "X"
     },
     yaxis: {
         zeroline: true,
-        title: "Y"
+        // title: "Y"
     },
     zaxis: {
         zeroline: true,
-        title: "Z"
+        // title: "Z"
     },
     // legend
     showlegend: true,
@@ -221,7 +221,7 @@ class ScatterPlot extends React.Component {
                         legendgroup: `group-${i}`,
                     };
 
-                    const plotEllipsoid = { // FIXME : make point non-selectable
+                    const plotEllipsoid = {
                         name: name + ' AREA',
                         x: area.ellipse.map(v => v[0]),
                         y: area.ellipse.map(v => v[1]),
