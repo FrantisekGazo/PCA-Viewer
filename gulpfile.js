@@ -39,7 +39,7 @@ gulp.task('bundle-index', function () {
     return b.bundle()
         .pipe(source('index.js'))
         .pipe(buffer())
-        .pipe(minifier(options, uglifyJS))
+        // .pipe(minifier(options, uglifyJS))
         .pipe(gulp.dest('./dist/'));
 });
 
