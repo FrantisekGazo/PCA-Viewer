@@ -63,6 +63,7 @@ class ProjectResults extends React.Component {
                                     selectedEntryIds={selectedEntryIds}
                                     selectedColor={'#ff0000'}
                                     results={results}
+                                    axisTitles={eigens.map(i => `u${i+1}`)}
                                     showAreas={showAreas}
                                     onPlotClick={onEntrySelected}/>
                             </CardMedia>

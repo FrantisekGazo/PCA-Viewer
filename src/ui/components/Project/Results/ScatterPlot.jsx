@@ -11,27 +11,19 @@ const layout = {
     hovermode: 'closest',
     height: 480,
     margin: {
-        l: 30,
+        l: 60,
         r: 30,
-        b: 30,
+        b: 0,
         t: 30
-    },
-    xaxis: {
-        zeroline: true,
-        // title: "X"
-    },
-    yaxis: {
-        zeroline: true,
-        // title: "Y"
-    },
-    zaxis: {
-        zeroline: true,
-        // title: "Z"
     },
     // legend
     showlegend: true,
     legend: {
-        orientation: "h"
+        orientation: "h",
+        xanchor:"center",
+        yanchor:"top",
+        y:-0.2, // play with it
+        x:0.5   // play with it
     }
 };
 
@@ -110,12 +102,24 @@ class ScatterPlot extends React.Component {
     }
 
     drawPlot() {
-        const { results, showAreas, selectedEntryIds, selectedColor } = this.props;
+        const { axisTitles, results, showAreas, selectedEntryIds, selectedColor } = this.props;
         const { data } = results;
 
         let plotData = [];
+        var plotLayout = {};
 
         if (this.is2D()) { // show 2D plot
+            plotLayout = Object.assign({}, layout, {
+                xaxis: {
+                    zeroline: true,
+                    title: axisTitles[0]
+                },
+                yaxis: {
+                    zeroline: true,
+                    title: axisTitles[1]
+                }
+            });
+
             this.size = SIZE_2D;
             this.lineWidth = this.size / 10;
 
@@ -179,6 +183,23 @@ class ScatterPlot extends React.Component {
                 }
             }
         } else { // show 3D plot
+            plotLayout = Object.assign({}, layout, {
+                scene: {
+                    xaxis: {
+                        zeroline: true,
+                        title: axisTitles[0]
+                    },
+                    yaxis: {
+                        zeroline: true,
+                        title: axisTitles[1]
+                    },
+                    zaxis: {
+                        zeroline: true,
+                        title: axisTitles[2]
+                    }
+                }
+            });
+
             this.size = SIZE_3D;
             this.lineWidth = this.size / 10;
 
@@ -245,7 +266,7 @@ class ScatterPlot extends React.Component {
         Plotly.newPlot(
             ELEMENT_ID,
             plotData,
-            layout,
+            plotLayout,
             opts
         );
 
@@ -339,6 +360,7 @@ class ScatterPlot extends React.Component {
 
 ScatterPlot.propTypes = {
     // object containing calculated results
+    axisTitles: React.PropTypes.array.isRequired,
     results: React.PropTypes.object.isRequired,
     showAreas: React.PropTypes.bool.isRequired,
     // selection information
