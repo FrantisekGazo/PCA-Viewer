@@ -26,10 +26,13 @@ class FileUtil {
                 input: fs.createReadStream(filePath)
             });
 
+            // support CSV files
+            const separator = filePath.endsWith('.csv') ? ',' : /\s+/;
+
             rl.on('line', function (line) {
                 const numberValues = [];
 
-                const stringValues = line.replace(',', '.').split(/\s+/);
+                const stringValues = line.replace(',', '.').split(separator);
                 let numberValue;
                 for (let i = 0; i < stringValues.length; i++) {
                     numberValue = parseFloat(stringValues[i]);
