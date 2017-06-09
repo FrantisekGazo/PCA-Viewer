@@ -37,10 +37,10 @@ class StreamUtil {
                 result.push(sample);
             }
 
-            if (result.length > 0) {
-                resolve(result);
-            } else {
+            if (stream.length > 0 && result.length == 0) {
                 reject(Error(`Sampling ${sampling} failed`));
+            } else {
+                resolve(result);
             }
         });
     }

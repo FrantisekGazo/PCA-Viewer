@@ -85,8 +85,10 @@ class StreamDatasetDetail extends React.Component {
     }
 
     handleClearClick() {
+        console.log('clear');
         this.setState({
-            entries: [],
+            stream: [],
+            transformedStream: [],
             update: this.state.update + 1
         });
     }
