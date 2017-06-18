@@ -1,4 +1,6 @@
-const {app, shell, Menu, BrowserWindow} = require('electron').remote;
+const { app, shell, Menu, BrowserWindow } = require('electron').remote;
+
+const HelpUtil = require('../../util/HelpUtil');
 
 
 const DEV_TOOLS = {
@@ -80,7 +82,7 @@ const template = () => [
             {
                 label: 'Learn More',
                 click: function () {
-                    shell.openExternal('http://electron.atom.io')
+                    HelpUtil.showHelp();
                 }
             }
         ]
